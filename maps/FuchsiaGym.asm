@@ -30,7 +30,7 @@ FuchsiaGym_MapScriptHeader:
 
 FuchsiaGymJanineScript:
 	checkflag ENGINE_MARSHBADGE
-	iftrue .FightDone
+	iftruefwd .FightDone
 	applymovement FUCHSIAGYM_JANINE, Movement_NinjaSpin
 	showtextfaceplayer JanineText_DisappointYou
 	winlosstext JanineText_ToughOne, 0
@@ -46,32 +46,32 @@ FuchsiaGymJanineScript:
 	variablesprite SPRITE_FUCHSIA_GYM_2, SPRITE_CUTE_GIRL
 	variablesprite SPRITE_FUCHSIA_GYM_3, SPRITE_CUTE_GIRL
 	variablesprite SPRITE_FUCHSIA_GYM_4, SPRITE_SCHOOLBOY
-	special MapCallbackSprites_LoadUsedSpritesGFX
+	special RefreshSprites
 	opentext
 	writetext Text_ReceivedSoulBadge
 	playsound SFX_GET_BADGE
 	waitsfx
 	setflag ENGINE_MARSHBADGE
 	readvar VAR_BADGES
-	ifequal 9, .FirstBadge
-	ifequal 10, .SecondBadge
-	ifequal 12, .LyrasEgg
-	sjump UnknownScript_0x195e02
+	ifequalfwd 9, .FirstBadge
+	ifequalfwd 10, .SecondBadge
+	ifequalfwd 12, .LyrasEgg
+	sjumpfwd .AfterBattle
 .FirstBadge:
 	specialphonecall SPECIALCALL_FIRSTBADGE
-	sjump UnknownScript_0x195e02
+	sjumpfwd .AfterBattle
 .SecondBadge:
 	checkevent EVENT_GOT_GS_BALL_FROM_POKECOM_CENTER
-	iftrue UnknownScript_0x195e02
+	iftruefwd .AfterBattle
 	specialphonecall SPECIALCALL_SECONDBADGE
-	sjump UnknownScript_0x195e02
+	sjumpfwd .AfterBattle
 .LyrasEgg:
 	specialphonecall SPECIALCALL_LYRASEGG
-	sjump UnknownScript_0x195e02
+	sjumpfwd .AfterBattle
 .FightDone:
 	faceplayer
 	opentext
-UnknownScript_0x195e02:
+.AfterBattle:
 	checkevent EVENT_GOT_TM66_POISON_JAB
 	iftrue_jumpopenedtext JanineText_ApplyMyself
 	writetext JanineText_ToxicSpeech
@@ -90,12 +90,12 @@ UnknownScript_0x195e02:
 
 LassAliceScript:
 	checkevent EVENT_BEAT_LASS_AMANDA
-	iftrue UnknownScript_0x195e2c
+	iftruefwd .AliceUnmasked
 	applymovement FUCHSIAGYM_FUCHSIA_GYM_1, Movement_NinjaSpin
 	faceplayer
 	variablesprite SPRITE_FUCHSIA_GYM_1, SPRITE_LASS
-	special MapCallbackSprites_LoadUsedSpritesGFX
-UnknownScript_0x195e2c:
+	special RefreshSprites
+.AliceUnmasked:
 	checkevent EVENT_BEAT_LASS_AMANDA
 	iftrue_jumptextfaceplayer LassAliceAfterText
 	faceplayer
@@ -103,24 +103,24 @@ UnknownScript_0x195e2c:
 	winlosstext LassAliceBeatenText, 0
 	loadtrainer LASS, AMANDA
 	startbattle
-	iftrue UnknownScript_0x195e4a
+	iftruefwd .AliceBecomesJanine
 	reloadmapafterbattle
 	setevent EVENT_BEAT_LASS_AMANDA
 	end
 
-UnknownScript_0x195e4a:
+.AliceBecomesJanine:
 	variablesprite SPRITE_FUCHSIA_GYM_1, SPRITE_JANINE
 	reloadmapafterbattle
 	end
 
 LassLindaScript:
 	checkevent EVENT_BEAT_LASS_LINDA
-	iftrue UnknownScript_0x195e66
+	iftruefwd .LindaUnmasked
 	applymovement FUCHSIAGYM_FUCHSIA_GYM_2, Movement_NinjaSpin
 	faceplayer
 	variablesprite SPRITE_FUCHSIA_GYM_2, SPRITE_LASS
-	special MapCallbackSprites_LoadUsedSpritesGFX
-UnknownScript_0x195e66:
+	special RefreshSprites
+.LindaUnmasked:
 	checkevent EVENT_BEAT_LASS_LINDA
 	iftrue_jumptextfaceplayer LassLindaAfterText
 	faceplayer
@@ -128,24 +128,24 @@ UnknownScript_0x195e66:
 	winlosstext LassLindaBeatenText, 0
 	loadtrainer LASS, LINDA
 	startbattle
-	iftrue UnknownScript_0x195e84
+	iftruefwd .LindaBecomesJanine
 	reloadmapafterbattle
 	setevent EVENT_BEAT_LASS_LINDA
 	end
 
-UnknownScript_0x195e84:
+.LindaBecomesJanine:
 	variablesprite SPRITE_FUCHSIA_GYM_2, SPRITE_JANINE
 	reloadmapafterbattle
 	end
 
 PicnickerCindyScript:
 	checkevent EVENT_BEAT_PICNICKER_CINDY
-	iftrue UnknownScript_0x195ea0
+	iftruefwd .CindyUnmasked
 	applymovement FUCHSIAGYM_FUCHSIA_GYM_3, Movement_NinjaSpin
 	faceplayer
 	variablesprite SPRITE_FUCHSIA_GYM_3, SPRITE_PICNICKER
-	special MapCallbackSprites_LoadUsedSpritesGFX
-UnknownScript_0x195ea0:
+	special RefreshSprites
+.CindyUnmasked:
 	checkevent EVENT_BEAT_PICNICKER_CINDY
 	iftrue_jumptextfaceplayer PicnickerCindyAfterText
 	faceplayer
@@ -153,24 +153,24 @@ UnknownScript_0x195ea0:
 	winlosstext PicnickerCindyBeatenText, 0
 	loadtrainer PICNICKER, CINDY
 	startbattle
-	iftrue UnknownScript_0x195ebe
+	iftruefwd .CindyBecomesJanine
 	reloadmapafterbattle
 	setevent EVENT_BEAT_PICNICKER_CINDY
 	end
 
-UnknownScript_0x195ebe:
+.CindyBecomesJanine:
 	variablesprite SPRITE_FUCHSIA_GYM_3, SPRITE_JANINE
 	reloadmapafterbattle
 	end
 
 CamperBarryScript:
 	checkevent EVENT_BEAT_CAMPER_BARRY
-	iftrue UnknownScript_0x195eda
+	iftruefwd .BarryUnmasked
 	applymovement FUCHSIAGYM_FUCHSIA_GYM_4, Movement_NinjaSpin
 	faceplayer
 	variablesprite SPRITE_FUCHSIA_GYM_4, SPRITE_SCHOOLBOY
-	special MapCallbackSprites_LoadUsedSpritesGFX
-UnknownScript_0x195eda:
+	special RefreshSprites
+.BarryUnmasked:
 	checkevent EVENT_BEAT_CAMPER_BARRY
 	iftrue_jumptextfaceplayer CamperBarryAfterText
 	faceplayer
@@ -178,12 +178,12 @@ UnknownScript_0x195eda:
 	winlosstext CamperBarryBeatenText, 0
 	loadtrainer CAMPER, BARRY
 	startbattle
-	iftrue UnknownScript_0x195ef8
+	iftruefwd .BarryBecomesJanine
 	reloadmapafterbattle
 	setevent EVENT_BEAT_CAMPER_BARRY
 	end
 
-UnknownScript_0x195ef8:
+.BarryBecomesJanine:
 	variablesprite SPRITE_FUCHSIA_GYM_4, SPRITE_JANINE
 	reloadmapafterbattle
 	end
@@ -196,7 +196,7 @@ FuchsiaGymGuyScript:
 FuchsiaGymStatue:
 	gettrainername JANINE, 1, $1
 	checkflag ENGINE_MARSHBADGE
-	iftrue .Beaten
+	iftruefwd .Beaten
 	jumpstd gymstatue1
 .Beaten:
 	jumpstd gymstatue2

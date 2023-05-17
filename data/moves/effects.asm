@@ -52,6 +52,7 @@ XScissor:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -73,6 +74,7 @@ SuckerPunch:
 	hastarget
 	suckerpunch
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -99,6 +101,7 @@ DrainPunch:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -122,6 +125,7 @@ SwitchHit:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -145,7 +149,6 @@ DoubleSlap:
 PinMissile:
 IcicleSpear:
 RockBlast:
-FuryStrikes:
 	checkobedience
 	usedmovetext
 	doturn
@@ -153,6 +156,7 @@ FuryStrikes:
 	startloop
 	lowersub
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -182,6 +186,7 @@ BraveBird:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -215,6 +220,7 @@ ZenHeadbutt:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -241,6 +247,7 @@ GunkShot:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -267,6 +274,7 @@ FireBlast:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -296,6 +304,7 @@ ZapCannon:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -318,6 +327,7 @@ BodySlam:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -341,6 +351,7 @@ SleepHit:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -366,6 +377,7 @@ Blizzard:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -394,6 +406,7 @@ Hurricane:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -417,6 +430,7 @@ MetalClaw:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	selfeffectchance
 	damagestats
@@ -440,6 +454,7 @@ SteelWing:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	selfeffectchance
 	damagestats
@@ -463,6 +478,7 @@ FlameCharge:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	selfeffectchance
 	damagestats
@@ -486,6 +502,7 @@ Ancientpower:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	selfeffectchance
 	damagestats
@@ -513,6 +530,7 @@ AuroraBeam:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -537,6 +555,7 @@ IronTail:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -559,6 +578,7 @@ BrickBreak:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	resettypematchup
 	brickbreak
@@ -584,6 +604,7 @@ Bulldoze:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -607,6 +628,7 @@ Moonblast:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -637,6 +659,7 @@ ShadowBall:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -661,6 +684,7 @@ Octazooka:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -683,6 +707,7 @@ EvasionDownHit:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -705,6 +730,7 @@ CloseCombat:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -732,6 +758,7 @@ SuperFang:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	constantdamage
 	resettypematchup
 	moveanim
@@ -749,6 +776,7 @@ Poisonpowder:
 	hastarget
 	checkhit
 	checkpowder
+	checkpriority
 	bounceback
 	checksafeguard
 	poison
@@ -761,6 +789,7 @@ Toxic:
 	hastarget
 	checkhit
 	checkpowder
+	checkpriority
 	bounceback
 	checksafeguard
 	toxic
@@ -773,6 +802,7 @@ WillOWisp:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	resettypematchup
 	bounceback
 	stab
@@ -790,6 +820,7 @@ Glare:
 	hastarget
 	checkhit
 	checkpowder
+	checkpriority
 	bounceback
 	checksafeguard
 	paralyze
@@ -806,6 +837,7 @@ Spore:
 	hastarget
 	checkhit
 	checkpowder
+	checkpriority
 	bounceback
 	checksafeguard
 	sleep
@@ -817,6 +849,7 @@ DoFreeze:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	checksafeguard
 	freezetarget
@@ -831,6 +864,7 @@ SweetKiss:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	checksafeguard
 	confuse
@@ -1021,6 +1055,7 @@ Growl:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat ATTACK
 	endmove
@@ -1032,6 +1067,7 @@ Leer:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat DEFENSE
 	endmove
@@ -1043,6 +1079,7 @@ StringShot:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat SPEED
 	endmove
@@ -1053,6 +1090,7 @@ SpecialAttackDown:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat SP_ATTACK
 	endmove
@@ -1063,6 +1101,7 @@ SpecialDefenseDown:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat SP_DEFENSE
 	endmove
@@ -1075,6 +1114,7 @@ Flash:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat ACCURACY
 	endmove
@@ -1085,6 +1125,7 @@ EvasionDown:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat EVASION
 	endmove
@@ -1096,6 +1137,7 @@ Charm:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | ATTACK
 	endmove
@@ -1107,6 +1149,7 @@ Screech:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | DEFENSE
 	endmove
@@ -1118,6 +1161,7 @@ ScaryFace:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | SPEED
 	endmove
@@ -1128,6 +1172,7 @@ SpecialAttackDown2:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | SP_ATTACK
 	endmove
@@ -1138,6 +1183,7 @@ SpecialDefenseDown2:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | SP_DEFENSE
 	endmove
@@ -1148,6 +1194,7 @@ AccuracyDown2:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | ACCURACY
 	endmove
@@ -1158,6 +1205,7 @@ EvasionDown2:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	loweroppstat $10 | EVASION
 	endmove
@@ -1220,6 +1268,7 @@ Outrage:
 	hastarget
 	rampage
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1245,6 +1294,7 @@ Whirlpool:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1267,6 +1317,7 @@ Explosion:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1288,6 +1339,7 @@ DreamEater:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1309,6 +1361,7 @@ Roar:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	roar
 	endmove
@@ -1318,6 +1371,7 @@ SkillSwap:
 	usedmovetext
 	doturn
 	hastarget
+	checkpriority
 	skillswap
 	endmove
 
@@ -1327,6 +1381,7 @@ Trick:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	trick
 	endmove
 
@@ -1343,6 +1398,7 @@ PayDay:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1364,6 +1420,7 @@ KnockOff:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1386,6 +1443,7 @@ BugBite:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1407,6 +1465,7 @@ TriAttack:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1444,6 +1503,7 @@ GigaImpact:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1465,6 +1525,7 @@ Rage:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1493,6 +1554,7 @@ LeechSeed:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	leechseed
 	endmove
@@ -1510,6 +1572,7 @@ Disable:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	failuretext
 	disable
@@ -1535,6 +1598,7 @@ Encore:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	failuretext
 	encore
@@ -1546,6 +1610,7 @@ PainSplit:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	painsplit
 	endmove
 
@@ -1569,6 +1634,7 @@ DestinyBond:
 	usedmovetext
 	doturn
 	hastarget
+	checkpriority
 	destinybond
 	endmove
 
@@ -1578,6 +1644,7 @@ Reversal:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	constantdamage
 	stab
 	moveanim
@@ -1594,6 +1661,7 @@ FalseSwipe:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1622,9 +1690,8 @@ Thief:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
-	; Yes, thief is 100% but this makes Sheer Force and Substitute be handled correctly
-	effectchance
 	damagestats
 	damagecalc
 	stab
@@ -1644,6 +1711,7 @@ MeanLook:
 	usedmovetext
 	doturn
 	hastarget
+	checkpriority
 	bounceback
 	arenatrap
 	endmove
@@ -1686,6 +1754,7 @@ Foresight:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	foresight
 	endmove
@@ -1694,6 +1763,7 @@ PerishSong:
 	checkobedience
 	usedmovetext
 	doturn
+	checkpriority
 	perishsong
 	endmove
 
@@ -1724,6 +1794,7 @@ Rollout:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1745,6 +1816,7 @@ Swagger:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	raiseoppstat $10 | ATTACK
 	confusetarget
@@ -1761,6 +1833,7 @@ ConditionalBoostHit:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1782,6 +1855,7 @@ Attract:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	bounceback
 	attract
 	endmove
@@ -1792,6 +1866,7 @@ Return:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	happinesspower
@@ -1813,6 +1888,7 @@ SacredFire:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -1836,6 +1912,7 @@ Magnitude:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	getmagnitude
@@ -1858,6 +1935,7 @@ GyroBall:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	gyroball
@@ -1879,6 +1957,7 @@ LowKick:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	lowkick
@@ -1908,6 +1987,7 @@ Pursuit:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -1929,6 +2009,7 @@ RapidSpin:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	selfeffectchance
 	damagestats
@@ -1959,6 +2040,7 @@ HiddenPower:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	hiddenpower
 	damagecalc
@@ -2000,6 +2082,7 @@ MirrorCoat:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	counter
 	moveanim
 	failuretext
@@ -2014,6 +2097,7 @@ Earthquake:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -2037,6 +2121,7 @@ FutureSight:
 	hastarget
 	futuresight
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -2057,6 +2142,7 @@ Gust:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -2078,6 +2164,7 @@ Stomp:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -2102,6 +2189,7 @@ SolarBeam:
 	hastarget
 	charge
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -2122,6 +2210,7 @@ Thunder:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats
@@ -2154,6 +2243,7 @@ Dig:
 	hastarget
 	charge
 	checkhit
+	checkpriority
 	critical
 	damagestats
 	damagecalc
@@ -2175,6 +2265,7 @@ FlareBlitz:
 	doturn
 	hastarget
 	checkhit
+	checkpriority
 	critical
 	effectchance
 	damagestats

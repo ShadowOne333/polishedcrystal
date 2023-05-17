@@ -73,9 +73,9 @@ Draw2DMenu:
 
 Place2DMenuItemStrings:
 	ld hl, wMenuData_2DMenuItemStringsAddr
-	ld e, [hl]
-	inc hl
+	ld a, [hli]
 	ld d, [hl]
+	ld e, a
 	call GetMenuTextStartCoord
 	call Coord2Tile
 	call GetMenuNumberOfRows
@@ -506,9 +506,9 @@ _PushWindow::
 	ldh [rSVBK], a
 
 	ld hl, wWindowStackPointer
-	ld e, [hl]
-	inc hl
+	ld a, [hli]
 	ld d, [hl]
+	ld e, a
 	push de
 
 	ld b, $10
@@ -564,8 +564,8 @@ _PushWindow::
 
 .no_overflow
 	ld hl, wWindowStackPointer
-	ld [hl], e
-	inc hl
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 
 	pop af
@@ -584,6 +584,56 @@ _PushWindow::
 .col
 	ld a, [hli]
 	ld [de], a
+	dec de
+	dec c
+	jr nz, .col
+
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .row
+	ret
+
+PushWindow_MenuBoxCoordToTile::
+	bccoord 0, 0
+	jr PushWindow_MenuBoxCoordToAbsolute
+
+PushWindow_MenuBoxCoordToAttr::
+	bccoord 0, 0, wAttrmap
+
+; fallthrough
+PushWindow_MenuBoxCoordToAbsolute:
+	push bc
+	call LoadMenuBoxCoords
+	ld a, [wMenuFlags]
+	bit 1, a
+	jr z, .noDec
+	dec b
+	dec c
+.noDec
+	call Coord2Absolute
+	pop bc
+	add hl, bc
+	ret
+
+RestoreTileBackup::
+	call PushWindow_MenuBoxCoordToTile
+	call .copy
+	call PushWindow_MenuBoxCoordToAttr
+	; fallthrough
+
+.copy
+	call GetTileBackupMenuBoxDims
+
+.row
+	push bc
+	push hl
+
+.col
+	ld a, [de]
+	ld [hli], a
 	dec de
 	dec c
 	jr nz, .col
@@ -701,8 +751,8 @@ _InitVerticalMenuCursor::
 .load_at_the_top
 	ld c, 1
 .load_position
-	ld [hl], c
-	inc hl
+	ld a, c
+	ld [hli], a
 ; wMenuCursorX
 	ld a, 1
 	ld [hli], a

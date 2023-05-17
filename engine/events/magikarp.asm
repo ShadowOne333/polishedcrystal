@@ -8,7 +8,13 @@ CheckMagikarpLength:
 	farcall SelectMonFromParty
 	jr c, .declined
 	ld a, [wCurPartySpecies]
-	cp MAGIKARP
+	cp LOW(MAGIKARP)
+	jr nz, .not_magikarp
+	ld a, [wCurForm]
+	assert MON_IS_EGG == MON_FORM
+	and IS_EGG_MASK | EXTSPECIES_MASK
+	assert !HIGH(MAGIKARP)
+	and a ; cp HIGH(MAGIKARP) << MON_EXTSPECIES_F | IS_EGG_MASK
 	jr nz, .not_magikarp
 
 	; Now let's compute its length based on its DVs and ID.
@@ -100,7 +106,7 @@ PrintMagikarpLength:
 	ld b, a
 	ld a, [wMagikarpLengthMmLo]
 	ld c, a
-	ld de, div(1.0, 25.4)
+	ld de, div(1.0q16, 25.4q16, 16) ; 1 in / 25.4 mm = 0.03937 in/mm
 	xor a
 	ldh [hTmpd], a
 	ldh [hTmpe], a
@@ -268,7 +274,7 @@ CalcMagikarpLength:
 	ld a, [hl]
 	ldh [hDivisor], a
 	ld b, 2
-	call Divide
+	farcall Divide
 	ldh a, [hQuotient + 2]
 	ld c, a
 
@@ -280,7 +286,7 @@ CalcMagikarpLength:
 	ldh [hMultiplicand + 2], a
 	ld a, [wTempByteValue]
 	ldh [hMultiplier], a
-	call Multiply
+	farcall Multiply
 	ld b, 0
 	ldh a, [hProduct + 3]
 	add c
@@ -293,7 +299,7 @@ CalcMagikarpLength:
 .next
 	inc hl ; align to next triplet
 	ld a, [wTempByteValue]
-	inc a
+	inc a ; no-optimize inefficient WRAM increment/decrement
 	ld [wTempByteValue], a
 	cp 16
 	jr c, .read
@@ -335,8 +341,8 @@ CalcMagikarpLength:
 ;	ld e, a
 
 	ld hl, wMagikarpLengthMm
-	ld [hl], d
-	inc hl
+	ld a, d
+	ld [hli], a
 	ld [hl], e
 	ret
 

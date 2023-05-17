@@ -22,27 +22,19 @@ unsigned char * read_file_into_buffer (const char * file, unsigned short * size)
   return buf;
 }
 
-struct command pick_best_command (unsigned count, struct command command, ...) {
-  struct command result = command;
-  va_list ap;
-  va_start(ap, command);
-  while (-- count) {
-    command = va_arg(ap, struct command);
-    if (is_better(command, result)) result = command;
+unsigned minimum_count (unsigned command) {
+  switch (command) {
+    case LZ_ALTERNATE:
+        return 3;
+    case LZ_REPEAT:
+        return 2;
+    default:
+        return 1;
   }
-  va_end(ap);
-  return result;
-}
-
-int is_better (struct command new, struct command old) {
-  if (new.command == 7) return 0;
-  if (old.command == 7) return 1;
-  short new_savings = new.count - command_size(new), old_savings = old.count - command_size(old);
-  return new_savings > old_savings;
 }
 
 short command_size (struct command command) {
-  short header_size = 1 + (command.count > SHORT_COMMAND_COUNT);
+  short header_size = 1 + (command.count - minimum_count(command.command) > SHORT_COMMAND_COUNT - 1);
   if (command.command & 4) return header_size + 1 + (command.value >= 0);
   return header_size + command.command[(short []) {command.count, 1, 2, 0}];
 }

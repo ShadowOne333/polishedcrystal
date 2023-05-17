@@ -25,7 +25,7 @@ NationalPark_MapScriptHeader:
 	object_event 13, 41, SPRITE_SCHOOLGIRL, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 0, GenericTrainerSchoolgirlEliza, -1
 	object_event 12, 41, SPRITE_SCHOOLBOY, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 0, GenericTrainerSchoolboyJohnny, -1
 	object_event 19, 41, SPRITE_POKEFAN_F, SPRITEMOVEDATA_WANDER, 2, 1, -1, -1, PAL_NPC_RED, OBJECTTYPE_COMMAND, jumptextfaceplayer, NationalParkTeacher2Text, -1
-	pokemon_event 28, 40, PERSIAN, -1, -1, PAL_NPC_BROWN, NationalParkPersianText, -1
+	pokemon_event 28, 40, PERSIAN, SPRITEMOVEDATA_POKEMON, -1, -1, PAL_NPC_BROWN, NationalParkPersianText, -1
 	object_event 29, 23, SPRITE_SCHOOLBOY, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 3, TrainerSchoolboyJack1, -1
 	object_event 20, 29, SPRITE_POKEFAN_F, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 2, TrainerPokefanfBeverly1, -1
 	object_event 18,  9, SPRITE_POKEFAN_M, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 2, GenericTrainerPokefanmWilliam, -1
@@ -39,16 +39,16 @@ NationalParkTeacher1Script:
 	faceplayer
 	opentext
 	checkevent EVENT_GOT_QUICK_CLAW
-	iftrue UnknownScript_0x5c01d
+	iftruefwd .GotQuickClaw
 	writetext NationalParkTeacher1Text
 	promptbutton
 	verbosegiveitem QUICK_CLAW
-	iffalse UnknownScript_0x5c021
+	iffalsefwd .NoRoom
 	setevent EVENT_GOT_QUICK_CLAW
-UnknownScript_0x5c01d:
+.GotQuickClaw:
 	writetext NationalParkTeacher1Text_GotQuickClaw
 	waitbutton
-UnknownScript_0x5c021:
+.NoRoom:
 	endtext
 
 OfficermKeithScript:
@@ -108,48 +108,48 @@ SchoolboyJack1Script:
 	loadvar VAR_CALLERID, PHONE_SCHOOLBOY_JACK
 	opentext
 	checkflag ENGINE_JACK_READY_FOR_REMATCH
-	iftrue UnknownScript_0x5c088
+	iftruefwd .Rematch
 	checkcellnum PHONE_SCHOOLBOY_JACK
-	iftrue UnknownScript_0x5c108
+	iftruefwd .NumberAccepted
 	checkevent EVENT_JACK_ASKED_FOR_PHONE_NUMBER
-	iftrue UnknownScript_0x5c071
+	iftruefwd .AskAgain
 	writetext SchoolboyJackTradeMonText
 	promptbutton
 	setevent EVENT_JACK_ASKED_FOR_PHONE_NUMBER
-	scall UnknownScript_0x5c0fc
-	sjump UnknownScript_0x5c074
+	scall .AskNumber1
+	sjumpfwd .RequestNumber
 
-UnknownScript_0x5c071:
-	scall UnknownScript_0x5c100
-UnknownScript_0x5c074:
+.AskAgain:
+	scall .AskNumber2
+.RequestNumber:
 	askforphonenumber PHONE_SCHOOLBOY_JACK
-	ifequal $1, UnknownScript_0x5c110
-	ifequal $2, UnknownScript_0x5c10c
+	ifequalfwd $1, .PhoneFull
+	ifequalfwd $2, .NumberDeclined
 	gettrainername SCHOOLBOY, JACK1, $0
-	scall UnknownScript_0x5c104
-	sjump UnknownScript_0x5c108
+	scall .RegisteredNumber
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x5c088:
-	scall UnknownScript_0x5c114
+.Rematch:
+	scall .RematchStd
 	winlosstext SchoolboyJack1BeatenText, 0
 	readmem wJackFightCount
-	ifequal 4, .Fight4
-	ifequal 3, .Fight3
-	ifequal 2, .Fight2
-	ifequal 1, .Fight1
-	ifequal 0, .LoadFight0
+	ifequalfwd 4, .Fight4
+	ifequalfwd 3, .Fight3
+	ifequalfwd 2, .Fight2
+	ifequalfwd 1, .Fight1
+	ifequalfwd 0, .LoadFight0
 .Fight4:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
-	iftrue .LoadFight4
+	iftruefwd .LoadFight4
 .Fight3:
 	checkevent EVENT_BEAT_ELITE_FOUR
-	iftrue .LoadFight3
+	iftruefwd .LoadFight3
 .Fight2:
 	checkevent EVENT_CLEARED_RADIO_TOWER
-	iftrue .LoadFight2
+	iftruefwd .LoadFight2
 .Fight1:
 	checkflag ENGINE_FLYPOINT_OLIVINE
-	iftrue .LoadFight1
+	iftruefwd .LoadFight1
 .LoadFight0:
 	loadtrainer SCHOOLBOY, JACK1
 	startbattle
@@ -189,25 +189,25 @@ UnknownScript_0x5c088:
 	clearflag ENGINE_JACK_READY_FOR_REMATCH
 	end
 
-UnknownScript_0x5c0fc:
+.AskNumber1:
 	jumpstd asknumber1m
 
-UnknownScript_0x5c100:
+.AskNumber2:
 	jumpstd asknumber2m
 
-UnknownScript_0x5c104:
+.RegisteredNumber:
 	jumpstd registerednumberm
 
-UnknownScript_0x5c108:
+.NumberAccepted:
 	jumpstd numberacceptedm
 
-UnknownScript_0x5c10c:
+.NumberDeclined:
 	jumpstd numberdeclinedm
 
-UnknownScript_0x5c110:
+.PhoneFull:
 	jumpstd phonefullm
 
-UnknownScript_0x5c114:
+.RematchStd:
 	jumpstd rematchm
 
 GenericTrainerPokefanmWilliam:
@@ -227,64 +227,64 @@ PokefanfBeverly1Script:
 	loadvar VAR_CALLERID, PHONE_POKEFAN_BEVERLY
 	opentext
 	checkflag ENGINE_BEVERLY_HAS_NUGGET
-	iftrue UnknownScript_0x5c177
+	iftruefwd .GiveNugget
 	checkcellnum PHONE_POKEFAN_BEVERLY
-	iftrue UnknownScript_0x5c19b
+	iftruefwd .NumberAccepted
 	checkpoke MARILL
-	iffalse UnknownScript_0x5c189
+	iffalsefwd .NoMarill
 	checkevent EVENT_BEVERLY_ASKED_FOR_PHONE_NUMBER
-	iftrue UnknownScript_0x5c160
+	iftruefwd .AskAgain
 	writetext PokefanBeverlyCuteMonText
 	promptbutton
 	setevent EVENT_BEVERLY_ASKED_FOR_PHONE_NUMBER
-	scall UnknownScript_0x5c18f
-	sjump UnknownScript_0x5c163
+	scall .AskNumber1
+	sjumpfwd .RequestNumber
 
-UnknownScript_0x5c160:
-	scall UnknownScript_0x5c193
-UnknownScript_0x5c163:
+.AskAgain:
+	scall .AskNumber2
+.RequestNumber:
 	askforphonenumber PHONE_POKEFAN_BEVERLY
-	ifequal $1, UnknownScript_0x5c1a3
-	ifequal $2, UnknownScript_0x5c19f
+	ifequalfwd $1, .PhoneFull
+	ifequalfwd $2, .NumberDeclined
 	gettrainername POKEFANF, BEVERLY1, $0
-	scall UnknownScript_0x5c197
-	sjump UnknownScript_0x5c19b
+	scall .RegisteredNumber
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x5c177:
-	scall UnknownScript_0x5c1a7
+.GiveNugget:
+	scall .Gift
 	verbosegiveitem NUGGET
-	iffalse UnknownScript_0x5c186
+	iffalsefwd .NoRoom
 	clearflag ENGINE_BEVERLY_HAS_NUGGET
-	sjump UnknownScript_0x5c19b
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x5c186:
-	sjump UnknownScript_0x5c1ab
+.NoRoom:
+	sjumpfwd .PackFull
 
-UnknownScript_0x5c189:
+.NoMarill:
 	jumpopenedtext PokefanFBeverlyMarillFriendText
 
-UnknownScript_0x5c18f:
+.AskNumber1:
 	jumpstd asknumber1f
 
-UnknownScript_0x5c193:
+.AskNumber2:
 	jumpstd asknumber2f
 
-UnknownScript_0x5c197:
+.RegisteredNumber:
 	jumpstd registerednumberf
 
-UnknownScript_0x5c19b:
+.NumberAccepted:
 	jumpstd numberacceptedf
 
-UnknownScript_0x5c19f:
+.NumberDeclined:
 	jumpstd numberdeclinedf
 
-UnknownScript_0x5c1a3:
+.PhoneFull:
 	jumpstd phonefullf
 
-UnknownScript_0x5c1a7:
+.Gift:
 	jumpstd giftf
 
-UnknownScript_0x5c1ab:
+.PackFull:
 	jumpstd packfullf
 
 GenericTrainerLassKrise:
@@ -464,7 +464,7 @@ LassKriseSeenText:
 	para "Oh, a battle?"
 	done
 
-LassKriseBeatenText:
+LassKriseBeatenText: ; text > text
 	text "…Hmmm…"
 	done
 

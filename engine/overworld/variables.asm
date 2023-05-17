@@ -1,79 +1,60 @@
+DEF in_stringbuffer2 EQUS "- $4000"
+
 VarActionTable:
-; $00: copy [de] to wStringBuffer2
-; $40: return address in de
-; $80: call function
-	dwb wStringBuffer2,                 RETVAR_STRBUF2
-	dwb wPartyCount,                    RETVAR_STRBUF2
-	dwb Var_BattleResult,               RETVAR_EXECUTE
-	dwb wBattleType,                    RETVAR_ADDR_DE
-	dwb wTimeOfDay,                     RETVAR_STRBUF2
-	dwb Var_CountCaughtMons,            RETVAR_EXECUTE
-	dwb Var_CountSeenMons,              RETVAR_EXECUTE
-	dwb Var_CountBadges,                RETVAR_EXECUTE
-	dwb wPlayerState,                   RETVAR_ADDR_DE
-	dwb Var_PlayerFacing,               RETVAR_EXECUTE
-	dwb hHours,                         RETVAR_STRBUF2
-	dwb Var_DayOfWeek,                  RETVAR_EXECUTE
-	dwb wMapGroup,                      RETVAR_STRBUF2
-	dwb wMapNumber,                     RETVAR_STRBUF2
-	dwb Var_UnownCaught,                RETVAR_EXECUTE
-	dwb wEnvironment,                   RETVAR_STRBUF2
-	dwb Var_BoxFreeSpace,               RETVAR_EXECUTE
-	dwb wBugContestMinsRemaining,       RETVAR_STRBUF2
-	dwb wXCoord,                        RETVAR_STRBUF2
-	dwb wYCoord,                        RETVAR_STRBUF2
-	dwb wSpecialPhoneCallID,            RETVAR_STRBUF2
-	dwb wKurtApricornQuantity,          RETVAR_STRBUF2
-	dwb wCurCaller,                     RETVAR_ADDR_DE
-	dwb wBlueCardBalance,               RETVAR_ADDR_DE
-	dwb wBuenasPassword,                RETVAR_ADDR_DE
-	dwb wKenjiBreakTimer,               RETVAR_STRBUF2
-	dwb Var_CountPokemonJournals,       RETVAR_EXECUTE
-	dwb Var_CountTrainerStars,          RETVAR_EXECUTE
-	dwb NULL,                           RETVAR_STRBUF2
+; words 0000-7fff (ROM labels) are executed as code
+; words c000-ffff (WRAM/HRAM labels) are returned directly
+; words 8000-bfff (shifted RAM labels) are shifted to c000-ffff and read into wStringBuffer2
+; this means that vars cannot execute RAM code, nor return pointers to or values from ROM or VRAM/SRAM
+	table_width 2, VarActionTable
+	dw wStringBuffer2 in_stringbuffer2
+	dw wPartyCount in_stringbuffer2
+	dw Var_BattleResult ; execute
+	dw wBattleType ; in de
+	dw wTimeOfDay in_stringbuffer2
+	dw Var_CountBadges ; execute
+	dw wPlayerState ; in de
+	dw Var_PlayerFacing ; execute
+	dw hHours in_stringbuffer2
+	dw Var_DayOfWeek ; execute
+	dw wMapGroup in_stringbuffer2
+	dw wMapNumber in_stringbuffer2
+	dw Var_UnownCaught ; execute
+	dw wEnvironment in_stringbuffer2
+	dw Var_BoxFreeSpace ; execute
+	dw wBugContestMinsRemaining in_stringbuffer2
+	dw wXCoord in_stringbuffer2
+	dw wYCoord in_stringbuffer2
+	dw wSpecialPhoneCallID in_stringbuffer2
+	dw wKurtApricornQuantity in_stringbuffer2
+	dw wCurCaller ; in de
+	dw wBlueCardBalance ; in de
+	dw wBuenasPassword ; in de
+	dw wKenjiBreakTimer in_stringbuffer2
+	dw Var_CountPokemonJournals ; execute
+	dw Var_CountTrainerStars ; execute
+	dw Var_Landmark ; execute
+	dw wPlayerGender ; in de
+	assert_table_length NUM_VARS
 
 _GetVarAction::
-	ld a, c
-	cp NUM_VARS
-	jr c, .valid
-	xor a
-.valid
-	ld c, a
 	ld b, 0
 	ld hl, VarActionTable
 	add hl, bc
 	add hl, bc
-	add hl, bc
-	ld e, [hl]
-	inc hl
+	ld a, [hli]
+	ld e, a
 	ld d, [hl]
-	inc hl
-	ld b, [hl]
-	ld a, b
-	and RETVAR_EXECUTE
-	jmp nz, _de_
-	ld a, b
-	and RETVAR_ADDR_DE
+	bit 7, d
+	jmp z, _de_
+	bit 6, d
 	ret nz
-	ld a, [de]
+	ld hl, $4000
+	add hl, de
+	ld a, [hl]
 _Var_loadstringbuffer2:
 	ld de, wStringBuffer2
 	ld [de], a
 	ret
-
-Var_CountCaughtMons:
-	ld hl, wPokedexCaught
-	ld b, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits
-	ld a, [wNumSetBits]
-	jr _Var_loadstringbuffer2
-
-Var_CountSeenMons:
-	ld hl, wPokedexSeen
-	ld b, wEndPokedexSeen - wPokedexSeen
-	call CountSetBits
-	ld a, [wNumSetBits]
-	jr _Var_loadstringbuffer2
 
 Var_CountBadges:
 	ld hl, wBadges
@@ -94,22 +75,29 @@ Var_DayOfWeek:
 	jr _Var_loadstringbuffer2
 
 Var_UnownCaught:
-	call .count
-	ld a, b
-	jr _Var_loadstringbuffer2
+	push hl
+	push de
+	push bc
 
-.count
-	ld hl, wUnownDex
-	ld b, 0
+	assert !HIGH(UNOWN)
+	lb bc, NUM_UNOWN, UNOWN
+	ld d, 0
 .loop
-	ld a, [hli]
-	and a
-	ret z
-	inc b
-	ld a, b
-	cp NUM_UNOWN
-	jr c, .loop
-	ret
+	push de
+	push bc
+	call CheckCaughtMon
+	pop bc
+	pop de
+	jr z, .not_captured
+	inc d
+.not_captured
+	dec b
+	jr nz, .loop
+	ld a, d
+	pop bc
+	pop de
+	pop hl
+	jr _Var_loadstringbuffer2
 
 Var_BoxFreeSpace:
 ; Remaining database entries
@@ -118,7 +106,7 @@ Var_BoxFreeSpace:
 
 Var_BattleResult:
 	ld a, [wBattleResult]
-	and $3f
+	and ~BATTLERESULT_BITMASK
 	jr _Var_loadstringbuffer2
 
 Var_CountPokemonJournals:
@@ -126,6 +114,10 @@ Var_CountPokemonJournals:
 	ld b, wPokemonJournalsEnd - wPokemonJournals
 	call CountSetBits
 	ld a, [wNumSetBits]
+	jr _Var_loadstringbuffer2
+
+Var_Landmark:
+	call GetCurrentLandmark
 	jr _Var_loadstringbuffer2
 
 Var_CountTrainerStars:
@@ -142,22 +134,23 @@ Var_CountTrainerStars:
 .nostar2
 	; star for completing the Pokédex
 	push bc
-	ld hl, wPokedexCaught
-	ld b, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits
-	pop bc
-	cp NUM_POKEMON
+	farcall Pokedex_CountSeenOwn
+	ld hl, wTempDexOwn
+	ld a, [hli]
+	cp HIGH(NUM_POKEMON)
+	jr c, .nostar3
+	ld a, [hl]
+	cp LOW(NUM_POKEMON)
 	jr c, .nostar3
 	inc b
 .nostar3
-	; star for reading all Pokémon Journals
-	push bc
-	ld hl, wPokemonJournals
-	ld b, wPokemonJournalsEnd - wPokemonJournals
-	call CountSetBits
 	pop bc
-	cp NUM_POKEMON_JOURNALS
-	jr c, .nostar4
+	; star for beating Tower Tycoon Palmer or Factory Head Thorton
+	eventflagcheck EVENT_BEAT_PALMER
+	jr nz, .star4
+	eventflagcheck EVENT_BEAT_THORTON
+	jr z, .nostar4
+.star4
 	inc b
 .nostar4
 	ld a, b

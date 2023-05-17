@@ -1,13 +1,13 @@
-GetPartyParamLocation::
-; Get the location of parameter a from wCurPartyMon in hl
+GetPartyParamLocationAndValue::
+; Get the location and value of parameter a from wCurPartyMon in wPartyMons
 	push bc
 	ld hl, wPartyMons
 	ld c, a
 	ld b, 0
 	add hl, bc
 	ld a, [wCurPartyMon]
-	call GetPartyLocation
 	pop bc
+	call GetPartyLocation
 	ld a, [hl]
 	ret
 
@@ -80,16 +80,42 @@ ResetDamage::
 	ld [wCurDamage + 1], a
 	ret
 
-CallOpponentTurn::
-	ldh [hFarCallSavedA], a
-	ld a, h
-	ldh [hFarCallSavedH], a
-	ld a, l
-	ldh [hFarCallSavedL], a
+StackCallOpponentTurn::
+; Falls through to SwitchTurn after inserting SwitchTurn in the call stack,
+; so the subsequent function pointer is "wrapped" by SwitchTurns.
+
+	add sp, -2 ; push space for a tail call to SwitchTurn
+	push de
+	push hl
+
+; Stack layout:
+; +8 return address
+; +6 function pointer
+; +4 nothing
+; +2 saved de
+; +0 saved hl
+
+	ld hl, sp + 7
+	ld d, [hl]
+	ld [hl], HIGH(SwitchTurn)
+	dec hl ; no-optimize *hl++|*hl-- = N preserving a
+	ld e, [hl]
+	ld [hl], LOW(SwitchTurn)
+	dec hl ; no-optimize *hl++|*hl-- = N
+	ld [hl], d ; no-optimize *hl++|*hl-- = b|c|d|e
+	dec hl
+	ld [hl], e
+
+; Stack layout:
+; +8 return address
+; +6 SwitchTurn
+; +4 function pointer
+; +2 saved de
+; +0 saved hl
+
 	pop hl
-	call SwitchTurn
-	call RetrieveAHLAndCallFunction
-	; fallthrough
+	pop de
+; fallthrough
 
 BattleCommand_switchturn::
 SwitchTurn::
@@ -102,7 +128,7 @@ SwitchTurn::
 	ret
 
 SetPlayerTurn::
-	ld a, 0
+	ld a, 0 ; no-optimize a = 0
 	ldh [hBattleTurn], a
 	ret
 
@@ -117,6 +143,7 @@ SetEnemyTurn::
 GetThirdMaxHP::
 ; Assumes HP<768
 	call GetMaxHP
+GetThirdBC:
 	xor a
 	inc b
 .loop
@@ -135,24 +162,31 @@ GetThirdMaxHP::
 
 GetSixteenthMaxHP::
 	call GetEighthMaxHP
-	jr HalfHP
+	jr HalveBC
 
 GetEighthMaxHP::
 	call GetQuarterMaxHP
-	jr HalfHP
+	jr HalveBC
 
 GetSixthMaxHP::
 	call GetThirdMaxHP
-	jr HalfHP
+	jr HalveBC
 
 GetQuarterMaxHP::
 	call GetHalfMaxHP
-	jr HalfHP
+	jr HalveBC
 
 GetHalfMaxHP::
 	call GetMaxHP
-HalfHP::
-	jmp HalveBC
+HalveBC::
+	srl b
+	rr c
+FloorBC::
+	ld a, c
+	or b
+	ret nz
+	inc c
+	ret
 
 GetMaxHP::
 ; output: bc, wBuffer1-2
@@ -175,7 +209,7 @@ GetMaxHP::
 	ret
 
 GetOpponentMonAttr::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 GetUserMonAttr::
 	ldh a, [hBattleTurn]
 	and a
@@ -187,7 +221,7 @@ GetUserMonAttr::
 	ret
 
 GetOpponentMonAttr_de::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 GetUserMonAttr_de::
 	push hl
 	ld h, d
@@ -199,7 +233,7 @@ GetUserMonAttr_de::
 	ret
 
 UpdateOpponentInParty::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 UpdateUserInParty::
 	ldh a, [hBattleTurn]
 	and a
@@ -303,7 +337,7 @@ ToggleBattleItems:
 	jr .loop
 
 OpponentCanLoseItem::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 UserCanLoseItem::
 ; Returns z if user can't lose its held item. This happens if:
 ; - user doesn't have a held item
@@ -332,7 +366,7 @@ UserCanLoseItem::
 	jmp PopBCDEHL
 
 GetOpponentUsedItemAddr::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 GetUsedItemAddr::
 ; Returns addr for user's POV's UsedItem
 	ldh a, [hBattleTurn]
@@ -441,9 +475,6 @@ GetFixedCategory::
 	inc a ; SPECIAL
 	ret
 
-DisappearUser::
-	farjp _DisappearUser
-
 ApplyPhysicalDefenseDamageMod::
 	push bc
 	ld c, a
@@ -453,15 +484,11 @@ ApplyPhysicalDefenseDamageMod::
 	ld a, c
 	pop bc
 	jr z, ApplySpecialAttackDamageMod
-; Damage modifiers. a contains $xy where damage is multiplied by x, then divided by y
 ApplyPhysicalAttackDamageMod::
 	push bc
 	ld b, PHYSICAL
-	jr ApplyAttackDamageMod
-ApplySpecialAttackDamageMod::
-	push bc
-	ld b, SPECIAL
 ApplyAttackDamageMod::
+; Damage modifiers. a contains $xy where damage is multiplied by x, then divided by y
 	ld c, a
 	ld a, BATTLE_VARS_MOVE_CATEGORY
 	call GetBattleVar
@@ -480,7 +507,10 @@ ApplySpecialDefenseDamageMod::
 	ld a, c
 	pop bc
 	ret z
-	jr ApplySpecialAttackDamageMod
+ApplySpecialAttackDamageMod::
+	push bc
+	ld b, SPECIAL
+	jr ApplyAttackDamageMod
 
 GetOpponentAbility::
 	ld a, BATTLE_VARS_ABILITY_OPP
@@ -512,29 +542,11 @@ GetOpponentAbilityAfterMoldBreaker::
 CheckIfTargetIsGrassType::
 	ld a, GRASS
 	jr CheckIfTargetIsSomeType
-CheckIfTargetIsPoisonType::
-	ld a, POISON
-	jr CheckIfTargetIsSomeType
-CheckIfTargetIsElectricType::
-	ld a, ELECTRIC
-	jr CheckIfTargetIsSomeType
-CheckIfTargetIsSteelType::
-	ld a, STEEL
-	jr CheckIfTargetIsSomeType
-CheckIfTargetIsFireType::
-	ld a, FIRE
-	jr CheckIfTargetIsSomeType
 CheckIfTargetIsIceType::
 	ld a, ICE
 	jr CheckIfTargetIsSomeType
 CheckIfTargetIsDarkType::
 	ld a, DARK
-	jr CheckIfTargetIsSomeType
-CheckIfTargetIsRockType::
-	ld a, ROCK
-	jr CheckIfTargetIsSomeType
-CheckIfTargetIsGroundType::
-	ld a, GROUND
 	jr CheckIfTargetIsSomeType
 CheckIfTargetIsGhostType::
 	ld a, GHOST
@@ -614,7 +626,7 @@ CompareHP::
 	ret
 
 CheckOpponentContactMove::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 CheckContactMove::
 ; Check if user's move made contact. Returns nc if it is
 	farjp _CheckContactMove
@@ -639,7 +651,7 @@ CheckIfHPIsZero::
 	ret
 
 GetWeatherAfterOpponentUmbrella::
-	call CallOpponentTurn
+	call StackCallOpponentTurn
 GetWeatherAfterUserUmbrella::
 	call GetWeatherAfterCloudNine
 	cp WEATHER_HAIL
@@ -853,6 +865,10 @@ BattleTextbox::
 	pop hl
 	jmp PrintTextboxText
 
+BattleMoveDescTextbox::
+	homecall BattleTextbox, BANK(MoveDescriptions)
+	ret
+
 GetBattleAnimPointer::
 	anonbankpush BattleAnimations
 
@@ -871,9 +887,9 @@ GetBattleAnimByte::
 	push de
 
 	ld hl, wBattleAnimAddress
-	ld e, [hl]
-	inc hl
+	ld a, [hli]
 	ld d, [hl]
+	ld e, a
 
 	ld a, [de]
 	ld [wBattleAnimByte], a
@@ -887,16 +903,6 @@ GetBattleAnimByte::
 	pop hl
 
 	ld a, [wBattleAnimByte]
-	ret
-
-HalveBC::
-	srl b
-	rr c
-FloorBC::
-	ld a, c
-	or b
-	ret nz
-	inc c
 	ret
 
 PushLYOverrides::

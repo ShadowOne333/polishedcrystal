@@ -12,7 +12,7 @@ EcruteakGym_MapScriptHeader:
 	warp_event  3,  4, ECRUTEAK_GYM, 3
 	warp_event  4,  4, ECRUTEAK_GYM, 3
 	warp_event  4,  5, ECRUTEAK_GYM, 3
-	warp_event  6,  7, ECRUTEAK_GYM, 3
+	warp_event  2, 13, ECRUTEAK_GYM, 3
 	warp_event  7,  4, ECRUTEAK_GYM, 3
 	warp_event  2,  6, ECRUTEAK_GYM, 3
 	warp_event  3,  6, ECRUTEAK_GYM, 3
@@ -65,7 +65,7 @@ EcruteakGymMortyScript:
 	faceplayer
 	opentext
 	checkevent EVENT_BEAT_MORTY
-	iftrue .FightDone
+	iftruefwd .FightDone
 	writetext MortyIntroText
 	waitbutton
 	closetext
@@ -102,10 +102,9 @@ EcruteakGymClosed:
 	follow PLAYER, ECRUTEAKGYM_GRAMPS
 	applymovement PLAYER, EcruteakGymPlayerSlowStepDownMovement
 	stopfollow
-	special FadeOutPalettes
-	playsound SFX_ENTER_DOOR
-	waitsfx
-	warp ECRUTEAK_CITY, 6, 27
+	warpcheck
+	warpsound
+	newloadmap MAPSETUP_DOOR
 	end
 
 GenericTrainerSageJeffrey:
@@ -154,7 +153,7 @@ EcruteakGymGuyScript:
 EcruteakGymStatue:
 	gettrainername MORTY, 1, $1
 	checkflag ENGINE_FOGBADGE
-	iftrue .Beaten
+	iftruefwd .Beaten
 	jumpstd gymstatue1
 .Beaten:
 	readvar VAR_BADGES
@@ -245,7 +244,7 @@ MortyText_ShadowBallSpeech:
 	line "It causes damage"
 
 	para "and may reduce"
-	line "Spcl.Def."
+	line "Special Defense."
 
 	para "Use it if it"
 	line "appeals to you."

@@ -1,27 +1,48 @@
 TypeNames:
 ; entries correspond to types (see constants/type_constants.asm)
-	table_width 2, TypeNames
-	dw Normal
-	dw Fighting
-	dw Flying
-	dw Poison
-	dw Ground
-	dw Rock
-	dw Bug
-	dw Ghost
-	dw Steel
+	table_width 1, TypeNames
+	dr Normal
+	dr Fighting
+	dr Flying
+	dr Poison
+	dr Ground
+	dr Rock
+	dr Bug
+	dr Ghost
+	dr Steel
 	assert_table_length SPECIAL_TYPES
-	dw Fire
-	dw Water
-	dw Grass
-	dw Electric
-	dw Psychic
-	dw Ice
-	dw Dragon
-	dw Dark
-	dw Fairy
-	dw UnknownType
+	dr Fire
+	dr Water
+	dr Grass
+	dr Electric
+	dr Psychic
+	dr Ice
+	dr Dragon
+	dr Dark
+	dr Fairy
+	dr UnknownType
 	assert_table_length NUM_TYPES
+
+EggGroupNames:
+; entries correspond to egg groups (see constants/pokemon_data_constants.asm)
+; placed here because several egg groups use the same string as a type
+	table_width 1, EggGroupNames
+	dr Monster
+	dr Water1
+	dr Bug
+	dr Flying
+	dr Field
+	dr Fairy
+	dr Grass
+	dr Humanlike
+	dr Water3
+	dr Mineral
+	dr Amorphous
+	dr Water2
+	dr Ditto
+	dr Dragon
+	dr Undiscovered
+	assert_table_length NUM_EGG_GROUPS
 
 Normal:      db "Normal@"
 Fighting:    db "Fighting@"
@@ -42,3 +63,20 @@ Dragon:      db "Dragon@"
 Dark:        db "Dark@"
 Fairy:       db "Fairy@"
 UnknownType: db "???@"
+
+Monster:      db "Monster@"
+Field:        db "Field@"
+Humanlike:    db "Human-Like@"
+Mineral:      db "Mineral@"
+Amorphous:    db "Amorphous@"
+Ditto:        db "Ditto@"
+Undiscovered: db "Undiscovered@"
+if !DEF(FAITHFUL)
+Water1:       db "Amphibian@"
+Water2:       db "Fish@"
+Water3:       db "Invertebrate@"
+else
+Water1:       db "Water 1@"
+Water2:       db "Water 2@"
+Water3:       db "Water 3@"
+endc

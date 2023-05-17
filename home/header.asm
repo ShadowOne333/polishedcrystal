@@ -6,26 +6,15 @@
 SECTION "rst00 EntryPoint", ROM0[$0000]
 EntryPoint::
 	di
-	jmp Rst0Crash
+	xor a ; ld a, ERR_RST_0
+	jmp Crash
 
-PushWindow::
-	farjp _PushWindow
+SwitchToMapScriptsBank::
+	ld a, [wMapScriptsBank]
+	assert @ == Bankswitch, "cannot fall through to Bankswitch"
+	; fallthrough
 
-
-SECTION "rst08 FarCall", ROM0[$0008]
-FarCall::
-	jmp RstFarCall
-
-PopAFBCDEHL::
-	pop af
-PopBCDEHL::
-	pop bc
-	pop de
-	pop hl
-	ret
-
-
-SECTION "rst10 Bankswitch", ROM0[$0010]
+SECTION "rst08 Bankswitch", ROM0[$0008]
 Bankswitch::
 	ldh [hROMBank], a
 	ld [MBC3RomBank], a
@@ -35,6 +24,23 @@ _de_::
 	push de
 DoNothing:: ; no-optimize stub function
 	ret
+
+
+SECTION "rst10 FarCall", ROM0[$0010]
+FarCall::
+; Call the following dab pointer.
+; Preserves af, bc, de, hl.
+	dec sp ; push space for the return bank
+; Stack layout:
+; +1 pointer to function address and bank followed by return location
+; +0 nothing
+	call _RstFarCall
+; Stack layout:
+; +1 return address
+; +0 return bank
+	jmp _ReturnFarCall
+
+	ds 1 ; unused
 
 
 SECTION "rst18 AddNTimes", ROM0[$0018]
@@ -47,8 +53,8 @@ FarCopyColorWRAM::
 
 FarCopyWRAM::
 	call StackCallInWRAMBankA
+	assert @ == CopyBytes, "cannot fall through to CopyBytes"
 	; fallthrough
-
 
 SECTION "rst20 CopyBytes", ROM0[$0020]
 CopyBytes::
@@ -107,14 +113,17 @@ SECTION "vblank", ROM0[$0040]
 
 ItemIsMail::
 ; Returns carry if item d is a mail.
+	assert FIRST_MAIL + NUM_MAILS - 1 == NUM_ITEMS, \
+		"Not all items after FIRST_MAIL are mail"
 	ld a, d
 ItemIsMail_a::
-	cp FLOWER_MAIL
+	cp FIRST_MAIL
 	ccf
 	ret
 
 
 SECTION "lcd", ROM0[$0048]
+	push af
 	jr hLCDInterruptFunction
 
 GetMemCGBLayout::
@@ -126,7 +135,19 @@ GetCGBLayout::
 SECTION "timer", ROM0[$0050]
 ; TIMER is never enabled
 
-INCLUDE "home/vwf.asm"
+	reti ; just in case
+
+PopAFBCDEHL::
+	pop af
+PopBCDEHL::
+	pop bc
+	pop de
+	pop hl
+	ret
+
+ClearText::
+	text_start
+	done
 
 
 SECTION "serial", ROM0[$0058]
@@ -138,9 +159,6 @@ SECTION "High Home", ROM0[$005b]
 ; JOYPAD is never enabled
 
 INCLUDE "home/jumptable.asm"
-INCLUDE "home/sine.asm"
-INCLUDE "home/delay.asm"
-INCLUDE "home/gfx2.asm"
 
 
 SECTION "Header", ROM0[$0100]
@@ -149,5 +167,13 @@ Start::
 	nop ; no-optimize nops
 	jr _Start
 
-; rgbfix patches the cartridge header here
+if DEF(ANALOGUE_POCKET)
+	; Use specialized logo for Analogue Pocket compatibility.
+	ds $0104 - @, $00
+	db $01, $10, $ce, $ef, $00, $00, $44, $aa, $00, $74, $00, $18, $11, $95, $00, $34
+	db $00, $1a, $00, $d5, $00, $22, $00, $69, $6f, $f6, $f7, $73, $09, $90, $e1, $10
+	db $44, $40, $9a, $90, $d5, $d0, $44, $30, $a9, $21, $5d, $48, $22, $e0, $f8, $60
+endc
+
+	; The rest of the header is handled by rgbfix.
 	ds $0150 - @, $00

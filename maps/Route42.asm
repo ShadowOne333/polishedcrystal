@@ -9,6 +9,7 @@ Route42_MapScriptHeader:
 	warp_event 10,  5, MOUNT_MORTAR_1F_OUTSIDE, 1
 	warp_event 28,  9, MOUNT_MORTAR_1F_OUTSIDE, 2
 	warp_event 46,  7, MOUNT_MORTAR_1F_OUTSIDE, 3
+	warp_event 22, 10, HIDDEN_CAVE_GROTTO, 1
 
 	def_coord_events
 	coord_event 12,  6, 1, Route42LyraScript1
@@ -24,9 +25,10 @@ Route42_MapScriptHeader:
 	bg_event 45,  9, BGEVENT_JUMPTEXT, MtMortarSign2Text
 	bg_event 54,  8, BGEVENT_JUMPTEXT, Route42Sign2Text
 	bg_event 16, 11, BGEVENT_ITEM + MAX_POTION, EVENT_ROUTE_42_HIDDEN_MAX_POTION
+	bg_event 22,  9, BGEVENT_JUMPSTD, cavegrotto, HIDDENGROTTO_ROUTE_42
 
 	def_object_events
-	object_event 26, 16, SPRITE_MON_ICON, SPRITEMOVEDATA_POKEMON, 0, SUICUNE, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_SAW_SUICUNE_ON_ROUTE_42
+	pokemon_event 26, 16, SUICUNE, SPRITEMOVEDATA_POKEMON, -1, -1, PAL_NPC_BLUE, ClearText, EVENT_SAW_SUICUNE_ON_ROUTE_42
 	object_event 10,  5, SPRITE_LYRA, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_LYRA_ROUTE_42
 	object_event 40, 10, SPRITE_FISHER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 1, TrainerFisherTully1, -1
 	object_event 51,  9, SPRITE_HIKER, SPRITEMOVEDATA_SPINRANDOM_FAST, 0, 0, -1, -1, 0, OBJECTTYPE_GENERICTRAINER, 3, GenericTrainerHikerBenjamin, -1
@@ -34,9 +36,9 @@ Route42_MapScriptHeader:
 	object_event  2,  8, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, Route42OfficerText, EVENT_BEAT_JASMINE
 	object_event  2,  9, SPRITE_OFFICER_F, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, Route42OfficerText, EVENT_BEAT_JASMINE
 	cuttree_event 24, 13, EVENT_ROUTE_42_CUT_TREE
-	fruittree_event 27, 16, FRUITTREE_ROUTE_42_1, PNK_APRICORN, PAL_NPC_RED
+	fruittree_event 27, 16, FRUITTREE_ROUTE_42_1, PNK_APRICORN, PAL_NPC_PINK
 	fruittree_event 28, 16, FRUITTREE_ROUTE_42_2, GRN_APRICORN, PAL_NPC_GREEN
-	fruittree_event 29, 16, FRUITTREE_ROUTE_42_3, YLW_APRICORN, PAL_NPC_BROWN
+	fruittree_event 29, 16, FRUITTREE_ROUTE_42_3, YLW_APRICORN, PAL_NPC_YELLOW
 	itemball_event  6,  4, ULTRA_BALL, 1, EVENT_ROUTE_42_ULTRA_BALL
 	itemball_event 33,  8, SUPER_POTION, 1, EVENT_ROUTE_42_SUPER_POTION
 
@@ -53,7 +55,7 @@ Route42LyraScript1:
 	appear ROUTE42_LYRA
 	waitsfx
 	applymovement ROUTE42_LYRA, MovementData_Route42LyraApproach1
-	sjump Route42LyraScript
+	sjumpfwd Route42LyraScript
 
 Route42LyraScript2:
 	turnobject PLAYER, LEFT
@@ -64,7 +66,7 @@ Route42LyraScript2:
 	appear ROUTE42_LYRA
 	waitsfx
 	applymovement ROUTE42_LYRA, MovementData_Route42LyraApproach2
-	sjump Route42LyraScript
+	sjumpfwd Route42LyraScript
 
 Route42LyraScript3:
 	turnobject PLAYER, LEFT
@@ -75,7 +77,7 @@ Route42LyraScript3:
 	appear ROUTE42_LYRA
 	waitsfx
 	applymovement ROUTE42_LYRA, MovementData_Route42LyraApproach3
-	sjump Route42LyraScript
+	sjumpfwd Route42LyraScript
 
 Route42LyraScript4:
 	turnobject PLAYER, LEFT
@@ -84,7 +86,7 @@ Route42LyraScript4:
 	appear ROUTE42_LYRA
 	waitsfx
 	applymovement ROUTE42_LYRA, MovementData_Route42LyraApproach4
-	sjump Route42LyraScript
+	sjumpfwd Route42LyraScript
 
 Route42LyraScript5:
 	turnobject PLAYER, UP
@@ -102,15 +104,15 @@ Route42LyraScript:
 	winlosstext Route42LyraWinText, Route42LyraLossText
 	setlasttalked ROUTE42_LYRA
 	checkevent EVENT_GOT_TOTODILE_FROM_ELM
-	iftrue .Totodile
+	iftruefwd .Totodile
 	checkevent EVENT_GOT_CHIKORITA_FROM_ELM
-	iftrue .Chikorita
+	iftruefwd .Chikorita
 	loadtrainer LYRA1, LYRA1_7
-	sjump .AfterBattle
+	sjumpfwd .AfterBattle
 
 .Totodile:
 	loadtrainer LYRA1, LYRA1_8
-	sjump .AfterBattle
+	sjumpfwd .AfterBattle
 
 .Chikorita:
 	loadtrainer LYRA1, LYRA1_9
@@ -131,9 +133,9 @@ Route42LyraScript:
 	applymovement ROUTE42_LYRA, MovementData_Route42LyraLeave
 	disappear ROUTE42_LYRA
 	checkevent EVENT_SAW_SUICUNE_ON_ROUTE_42
-	iftrue .NoSuicune
+	iftruefwd .NoSuicune
 	setscene $2
-	sjump .Finish
+	sjumpfwd .Finish
 .NoSuicune
 	setscene $0
 .Finish
@@ -159,46 +161,46 @@ FisherTully1Script:
 	loadvar VAR_CALLERID, PHONE_FISHER_TULLY
 	opentext
 	checkflag ENGINE_TULLY_READY_FOR_REMATCH
-	iftrue UnknownScript_0x1a927f
+	iftruefwd .WantsBattle
 	checkflag ENGINE_TULLY_HAS_WATER_STONE
-	iftrue UnknownScript_0x1a92dc
+	iftruefwd .HasWaterStone
 	checkcellnum PHONE_FISHER_TULLY
-	iftrue UnknownScript_0x1a92fd
+	iftruefwd .NumberAccepted
 	checkevent EVENT_TULLY_ASKED_FOR_PHONE_NUMBER
-	iftrue UnknownScript_0x1a9268
+	iftruefwd .AskedAlready
 	writetext FisherTullyAfterBattleText
 	promptbutton
 	setevent EVENT_TULLY_ASKED_FOR_PHONE_NUMBER
-	scall UnknownScript_0x1a92f1
-	sjump UnknownScript_0x1a926b
+	scall .AskNumber1
+	sjumpfwd .AskForNumber
 
-UnknownScript_0x1a9268:
-	scall UnknownScript_0x1a92f5
-UnknownScript_0x1a926b:
+.AskedAlready:
+	scall .AskNumber2
+.AskForNumber:
 	askforphonenumber PHONE_FISHER_TULLY
-	ifequal $1, UnknownScript_0x1a9305
-	ifequal $2, UnknownScript_0x1a9301
+	ifequalfwd $1, .PhoneFull
+	ifequalfwd $2, .NumberDeclined
 	gettrainername FISHER, TULLY1, $0
-	scall UnknownScript_0x1a92f9
-	sjump UnknownScript_0x1a92fd
+	scall .RegisteredNumber
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x1a927f:
-	scall UnknownScript_0x1a9309
+.WantsBattle:
+	scall .Rematch
 	winlosstext FisherTully1BeatenText, 0
 	readmem wTullyFightCount
-	ifequal 3, .Fight3
-	ifequal 2, .Fight2
-	ifequal 1, .Fight1
-	ifequal 0, .LoadFight0
+	ifequalfwd 3, .Fight3
+	ifequalfwd 2, .Fight2
+	ifequalfwd 1, .Fight1
+	ifequalfwd 0, .LoadFight0
 .Fight3:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
-	iftrue .LoadFight3
+	iftruefwd .LoadFight3
 .Fight2:
 	checkevent EVENT_BEAT_ELITE_FOUR
-	iftrue .LoadFight2
+	iftruefwd .LoadFight2
 .Fight1:
 	checkevent EVENT_CLEARED_ROCKET_HIDEOUT
-	iftrue .LoadFight1
+	iftruefwd .LoadFight1
 .LoadFight0:
 	loadtrainer FISHER, TULLY1
 	startbattle
@@ -230,42 +232,42 @@ UnknownScript_0x1a927f:
 	clearflag ENGINE_TULLY_READY_FOR_REMATCH
 	end
 
-UnknownScript_0x1a92dc:
-	scall UnknownScript_0x1a930d
+.HasWaterStone:
+	scall .Gift
 	verbosegiveitem WATER_STONE
-	iffalse UnknownScript_0x1a92ee
+	iffalsefwd .NoRoom
 	clearflag ENGINE_TULLY_HAS_WATER_STONE
 	setevent EVENT_TULLY_GAVE_WATER_STONE
-	sjump UnknownScript_0x1a92fd
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x1a92ee:
-	sjump UnknownScript_0x1a9311
+.NoRoom:
+	sjumpfwd .PackFull
 
-UnknownScript_0x1a92f1:
+.AskNumber1:
 	jumpstd asknumber1m
 
-UnknownScript_0x1a92f5:
+.AskNumber2:
 	jumpstd asknumber2m
 
-UnknownScript_0x1a92f9:
+.RegisteredNumber:
 	jumpstd registerednumberm
 
-UnknownScript_0x1a92fd:
+.NumberAccepted:
 	jumpstd numberacceptedm
 
-UnknownScript_0x1a9301:
+.NumberDeclined:
 	jumpstd numberdeclinedm
 
-UnknownScript_0x1a9305:
+.PhoneFull:
 	jumpstd phonefullm
 
-UnknownScript_0x1a9309:
+.Rematch:
 	jumpstd rematchm
 
-UnknownScript_0x1a930d:
+.Gift:
 	jumpstd giftm
 
-UnknownScript_0x1a9311:
+.PackFull:
 	jumpstd packfullm
 
 GenericTrainerHikerBenjamin:

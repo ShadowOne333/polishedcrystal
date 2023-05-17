@@ -4,7 +4,7 @@ VermilionCity_MapScriptHeader:
 
 	def_callbacks
 	callback MAPCALLBACK_OBJECTS, VermilionCitySetupLawrenceCallback
-	callback MAPCALLBACK_BLOCKS, VermilionCitySetupBattleFactoryCallback
+	callback MAPCALLBACK_TILES, VermilionCitySetupBattleFactoryCallback
 
 	def_warp_events
 	warp_event  5,  5, VERMILION_HOUSE_FISHING_SPEECH_HOUSE, 1
@@ -41,7 +41,7 @@ VermilionCity_MapScriptHeader:
 	object_event 18, 31, SPRITE_LAWRENCE, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_LAWRENCE_VERMILION_CITY
 	object_event 18, 13, SPRITE_BATTLE_GIRL, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_RED, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCityTeacherText, -1
 	object_event 27, 13, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, VermilionMachokeOwnerScript, -1
-	pokemon_event 28, 13, MACHOKE, -1, -1, PAL_NPC_BLUE, VermilionMachokeText, -1
+	pokemon_event 28, 13, MACHOKE, SPRITEMOVEDATA_POKEMON, -1, -1, PAL_NPC_GRAY, VermilionMachokeText, -1
 	object_event 16, 20, SPRITE_ROCKER, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCitySuperNerdText, -1
 	object_event 32, 12, SPRITE_POKEMANIAC, SPRITEMOVEDATA_WALK_UP_DOWN, 1, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, VermilionCitySuperNerd2Script, -1
 	object_event 11,  9, SPRITE_SAILOR, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 0, 3, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCitySailorText, -1
@@ -56,9 +56,9 @@ VermilionCity_MapScriptHeader:
 
 VermilionCitySetupLawrenceCallback:
 	checkscene
-	iftrue .done
+	iftruefwd .done
 	readvar VAR_XCOORD
-	ifequal 18, .done
+	ifequalfwd 18, .done
 	disappear VERMILIONCITY_LAWRENCE
 	moveobject VERMILIONCITY_LAWRENCE, 19, 31
 	appear VERMILIONCITY_LAWRENCE
@@ -67,43 +67,11 @@ VermilionCitySetupLawrenceCallback:
 
 VermilionCitySetupBattleFactoryCallback:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
-	iftrue .done
-	callasm .DarkenPowerPlantDoors
+	iftruefwd .done
+	changeblock 28,  8, $ce
+	changeblock 30,  8, $ff
 .done
 	endcallback
-
-.DarkenPowerPlantDoors:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wDecompressedAttributes)
-	ldh [rSVBK], a
-	xor a ; PAL_BG_GRAY
-	ld hl, wDecompressedAttributes + 16 * $34 + 8
-	call .FillQuadrant
-	ld hl, wDecompressedAttributes + 16 * $92 + 10
-	call .FillQuadrant
-	ld a, PAL_BG_BROWN
-	ld [wDecompressedAttributes + 16 * $68 + 1], a
-	ld [wDecompressedAttributes + 16 * $68 + 10], a
-	ld [wDecompressedAttributes + 16 * $69 + 1], a
-	ld [wDecompressedAttributes + 16 * $69 + 8], a
-	ld [wDecompressedAttributes + 16 * $69 + 10], a
-	ld [wDecompressedAttributes + 16 * $7f + 1], a
-	ld [wDecompressedAttributes + 16 * $7f + 3], a
-	ld [wDecompressedAttributes + 16 * $7f + 8], a
-	ld [wDecompressedAttributes + 16 * $7f + 11], a
-	pop af
-	ldh [rSVBK], a
-	ret
-
-.FillQuadrant:
-	ld [hli], a
-	ld [hli], a
-	inc hl
-	inc hl
-	ld [hli], a
-	ld [hl], a
-	ret
 
 LawrenceIntroScript:
 	turnobject PLAYER, UP
@@ -117,10 +85,10 @@ LawrenceIntroScript:
 	showemote EMOTE_SHOCK, VERMILIONCITY_LAWRENCE, 15
 	pause 15
 	readvar VAR_XCOORD
-	ifequal 18, .left
+	ifequalfwd 18, .left
 	applymovement VERMILIONCITY_LAWRENCE, LawrenceWalkAroundRightMovementData
 	turnobject PLAYER, LEFT
-	sjump .continue
+	sjumpfwd .continue
 
 .left
 	applymovement VERMILIONCITY_LAWRENCE, LawrenceWalkAroundLeftMovementData
@@ -131,6 +99,7 @@ LawrenceIntroScript:
 	applymovement VERMILIONCITY_LAWRENCE, LawrenceWalkAwayMovementData
 	disappear VERMILIONCITY_LAWRENCE
 	setscene $1
+	setevent EVENT_TELEPORT_GUY
 	setflag ENGINE_FLYPOINT_VERMILION
 	special RestartMapMusic
 	end
@@ -169,7 +138,7 @@ LawrenceWalkAroundRightMovementData:
 VermilionSnorlax:
 	opentext
 	special SpecialSnorlaxAwake
-	iftrue .Awake
+	iftruefwd .Awake
 	jumpopenedtext VermilionCitySnorlaxSleepingText
 
 .Awake:
@@ -189,7 +158,7 @@ VermilionGymBadgeGuy:
 	checkevent EVENT_GOT_BOTTLE_CAP_FROM_VERMILION_GUY
 	iftrue_jumptextfaceplayer VermilionCityBadgeGuyBattleEdgeText
 	readvar VAR_BADGES
-	ifequal 16, .AllBadges
+	ifequalfwd 16, .AllBadges
 	ifgreater 13, .MostBadges
 	ifgreater 9, .SomeBadges
 	jumptextfaceplayer VermilionCityBadgeGuyTrainerText

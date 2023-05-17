@@ -105,7 +105,8 @@ AI_Redundant:
 	ret
 
 .BatonPass:
-	call CallOpponentTurn
+.Teleport:
+	call StackCallOpponentTurn
 .Roar:
 	push hl
 	push de
@@ -138,13 +139,13 @@ AI_Redundant:
 
 .SleepTalk:
 	ld a, [wEnemyMonStatus]
-	and SLP
+	and SLP_MASK
 	jr .InvertZero
 
 .Spikes:
 	ld a, [wPlayerHazards]
-	and HAZARDS_SPIKES
-	cp HAZARDS_SPIKES
+	or ~HAZARDS_SPIKES
+	inc a
 	jr .InvertZero
 
 .ToxicSpikes:
@@ -190,7 +191,7 @@ AI_Redundant:
 
 .DreamEater:
 	ld a, [wBattleMonStatus]
-	and SLP
+	and SLP_MASK
 	; fallthrough
 .InvertZero:
 	jr z, .Redundant
@@ -212,7 +213,6 @@ AI_Redundant:
 	farcall AICheckEnemyMaxHP
 	jr nc, .NotRedundant
 
-.Teleport:
 .Redundant:
 	ld a, 1
 	and a

@@ -37,7 +37,7 @@ FirstStepIntoKantoLeftScene:
 	turnobject ROUTE27_FISHER, LEFT
 	showemote EMOTE_SHOCK, ROUTE27_FISHER, 15
 	applymovement ROUTE27_FISHER, Route27FisherStepLeftTwiceMovement
-	sjump FirstStepIntoKantoScene_Continue
+	sjumpfwd FirstStepIntoKantoScene_Continue
 
 FirstStepIntoKantoRightScene:
 	turnobject ROUTE27_FISHER, LEFT
@@ -59,7 +59,7 @@ Route27VeteranfScript:
 	iftrue_jumptextfaceplayer .AfterText2
 	faceplayer
 	checkevent EVENT_BEAT_VETERANF_LITVYAK
-	iftrue .Beaten
+	iftruefwd .Beaten
 	checkevent EVENT_BEAT_PSYCHIC_GILBERT
 	iffalse_jumptext .IntroText
 	checkevent EVENT_BEAT_BIRD_KEEPER_JOSE
@@ -143,7 +143,7 @@ Route27VeteranfScript:
 	done
 
 .RefusedText:
-	text "It's okay."
+	text "It's OK."
 	line "I can wait."
 	done
 
@@ -193,42 +193,42 @@ Bird_keeperJose1Script:
 	loadvar VAR_CALLERID, PHONE_BIRDKEEPER_JOSE
 	opentext
 	checkflag ENGINE_JOSE_READY_FOR_REMATCH
-	iftrue UnknownScript_0x1a08ff
+	iftruefwd .WantsBattle
 	checkflag ENGINE_JOSE_HAS_STAR_PIECE
-	iftrue UnknownScript_0x1a0945
+	iftruefwd .HasStarPiece
 	checkcellnum PHONE_BIRDKEEPER_JOSE
-	iftrue UnknownScript_0x1a0963
+	iftruefwd .NumberAccepted
 	checkevent EVENT_JOSE_ASKED_FOR_PHONE_NUMBER
-	iftrue UnknownScript_0x1a08e8
+	iftruefwd .AskedAlready
 	writetext BirdKeeperJose2AfterBattleText
 	promptbutton
 	setevent EVENT_JOSE_ASKED_FOR_PHONE_NUMBER
-	scall UnknownScript_0x1a0957
-	sjump UnknownScript_0x1a08eb
+	scall .AskNumber1
+	sjumpfwd .AskForNumber
 
-UnknownScript_0x1a08e8:
-	scall UnknownScript_0x1a095b
-UnknownScript_0x1a08eb:
+.AskedAlready:
+	scall .AskNumber2
+.AskForNumber:
 	askforphonenumber PHONE_BIRDKEEPER_JOSE
-	ifequal $1, UnknownScript_0x1a096b
-	ifequal $2, UnknownScript_0x1a0967
+	ifequalfwd $1, .PhoneFull
+	ifequalfwd $2, .NumberDeclined
 	gettrainername BIRD_KEEPER, JOSE1, $0
-	scall UnknownScript_0x1a095f
-	sjump UnknownScript_0x1a0963
+	scall .RegisteredNumber
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x1a08ff:
-	scall UnknownScript_0x1a096f
+.WantsBattle:
+	scall .Rematch
 	winlosstext Bird_keeperJose1BeatenText, 0
 	readmem wJoseFightCount
-	ifequal 2, .Fight2
-	ifequal 1, .Fight1
-	ifequal 0, .LoadFight0
+	ifequalfwd 2, .Fight2
+	ifequalfwd 1, .Fight1
+	ifequalfwd 0, .LoadFight0
 .Fight2:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
-	iftrue .LoadFight2
+	iftruefwd .LoadFight2
 .Fight1:
 	checkevent EVENT_BEAT_ELITE_FOUR
-	iftrue .LoadFight1
+	iftruefwd .LoadFight1
 .LoadFight0:
 	loadtrainer BIRD_KEEPER, JOSE1
 	startbattle
@@ -252,41 +252,41 @@ UnknownScript_0x1a08ff:
 	clearflag ENGINE_JOSE_READY_FOR_REMATCH
 	end
 
-UnknownScript_0x1a0945:
-	scall UnknownScript_0x1a0973
+.HasStarPiece:
+	scall .Gift
 	verbosegiveitem STAR_PIECE
-	iffalse UnknownScript_0x1a0954
+	iffalsefwd .NoRoom
 	clearflag ENGINE_JOSE_HAS_STAR_PIECE
-	sjump UnknownScript_0x1a0963
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x1a0954:
-	sjump UnknownScript_0x1a0977
+.NoRoom:
+	sjumpfwd .PackFull
 
-UnknownScript_0x1a0957:
+.AskNumber1:
 	jumpstd asknumber1m
 
-UnknownScript_0x1a095b:
+.AskNumber2:
 	jumpstd asknumber2m
 
-UnknownScript_0x1a095f:
+.RegisteredNumber:
 	jumpstd registerednumberm
 
-UnknownScript_0x1a0963:
+.NumberAccepted:
 	jumpstd numberacceptedm
 
-UnknownScript_0x1a0967:
+.NumberDeclined:
 	jumpstd numberdeclinedm
 
-UnknownScript_0x1a096b:
+.PhoneFull:
 	jumpstd phonefullm
 
-UnknownScript_0x1a096f:
+.Rematch:
 	jumpstd rematchm
 
-UnknownScript_0x1a0973:
+.Gift:
 	jumpstd giftm
 
-UnknownScript_0x1a0977:
+.PackFull:
 	jumpstd packfullm
 
 GenericTrainerCooltrainermBlake:
@@ -330,40 +330,40 @@ CooltrainerfReena1Script:
 	loadvar VAR_CALLERID, PHONE_COOLTRAINERF_REENA
 	opentext
 	checkflag ENGINE_REENA_READY_FOR_REMATCH
-	iftrue UnknownScript_0x1a09e9
+	iftruefwd .WantsBattle
 	checkcellnum PHONE_COOLTRAINERF_REENA
-	iftrue UnknownScript_0x1a0a3b
+	iftruefwd .NumberAccepted
 	checkevent EVENT_REENA_ASKED_FOR_PHONE_NUMBER
-	iftrue UnknownScript_0x1a09d2
+	iftruefwd .AskedAlready
 	writetext CooltrainerfReenaAfterBattleText
 	promptbutton
 	setevent EVENT_REENA_ASKED_FOR_PHONE_NUMBER
-	scall UnknownScript_0x1a0a2f
-	sjump UnknownScript_0x1a09d5
+	scall .AskNumber1
+	sjumpfwd .AskForNumber
 
-UnknownScript_0x1a09d2:
-	scall UnknownScript_0x1a0a33
-UnknownScript_0x1a09d5:
+.AskedAlready:
+	scall .AskNumber2
+.AskForNumber:
 	askforphonenumber PHONE_COOLTRAINERF_REENA
-	ifequal $1, UnknownScript_0x1a0a43
-	ifequal $2, UnknownScript_0x1a0a3f
+	ifequalfwd $1, .PhoneFull
+	ifequalfwd $2, .NumberDeclined
 	gettrainername COOLTRAINERF, REENA1, $0
-	scall UnknownScript_0x1a0a37
-	sjump UnknownScript_0x1a0a3b
+	scall .RegisteredNumber
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x1a09e9:
-	scall UnknownScript_0x1a0a47
+.WantsBattle:
+	scall .Rematch
 	winlosstext CooltrainerfReena1BeatenText, 0
 	readmem wReenaFightCount
-	ifequal 2, .Fight2
-	ifequal 1, .Fight1
-	ifequal 0, .LoadFight0
+	ifequalfwd 2, .Fight2
+	ifequalfwd 1, .Fight1
+	ifequalfwd 0, .LoadFight0
 .Fight2:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
-	iftrue .LoadFight2
+	iftruefwd .LoadFight2
 .Fight1:
 	checkevent EVENT_BEAT_ELITE_FOUR
-	iftrue .LoadFight1
+	iftruefwd .LoadFight1
 .LoadFight0:
 	loadtrainer COOLTRAINERF, REENA1
 	startbattle
@@ -387,25 +387,25 @@ UnknownScript_0x1a09e9:
 	clearflag ENGINE_REENA_READY_FOR_REMATCH
 	end
 
-UnknownScript_0x1a0a2f:
+.AskNumber1:
 	jumpstd asknumber1f
 
-UnknownScript_0x1a0a33:
+.AskNumber2:
 	jumpstd asknumber2f
 
-UnknownScript_0x1a0a37:
+.RegisteredNumber:
 	jumpstd registerednumberf
 
-UnknownScript_0x1a0a3b:
+.NumberAccepted:
 	jumpstd numberacceptedf
 
-UnknownScript_0x1a0a3f:
+.NumberDeclined:
 	jumpstd numberdeclinedf
 
-UnknownScript_0x1a0a43:
+.PhoneFull:
 	jumpstd phonefullf
 
-UnknownScript_0x1a0a47:
+.Rematch:
 	jumpstd rematchf
 
 GenericTrainerCooltrainerfMegan:
@@ -452,7 +452,7 @@ CooltrainermBlakeSeenText:
 	cont "Let me battle you!"
 	done
 
-CooltrainermBlakeBeatenText:
+CooltrainermBlakeBeatenText: ; text > text
 	text "Yow!"
 	done
 

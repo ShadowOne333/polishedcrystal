@@ -6,6 +6,7 @@ CeladonGameCorner_MapScriptHeader:
 	def_warp_events
 	warp_event 14, 13, CELADON_CITY, 6
 	warp_event 15, 13, CELADON_CITY, 6
+	warp_event 15,  0, ROCKET_HIDEOUT_B1F, 2
 
 	def_coord_events
 
@@ -78,13 +79,13 @@ CeladonGameCornerFisherScript:
 	faceplayer
 	opentext
 	checkevent EVENT_GOT_COINS_FROM_GAMBLER_AT_CELADON
-	iftrue .FisherOffer
+	iftruefwd .FisherOffer
 	writetext CeladonGameCornerFisherText1
 	promptbutton
 	checkkeyitem COIN_CASE
-	iffalse .NoCoinCase
+	iffalsefwd .NoCoinCase
 	checkcoins 49999
-	ifequal $0, .FullCoinCase
+	ifequalfwd $0, .FullCoinCase
 	getstring .coinname, $1
 	callstd receiveitem
 	givecoins 18
@@ -92,16 +93,16 @@ CeladonGameCornerFisherScript:
 .FisherOffer:
 	writetext FisherOfferText
 	yesorno
-	iffalse .GotCoins
+	iffalsefwd .GotCoins
 	checkcoins 50
-	ifequal $2, .FisherNotEnough
+	ifequalfwd $2, .FisherNotEnough
 	takecoins 50
 	playsound SFX_TRANSACTION
 	scall MapCeladonGameCornerSignpost16Script
 	opentext
 .GotCoins:
 	writetext CeladonGameCornerFisherText2
-	sjump .FisherEnd
+	sjumpfwd .FisherEnd
 .FisherNotEnough:
 	writetext FisherNotEnoughText
 .FisherEnd:
@@ -134,7 +135,7 @@ CeladonGameCornerGrampsScript:
 
 MapCeladonGameCornerSignpost35Script:
 	random $6
-	ifequal $0, MapCeladonGameCornerSignpost16Script
+	ifequalfwd $0, MapCeladonGameCornerSignpost16Script
 	refreshscreen
 	setval $0
 	special Special_SlotMachine

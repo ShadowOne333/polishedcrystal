@@ -33,18 +33,16 @@ VioletGymFalknerAwayScript:
 	applyonemovement VIOLETGYM_GYM_GUY2, step_down
 	showtext VioletGymGuyFalknerAwayText
 	turnobject PLAYER, DOWN
-	pause 10
-	special FadeOutPalettes
-	playsound SFX_ENTER_DOOR
-	waitsfx
-	warp VIOLET_CITY, 18, 22
+	warpcheck
+	warpsound
+	newloadmap MAPSETUP_DOOR
 	end
 
 VioletGymFalknerScript:
 	faceplayer
 	opentext
 	checkevent EVENT_BEAT_FALKNER
-	iftrue .FightDone
+	iftruefwd .FightDone
 	writetext FalknerIntroText
 	waitbutton
 	closetext
@@ -98,7 +96,7 @@ VioletGymGuyScript:
 VioletGymStatue:
 	gettrainername FALKNER, 1, $1
 	checkflag ENGINE_ZEPHYRBADGE
-	iftrue .Beaten
+	iftruefwd .Beaten
 	jumpstd gymstatue1
 .Beaten:
 	readvar VAR_BADGES

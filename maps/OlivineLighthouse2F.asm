@@ -35,42 +35,42 @@ SailorHuey1Script:
 	loadvar VAR_CALLERID, PHONE_SAILOR_HUEY
 	opentext
 	checkflag ENGINE_HUEY_READY_FOR_REMATCH
-	iftrue UnknownScript_0x5afc7
+	iftruefwd .WantsBattle
 	checkcellnum PHONE_SAILOR_HUEY
-	iftrue UnknownScript_0x5b05f
+	iftruefwd .NumberAccepted
 	checkevent EVENT_HUEY_ASKED_FOR_PHONE_NUMBER
-	iftrue UnknownScript_0x5afb0
+	iftruefwd .AskedBefore
 	setevent EVENT_HUEY_ASKED_FOR_PHONE_NUMBER
-	scall UnknownScript_0x5b053
-	sjump UnknownScript_0x5afb3
+	scall .AskNumber1
+	sjumpfwd .AskForNumber
 
-UnknownScript_0x5afb0:
-	scall UnknownScript_0x5b057
-UnknownScript_0x5afb3:
+.AskedBefore:
+	scall .AskNumber2
+.AskForNumber:
 	askforphonenumber PHONE_SAILOR_HUEY
-	ifequal $1, UnknownScript_0x5b067
-	ifequal $2, UnknownScript_0x5b063
+	ifequalfwd $1, .PhoneFull
+	ifequalfwd $2, .NumberDeclined
 	gettrainername SAILOR, HUEY1, $0
-	scall UnknownScript_0x5b05b
-	sjump UnknownScript_0x5b05f
+	scall .RegisteredNumber
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x5afc7:
-	scall UnknownScript_0x5b06b
+.WantsBattle:
+	scall .Rematch
 	winlosstext SailorHuey1BeatenText, 0
 	readmem wHueyFightCount
-	ifequal 3, .Fight3
-	ifequal 2, .Fight2
-	ifequal 1, .Fight1
-	ifequal 0, .LoadFight0
+	ifequalfwd 3, .Fight3
+	ifequalfwd 2, .Fight2
+	ifequalfwd 1, .Fight1
+	ifequalfwd 0, .LoadFight0
 .Fight3:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
-	iftrue .LoadFight3
+	iftruefwd .LoadFight3
 .Fight2:
 	checkevent EVENT_BEAT_ELITE_FOUR
-	iftrue .LoadFight2
+	iftruefwd .LoadFight2
 .Fight1:
 	checkevent EVENT_CLEARED_RADIO_TOWER
-	iftrue .LoadFight1
+	iftruefwd .LoadFight1
 .LoadFight0:
 	loadtrainer SAILOR, HUEY1
 	startbattle
@@ -101,55 +101,55 @@ UnknownScript_0x5afc7:
 	reloadmapafterbattle
 	clearflag ENGINE_HUEY_READY_FOR_REMATCH
 	checkevent EVENT_HUEY_PROTEIN
-	iftrue UnknownScript_0x5b03f
+	iftruefwd .HasProtein
 	checkevent EVENT_GOT_PROTEIN_FROM_HUEY
-	iftrue UnknownScript_0x5b03e
-	scall UnknownScript_0x5b076
+	iftruefwd .SkipGift
+	scall .RematchGift
 	verbosegiveitem PROTEIN
-	iffalse UnknownScript_0x5b06f
+	iffalsefwd .PackFull
 	setevent EVENT_GOT_PROTEIN_FROM_HUEY
-	sjump UnknownScript_0x5b05f
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x5b03e:
+.SkipGift:
 	end
 
-UnknownScript_0x5b03f:
+.HasProtein:
 	opentext
 	writetext SailorHueyGiveProteinText
 	waitbutton
 	verbosegiveitem PROTEIN
-	iffalse UnknownScript_0x5b06f
+	iffalsefwd .PackFull
 	clearevent EVENT_HUEY_PROTEIN
 	setevent EVENT_GOT_PROTEIN_FROM_HUEY
-	sjump UnknownScript_0x5b05f
+	sjumpfwd .NumberAccepted
 
-UnknownScript_0x5b053:
+.AskNumber1:
 	jumpstd asknumber1m
 
-UnknownScript_0x5b057:
+.AskNumber2:
 	jumpstd asknumber2m
 
-UnknownScript_0x5b05b:
+.RegisteredNumber:
 	jumpstd registerednumberm
 
-UnknownScript_0x5b05f:
+.NumberAccepted:
 	jumpstd numberacceptedm
 
-UnknownScript_0x5b063:
+.NumberDeclined:
 	jumpstd numberdeclinedm
 
-UnknownScript_0x5b067:
+.PhoneFull:
 	jumpstd phonefullm
 
-UnknownScript_0x5b06b:
+.Rematch:
 	jumpstd rematchm
 
-UnknownScript_0x5b06f:
+.PackFull:
 	setevent EVENT_HUEY_PROTEIN
 	jumpstd packfullm
 	end
 
-UnknownScript_0x5b076:
+.RematchGift:
 	jumpstd rematchgiftm
 
 SailorHuey1SeenText:

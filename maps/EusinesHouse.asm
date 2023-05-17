@@ -12,7 +12,7 @@ EusinesHouse_MapScriptHeader:
 	def_bg_events
 
 	def_object_events
-	object_event  2,  3, SPRITE_EUSINE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CeladonEusine, EVENT_SET_WHEN_FOUGHT_HO_OH
+	object_event  2,  3, SPRITE_EUSINE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CeladonEusine, EVENT_EUSINES_HOUSE_EUSINE
 	object_event  5,  3, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, EusinesHouseGrampsScript, -1
 
 	object_const_def
@@ -24,44 +24,41 @@ CeladonEusine:
 	writetext CeladonEusineText1
 	promptbutton
 	special SpecialBeastsCheck
-	iftrue .HoOh
+	iftruefwd .HoOh
 	writetext EusineNoBeastsText
 	waitbutton
 	closetext
-	setval RAIKOU
-	special SpecialMonCheck
-	iftrue .OwnRaikou
+	checkflag ENGINE_PLAYER_CAUGHT_RAIKOU
+	iftruefwd .OwnRaikou
 	showtext EusineShowsRaikouText
 	refreshscreen
 	pokepic RAIKOU
 	cry RAIKOU
 	waitbutton
 	closepokepic
-	setval RAIKOU
+	setmonval RAIKOU
 	special SpecialSeenMon
 .OwnRaikou
-	setval ENTEI
-	special SpecialMonCheck
-	iftrue .OwnEntei
+	checkflag ENGINE_PLAYER_CAUGHT_ENTEI
+	iftruefwd .OwnEntei
 	showtext EusineShowsEnteiText
 	refreshscreen
 	pokepic ENTEI
 	cry ENTEI
 	waitbutton
 	closepokepic
-	setval ENTEI
+	setmonval ENTEI
 	special SpecialSeenMon
 .OwnEntei
-	setval SUICUNE
-	special SpecialMonCheck
-	iftrue .OwnSuicune
+	checkflag ENGINE_PLAYER_CAUGHT_SUICUNE
+	iftruefwd .OwnSuicune
 	showtext EusineShowsSuicuneText
 	refreshscreen
 	pokepic SUICUNE
 	cry SUICUNE
 	waitbutton
 	closepokepic
-	setval SUICUNE
+	setmonval SUICUNE
 	special SpecialSeenMon
 .OwnSuicune
 	jumptext EusineQuestHintText
@@ -93,9 +90,40 @@ CeladonEusine:
 	step_end
 
 EusinesHouseGrampsScript:
-	checkevent EVENT_SET_WHEN_FOUGHT_HO_OH
-	iftrue_jumptextfaceplayer EusinesHouseGrampsText2
-	jumptextfaceplayer EusinesHouseGrampsText1
+	checkevent EVENT_EUSINES_HOUSE_EUSINE
+	iffalse_jumptextfaceplayer EusinesHouseGrampsGrandsonHomeText
+	checkevent EVENT_FOUGHT_SUICUNE
+	iffalse_jumptextfaceplayer EusinesHouseGrampsEusineSearchingForSuicuneText
+	checkevent EVENT_DECO_ABRA_DOLL
+	iftrue_jumptextfaceplayer EusinesHouseGrampsEusineTravelingWorldText
+	checkevent EVENT_FOUGHT_HO_OH
+	iftruefwd .AfterHoOhFight
+	jumptextfaceplayer EusinesHouseGrampsEusineSearchingForHoOhText
+
+.AfterHoOhFight:
+	faceplayer
+	opentext
+	writetext EusinesHouseGrampsThankYouGiftText
+	waitbutton
+	writetext ReceivedAbraDollText
+	playsound SFX_ITEM
+	pause 60
+	waitbutton
+	writetext AbraDollSentHomeText
+	setevent EVENT_DECO_ABRA_DOLL
+	waitbutton
+	closetext
+	end
+
+ReceivedAbraDollText:
+	text "<PLAYER> received"
+	line "Abra Doll."
+	done
+
+AbraDollSentHomeText:
+	text "Abra Doll"
+	line "was sent home."
+	done
 
 CeladonEusineText1:
 	text "Eusine: Hi!"
@@ -166,13 +194,13 @@ EusineQuestHintText:
 	line "you, <PLAYER>!"
 	done
 
-EusinesHouseGrampsText1:
+EusinesHouseGrampsGrandsonHomeText:
 	text "My grandson came"
 	line "home!"
 	cont "I'm overjoyed!"
 	done
 
-EusinesHouseGrampsText2:
+EusinesHouseGrampsEusineSearchingForSuicuneText:
 	text "My grandson Eusine"
 	line "is in Johto,"
 
@@ -182,4 +210,39 @@ EusinesHouseGrampsText2:
 	para "I taught him all"
 	line "about the legend-"
 	cont "ary #mon!"
+	done
+
+EusinesHouseGrampsEusineSearchingForHoOhText:
+	text "My grandson Eusine"
+	line "is on another"
+	cont "adventure."
+
+	para "He left to visit"
+	line "Bell Tower in"
+	cont "Ecruteak City."
+	done
+
+EusinesHouseGrampsThankYouGiftText:
+	text "My grandson Eusine"
+	line "called."
+
+	para "He's doing well."
+	line "I'm happy for him!"
+
+	para "Thank you for"
+	line "checking on me,"
+	cont "<PLAYER>!"
+
+	para "Please take this"
+	line "to show my"
+	cont "appreciation."
+	done
+
+EusinesHouseGrampsEusineTravelingWorldText:
+	text "Eusine is out"
+	line "traveling the"
+	cont "world."
+
+	para "I'm so proud of"
+	line "him!"
 	done

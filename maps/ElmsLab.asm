@@ -46,9 +46,9 @@ ElmsLab_MapScriptHeader:
 	def_object_events
 	object_event  5,  2, SPRITE_ELM, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ProfElmScript, -1
 	object_event  2,  9, SPRITE_SCIENTIST, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_BROWN, OBJECTTYPE_SCRIPT, 0, ElmsAideScript, EVENT_ELMS_AIDE_IN_LAB
-	object_event  6,  3, SPRITE_BALL_CUT_FRUIT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, CyndaquilPokeBallScript, EVENT_CYNDAQUIL_POKEBALL_IN_ELMS_LAB
-	object_event  7,  3, SPRITE_BALL_CUT_FRUIT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, TotodilePokeBallScript, EVENT_TOTODILE_POKEBALL_IN_ELMS_LAB
-	object_event  8,  3, SPRITE_BALL_CUT_FRUIT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, ChikoritaPokeBallScript, EVENT_CHIKORITA_POKEBALL_IN_ELMS_LAB
+	object_event  6,  3, SPRITE_BALL_CUT_FRUIT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_POKE_BALL, OBJECTTYPE_SCRIPT, 0, CyndaquilPokeBallScript, EVENT_CYNDAQUIL_POKEBALL_IN_ELMS_LAB
+	object_event  7,  3, SPRITE_BALL_CUT_FRUIT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_DECO_ITEM, OBJECTTYPE_SCRIPT, 0, TotodilePokeBallScript, EVENT_TOTODILE_POKEBALL_IN_ELMS_LAB
+	object_event  8,  3, SPRITE_BALL_CUT_FRUIT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_KEY_ITEM, OBJECTTYPE_SCRIPT, 0, ChikoritaPokeBallScript, EVENT_CHIKORITA_POKEBALL_IN_ELMS_LAB
 	object_event  5,  3, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, CopScript, EVENT_COP_IN_ELMS_LAB
 	object_event  5, 11, SPRITE_LYRA, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ElmsLabLyraScript, EVENT_LYRA_IN_ELMS_LAB
 
@@ -77,7 +77,7 @@ ElmsLabTrigger7:
 
 ElmsLabCallback_MoveElm:
 	checkscene
-	iftrue .Skip
+	iftruefwd .Skip
 	moveobject ELMSLAB_ELM, 3, 4
 .Skip:
 	endcallback
@@ -92,7 +92,7 @@ ElmsLab_AutowalkUpToElm:
 	writetext ElmText_Intro
 ElmsLab_RefuseLoop:
 	yesorno
-	iftrue ElmsLab_ElmGetsEmail
+	iftruefwd ElmsLab_ElmGetsEmail
 	writetext ElmText_Refused
 	sjump ElmsLab_RefuseLoop
 
@@ -136,47 +136,47 @@ ProfElmScript:
 	faceplayer
 	opentext
 	checkevent EVENT_GOT_SS_TICKET_FROM_ELM
-	iftrue ElmCheckMasterBall
+	iftruefwd ElmCheckMasterBall
 	checkevent EVENT_BEAT_ELITE_FOUR
 	iftrue ElmGiveTicketScript
 ElmCheckMasterBall:
 	checkevent EVENT_GOT_MASTER_BALL_FROM_ELM
-	iftrue ElmCheckEverstone
+	iftruefwd ElmCheckOddSouvenir
 	checkflag ENGINE_RISINGBADGE
 	iftrue ElmGiveMasterBallScript
-ElmCheckEverstone:
-	checkevent EVENT_GOT_EVERSTONE_FROM_ELM
-	iftrue_jumpopenedtext ElmText_CallYou
+ElmCheckOddSouvenir:
+	checkevent EVENT_GOT_ODD_SOUVENIR_FROM_ELM
+	iftrue ElmCheckBattleScript
 	checkevent EVENT_SHOWED_TOGEPI_TO_ELM
-	iftrue ElmGiveEverstoneScript
+	iftrue ElmGiveOddSouvenirScript
 	checkevent EVENT_TOLD_ELM_ABOUT_TOGEPI_OVER_THE_PHONE
-	iffalse ElmCheckTogepiEgg
-	setval TOGEPI
+	iffalsefwd ElmCheckTogepiEgg
+	setmonval TOGEPI
 	special Special_FindThatSpeciesYourTrainerID
 	iftrue ShowElmTogepiScript
-	setval TOGETIC
+	setmonval TOGETIC
 	special Special_FindThatSpeciesYourTrainerID
 	iftrue ShowElmTogepiScript
-	setval TOGEKISS
+	setmonval TOGEKISS
 	special Special_FindThatSpeciesYourTrainerID
 	iftrue ShowElmTogepiScript
 	jumpopenedtext ElmThoughtEggHatchedText
 
 ElmEggHatchedScript:
-	setval TOGEPI
+	setmonval TOGEPI
 	special Special_FindThatSpeciesYourTrainerID
 	iftrue ShowElmTogepiScript
-	setval TOGETIC
+	setmonval TOGETIC
 	special Special_FindThatSpeciesYourTrainerID
 	iftrue ShowElmTogepiScript
-	setval TOGEKISS
+	setmonval TOGEKISS
 	special Special_FindThatSpeciesYourTrainerID
 	iftrue ShowElmTogepiScript
-	sjump ElmCheckGotEggAgain
+	sjumpfwd ElmCheckGotEggAgain
 
 ElmCheckTogepiEgg:
 	checkevent EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE
-	iffalse ElmCheckGotEggAgain
+	iffalsefwd ElmCheckGotEggAgain
 	checkevent EVENT_TOGEPI_HATCHED
 	iftrue ElmEggHatchedScript
 ElmCheckGotEggAgain:
@@ -216,7 +216,7 @@ CyndaquilPokeBallScript:
 	writetext ChoseStarterText
 	promptbutton
 	waitsfx
-	givepoke CYNDAQUIL, NO_FORM, 5, ORAN_BERRY
+	givepoke CYNDAQUIL, PLAIN_FORM, 5, ORAN_BERRY
 	writetext LyraChoosesStarterText
 	waitbutton
 	closetext
@@ -234,9 +234,9 @@ CyndaquilPokeBallScript:
 	closetext
 	applymovement ELMSLAB_LYRA, LyraAfterChikoritaMovement
 	readvar VAR_FACING
-	ifequal RIGHT, ElmDirectionsScript
+	ifequalfwd RIGHT, ElmDirectionsScript
 	applymovement PLAYER, AfterCyndaquilMovement
-	sjump ElmDirectionsScript
+	sjumpfwd ElmDirectionsScript
 
 TotodilePokeBallScript:
 	checkevent EVENT_GOT_A_POKEMON_FROM_ELM
@@ -256,7 +256,7 @@ TotodilePokeBallScript:
 	writetext ChoseStarterText
 	promptbutton
 	waitsfx
-	givepoke TOTODILE, NO_FORM, 5, ORAN_BERRY
+	givepoke TOTODILE, PLAIN_FORM, 5, ORAN_BERRY
 	writetext LyraChoosesStarterText
 	waitbutton
 	closetext
@@ -274,7 +274,7 @@ TotodilePokeBallScript:
 	closetext
 	applymovement ELMSLAB_LYRA, LyraAfterCyndaquilMovement
 	applymovement PLAYER, AfterTotodileMovement
-	sjump ElmDirectionsScript
+	sjumpfwd ElmDirectionsScript
 
 ChikoritaPokeBallScript:
 	checkevent EVENT_GOT_A_POKEMON_FROM_ELM
@@ -294,7 +294,7 @@ ChikoritaPokeBallScript:
 	writetext ChoseStarterText
 	promptbutton
 	waitsfx
-	givepoke CHIKORITA, NO_FORM, 5, ORAN_BERRY
+	givepoke CHIKORITA, PLAIN_FORM, 5, ORAN_BERRY
 	writetext LyraChoosesStarterText
 	waitbutton
 	closetext
@@ -312,7 +312,7 @@ ChikoritaPokeBallScript:
 	closetext
 	applymovement ELMSLAB_LYRA, LyraAfterTotodileMovement
 	applymovement PLAYER, AfterChikoritaMovement
-	sjump ElmDirectionsScript
+	; fallthrough
 
 ElmDirectionsScript:
 	turnobject PLAYER, UP
@@ -338,13 +338,13 @@ endc
 ElmsLabHealingMachine:
 	opentext
 	checkevent EVENT_GOT_A_POKEMON_FROM_ELM
-	iftrue .CanHeal
+	iftruefwd .CanHeal
 	jumpopenedtext ElmsLabHealingMachineText1
 
 .CanHeal:
 	writetext ElmsLabHealingMachineText2
 	yesorno
-	iftrue ElmsLabHealingMachine_HealParty
+	iftruefwd ElmsLabHealingMachine_HealParty
 	endtext
 
 ElmsLabHealingMachine_HealParty:
@@ -377,7 +377,6 @@ ElmAfterTheftScript:
 	writetext ElmAfterTheftText5
 	promptbutton
 	setevent EVENT_GAVE_MYSTERY_EGG_TO_ELM
-	setflag ENGINE_BUG_CONTEST_ON
 	clearevent EVENT_LYRA_ROUTE_29
 	setmapscene ROUTE_29, $1
 	clearevent EVENT_ROUTE_30_YOUNGSTER_JOEY
@@ -396,13 +395,17 @@ ShowElmTogepiScript:
 	promptbutton
 	writetext ShowElmTogepiText3
 	promptbutton
-ElmGiveEverstoneScript:
-	writetext ElmGiveEverstoneText1
+ElmGiveOddSouvenirScript:
+	writetext ElmGiveOddSouvenirText1
 	promptbutton
-	verbosegiveitem EVERSTONE
+	verbosegiveitem ODD_SOUVENIR
 	iffalse_endtext
-	setevent EVENT_GOT_EVERSTONE_FROM_ELM
-	jumpopenedtext ElmGiveEverstoneText2
+	setevent EVENT_GOT_ODD_SOUVENIR_FROM_ELM
+	writetext ElmGiveOddSouvenirText2
+	waitbutton
+	checkevent EVENT_BATTLED_PROF_ELM
+	iffalsefwd ElmAlsoBattleScript
+	endtext
 
 ElmGiveMasterBallScript:
 	writetext ElmGiveMasterBallText1
@@ -410,21 +413,54 @@ ElmGiveMasterBallScript:
 	verbosegiveitem MASTER_BALL
 	iffalse_endtext
 	setevent EVENT_GOT_MASTER_BALL_FROM_ELM
-	jumpopenedtext ElmGiveMasterBallText2
+	writetext ElmGiveMasterBallText2
+	waitbutton
+	checkevent EVENT_BATTLED_PROF_ELM
+	iftrue_endtext
+ElmAlsoBattleScript:
+	writetext ElmByTheWayText
+	waitbutton
+	sjumpfwd ElmAskBattleScript
 
-ElmGiveTicketScript:
-	writetext ElmChallengeText
+ElmCheckBattleScript:
+	checkevent EVENT_BATTLED_PROF_ELM
+	iftrue_jumpopenedtext ElmText_CallYou
+	checkevent EVENT_BEAT_FALKNER
+	iffalse_jumpopenedtext ElmText_CallYou
+	writetext ElmBeforeBattleText
+	waitbutton
+ElmAskBattleScript:
+	writetext ElmAskBattleText
 	yesorno
 	iffalse_jumpopenedtext ElmRefusedBattleText
 	writetext ElmSeenText
 	waitbutton
 	closetext
-	winlosstext ElmWinText, 0
+	winlosstext ElmWinText, ElmLoseText
 	setlasttalked ELMSLAB_ELM
+	readvar VAR_BADGES
+	ifless 2, .Team1
+	ifless 4, .Team2
+	ifless 8, .Team3
+	loadtrainer PROF_ELM, 4
+	sjumpfwd .GotTeam
+.Team1:
 	loadtrainer PROF_ELM, 1
+	sjumpfwd .GotTeam
+.Team2:
+	loadtrainer PROF_ELM, 2
+	sjumpfwd .GotTeam
+.Team3:
+	loadtrainer PROF_ELM, 3
+.GotTeam:
+	loadvar VAR_BATTLETYPE, BATTLETYPE_CANLOSE
+	setevent EVENT_BATTLED_PROF_ELM
 	startbattle
-	reloadmapafterbattle
-	opentext
+	reloadmap
+	special HealPartyEvenForNuzlocke
+	jumptextfaceplayer ElmAfterBattleText
+
+ElmGiveTicketScript:
 	writetext ElmGiveTicketText1
 	promptbutton
 	verbosegivekeyitem S_S_TICKET
@@ -435,14 +471,14 @@ ElmGiveTicketScript:
 	special Special_FadeOutMusic
 	pause 10
 	readvar VAR_FACING
-	ifequal UP, .Shortest
-	ifequal DOWN, .Longest
+	ifequalfwd UP, .Shortest
+	ifequalfwd DOWN, .Longest
 	disappear ELMSLAB_LYRA
 	moveobject ELMSLAB_LYRA, 4, 7
 	scall .LyraEntryShort
 	scall .LyraAnnouncesGymChallenge
 	turnobject PLAYER, RIGHT
-	sjump .Continue
+	sjumpfwd .Continue
 
 .Longest
 	disappear ELMSLAB_LYRA
@@ -454,7 +490,7 @@ ElmGiveTicketScript:
 	turnobject PLAYER, LEFT
 	scall .LyraAnnouncesGymChallenge
 	turnobject PLAYER, DOWN
-	sjump .Continue
+	sjumpfwd .Continue
 
 .Shortest
 	disappear ELMSLAB_LYRA
@@ -490,19 +526,19 @@ ElmGiveTicketScript:
 ElmJumpBackScript1:
 	closetext
 	readvar VAR_FACING
-	ifequal DOWN, ElmJumpDownScript
-	ifequal UP, ElmJumpUpScript
-	ifequal LEFT, ElmJumpLeftScript
-	ifequal RIGHT, ElmJumpRightScript
+	ifequalfwd DOWN, ElmJumpDownScript
+	ifequalfwd UP, ElmJumpUpScript
+	ifequalfwd LEFT, ElmJumpLeftScript
+	ifequalfwd RIGHT, ElmJumpRightScript
 	end
 
 ElmJumpBackScript2:
 	closetext
 	readvar VAR_FACING
-	ifequal DOWN, ElmJumpUpScript
-	ifequal UP, ElmJumpDownScript
-	ifequal LEFT, ElmJumpRightScript
-	ifequal RIGHT, ElmJumpLeftScript
+	ifequalfwd DOWN, ElmJumpUpScript
+	ifequalfwd UP, ElmJumpDownScript
+	ifequalfwd LEFT, ElmJumpRightScript
+	ifequalfwd RIGHT, ElmJumpLeftScript
 	end
 
 ElmJumpUpScript:
@@ -534,9 +570,9 @@ LyraBattleScript:
 	winlosstext ElmsLabLyraWinText, ElmsLabLyraLossText
 	setlasttalked ELMSLAB_LYRA
 	checkevent EVENT_GOT_TOTODILE_FROM_ELM
-	iftrue .Totodile
+	iftruefwd .Totodile
 	checkevent EVENT_GOT_CHIKORITA_FROM_ELM
-	iftrue .Chikorita
+	iftruefwd .Chikorita
 	loadtrainer LYRA1, LYRA1_1
 	loadvar VAR_BATTLETYPE, BATTLETYPE_CANLOSE
 	startbattle
@@ -544,8 +580,8 @@ LyraBattleScript:
 	reloadmap
 	special DeleteSavedMusic
 	playmusic MUSIC_LYRA_DEPARTURE_HGSS
-	iftrue .AfterYourDefeat
-	sjump .AfterVictorious
+	iftruefwd .AfterYourDefeat
+	sjumpfwd .AfterVictorious
 
 .Totodile:
 	loadtrainer LYRA1, LYRA1_2
@@ -555,8 +591,8 @@ LyraBattleScript:
 	reloadmap
 	special DeleteSavedMusic
 	playmusic MUSIC_LYRA_DEPARTURE_HGSS
-	iftrue .AfterVictorious
-	sjump .AfterYourDefeat
+	iftruefwd .AfterVictorious
+	sjumpfwd .AfterYourDefeat
 
 .Chikorita:
 	loadtrainer LYRA1, LYRA1_3
@@ -566,12 +602,12 @@ LyraBattleScript:
 	reloadmap
 	special DeleteSavedMusic
 	playmusic MUSIC_LYRA_DEPARTURE_HGSS
-	iftrue .AfterVictorious
-	sjump .AfterYourDefeat
+	iftruefwd .AfterVictorious
+	sjumpfwd .AfterYourDefeat
 
 .AfterVictorious:
 	showtext ElmsLabLyraText_YouWon
-	sjump .FinishLyra
+	sjumpfwd .FinishLyra
 
 .AfterYourDefeat:
 	showtext ElmsLabLyraText_YouLost
@@ -1163,6 +1199,15 @@ ElmAfterTheftText6:
 	para "Before you leave,"
 	line "make sure that you"
 	cont "talk to your mom."
+
+	para "And give me a call"
+	line "sometimes too."
+
+	para "I can tell you all"
+	line "about my research"
+
+	para "on how #mon"
+	line "evolve!"
 	done
 
 ElmStudyingEggText:
@@ -1225,7 +1270,7 @@ ShowElmTogepiText3:
 	cont "to be done."
 	done
 
-ElmGiveEverstoneText1:
+ElmGiveOddSouvenirText1:
 	text "Thanks, <PLAYER>!"
 	line "You're helping"
 
@@ -1237,23 +1282,22 @@ ElmGiveEverstoneText1:
 	cont "our appreciation."
 	done
 
-ElmGiveEverstoneText2:
-	text "That's an"
-	line "Everstone."
+ElmGiveOddSouvenirText2:
+	text "That's an oddity"
+	line "I was given by"
+	cont "Mr. #mon."
 
-	para "Some species of"
-	line "#mon evolve"
+	para "He told me it's a"
+	line "souvenir from his"
 
-	para "when they grow to"
-	line "certain levels."
+	para "trip to a tropical"
+	line "island."
 
-	para "A #mon holding"
-	line "the Everstone"
-	cont "won't evolve."
+	para "Supposedly there"
+	line "are a few species"
 
-	para "Give it to a #-"
-	line "mon you don't want"
-	cont "to evolve."
+	para "of #mon that"
+	line "like to hold it."
 	done
 
 ElmText_CallYou:
@@ -1344,50 +1388,13 @@ ElmGiveMasterBallText2:
 	line "can, <PLAYER>!"
 	done
 
-ElmChallengeText:
+ElmGiveTicketText1:
 	text "Elm: <PLAYER>!"
 	line "There you are!"
 
 	para "I called because I"
 	line "have something for"
 	cont "you."
-
-	para "But first…"
-
-	para "I'd like to try"
-	line "battling the new"
-	cont "Champion!"
-
-	para "How about it,"
-	line "<PLAYER>?"
-	done
-
-ElmSeenText:
-	text "Show me how much"
-	line "you've grown since"
-
-	para "you left New Bark"
-	line "Town!"
-	done
-
-ElmWinText:
-	text "Astounding!"
-	done
-
-ElmRefusedBattleText:
-	text "If your #mon"
-	line "need healing,"
-
-	para "just use the"
-	line "machine here."
-	done
-
-ElmGiveTicketText1:
-	text "Elm: I'm proud"
-	line "of you, <PLAYER>."
-
-	para "You're clearly"
-	line "ready for this."
 
 	para "See? It's an"
 	line "S.S.Ticket."
@@ -1480,6 +1487,62 @@ ElmAfterTicketText:
 
 	para "Give my regards to"
 	line "Prof.Oak in Kanto!"
+	done
+
+ElmBeforeBattleText:
+	text "Elm: <PLAYER>!"
+	line "How is your #-"
+	cont "journey so far?"
+	done
+
+ElmByTheWayText:
+	text "While you're here,"
+	line "<PLAYER>…"
+	done
+
+ElmAskBattleText:
+	text "I could use some"
+	line "practice battling"
+
+	para "a talented trainer"
+	line "like yourself."
+
+	para "How about it,"
+	line "<PLAYER>?"
+	done
+
+ElmSeenText:
+	text "Show me how much"
+	line "you've grown since"
+
+	para "you left New Bark"
+	line "Town!"
+	done
+
+ElmWinText:
+	text "Astounding!"
+	done
+
+ElmLoseText:
+	text "Were you going"
+	line "easy on me?"
+	done
+
+ElmRefusedBattleText:
+	text "If your #mon"
+	line "need healing,"
+
+	para "just use the"
+	line "machine here."
+	done
+
+ElmAfterBattleText:
+	text "Elm: I'm proud"
+	line "of you, <PLAYER>."
+
+	para "I was right to"
+	line "trust you with"
+	cont "a #mon!"
 	done
 
 AideText_GiveYouPotions:

@@ -1,35 +1,19 @@
 SECTION "HRAM", HRAM
 
-HRAM_START::
+hScriptVar:: dw
 
-hPushOAM:: ds 5
-
-hScriptVar:: db
-
+hROMBank:: db
 hROMBankBackup:: db
-
-; TODO: come up with other names for hBuffer
-; related to home/audio.asm and home/decompress.asm
-hTempBank::
-hBuffer:: db
-hLYOverrideStackCopyAmount:: db
-
-hRTCDayHi::   db
-hRTCDayLo::   db
-hRTCHours::   db
-hRTCMinutes:: db
-hRTCSeconds:: db
+	ds 1 ; unused
 
 hHours:: db
 hMinutes:: db
 hSeconds:: db
 
+hVBlank:: db
 hVBlankCounter:: db
-
 hVBlankOccurred:: db
 
-hROMBank:: db
-hVBlank:: db
 hMapEntryMethod:: db
 hMenuReturn:: db
 
@@ -46,7 +30,7 @@ hInMenu:: db
 
 UNION
 hGraphicStartTile:: db
-hMoveMon:: db
+hIsMapObject:: db ; 0 = object, 1 = mapobject
 hMapObjectIndexBuffer:: db
 hObjectStructIndexBuffer:: db
 NEXTU
@@ -54,15 +38,12 @@ hMapBorderBlock:: db
 hMapWidthPlus6:: db
 hConnectionStripLength:: db
 hConnectedMapWidth:: db
+NEXTU
+	ds 1
+hMoveMon:: db
 ENDU
 
-UNION
-hFarCallSavedHL::
-hFarCallSavedL:: db
-hFarCallSavedH:: db
-NEXTU
-hLZAddress:: dw
-ENDU
+	ds 3 ; unused
 
 UNION
 ; math-related values
@@ -109,7 +90,7 @@ hChartValues::
 hChartHP::  db
 hChartAtk:: db
 hChartDef:: db
-hChartSpd:: db
+hChartSpe:: db
 hChartSat:: db
 hChartSdf:: db
 ENDU
@@ -119,12 +100,7 @@ hMoneyTemp:: ds 3
 hLCDCPointer::     db
 hLYOverrideStart:: db
 hLYOverrideEnd::   db
-
-hSerialReceivedNewData::     db
-hSerialConnectionStatus::    db
-hSerialIgnoringInitialData:: db
-hSerialSend::                db
-hSerialReceive::             db
+hLYOverrideStackCopyAmount:: db
 
 hSCX:: db
 hSCY:: db
@@ -146,12 +122,10 @@ hBGMapMode::
 hBGMapHalf::     db
 hBGMapAddress::  dw
 
-hOAMUpdate:: db
-
-hSPBuffer:: dw
-
 hBGMapUpdate::    db
 hBGMapTileCount:: db
+
+hOAMUpdate:: db
 
 hMapAnims::      db
 hTileAnimFrame:: db
@@ -162,7 +136,15 @@ hRandom::
 hRandomAdd:: db
 hRandomSub:: db
 
-hSecondsBackup:: db
+hSerialReceivedNewData::     db
+hSerialConnectionStatus::    db
+	vc_assert hSerialConnectionStatus == $ffcb, \
+		"hSerialConnectionStatus is no longer located at 00:ffcb."
+hSerialIgnoringInitialData:: db
+hSerialSend::                db
+hSerialReceive::             db
+
+hSPBuffer:: dw
 
 UNION
 ; 0 - player
@@ -174,14 +156,16 @@ NEXTU
 hChartScreen:: db
 hChartFillCoord:: db
 hChartLineCoord:: db
+NEXTU
+hPokedexAreaMode:: ; %xyyyzzzz, x: area unknown, y: region, z: location type
+hPokedexStatsCurAbil:: db
+	ds 2
 ENDU
 
 hCGBPalUpdate:: db
 hCGB::          db
 
 hDMATransfer:: db
-
-hFarCallSavedA:: db
 
 hDelayFrameLY:: db
 
@@ -208,9 +192,21 @@ ENDU
 
 hCrashCode:: db
 
-	ds 8
+hStopPrintingString:: db
 
+UNION
+; vwf
 hAppendVWFText:: ds 4
+NEXTU
+; ctxt
+hPlaceStringCoords:: dw
+hCompressedTextBuffer:: ds 2 ; one character and "@"
+ENDU
+
+hScriptBank:: db
+hScriptPos:: dw
+
+	ds 9 ; unused
 
 hLCDInterruptFunction::
 hFunctionJump::     db ; $c3 jp
@@ -226,5 +222,3 @@ hBitwiseRet::    db ; $c9 ret
 hSingleOperation::
 hSingleOpcode:: db ; opcode
 hSingleRet::    db ; $c9 ret
-
-HRAM_END::

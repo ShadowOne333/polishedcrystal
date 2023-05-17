@@ -20,7 +20,16 @@ ScrollingMenu::
 	ld hl, wVramState
 	bit 0, [hl]
 	jmp nz, UpdateTimePals
-	jmp SetPalettes
+	; fallthrough
+
+SetPalettes::
+	push de
+	ld a, %11100100
+	call DmgToCgbBGPals
+	lb de, %11100100, %11100100
+	call DmgToCgbObjPals
+	pop de
+	ret
 
 InitScrollingMenu::
 	ld a, [wMenuBorderTopCoord]
@@ -40,7 +49,7 @@ InitScrollingMenu::
 	pop bc
 	jmp Textbox
 
-JoyTextDelay_ForcehJoyDown:: ; 354b joypad
+JoyTextDelay_ForcehJoyDown::
 	call DelayFrame
 
 	ldh a, [hInMenu]
@@ -59,10 +68,3 @@ JoyTextDelay_ForcehJoyDown:: ; 354b joypad
 	or c
 	ld c, a
 	ret
-
-ConsumeGenericDelay::
-	ld a, [wGenericDelay]
-	and a
-	ret z
-	ld c, a
-	jmp DelayFrames

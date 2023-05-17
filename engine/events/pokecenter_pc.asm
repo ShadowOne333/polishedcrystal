@@ -26,9 +26,8 @@ PokemonCenterPC:
 	jmp CloseWindow
 
 .TopMenu:
-	db $48 ; flags
-	db 00, 00 ; start coords
-	db 12, 15 ; end coords
+	db MENU_BACKUP_TILES | MENU_NO_CLICK_SFX
+	menu_coords 0, 0, 15, 12
 	dw .MenuData2
 	db 1 ; default option
 
@@ -168,7 +167,7 @@ _PlayersHousePC:
 	ld b, $1
 	call _PlayersPC
 	and a
-	jr nz, .asm_156f9
+	jr nz, .changed_deco_tiles
 	call LoadMapPart
 	call ApplyTilemap
 	call UpdateSprites
@@ -176,7 +175,7 @@ _PlayersHousePC:
 	ld c, $0
 	ret
 
-.asm_156f9
+.changed_deco_tiles
 	call ClearBGPalettes
 	ld c, $1
 	ret
@@ -200,18 +199,18 @@ _PlayersPC:
 	ld [wPCItemsScrollPosition], a
 	ld hl, PlayersPCMenuData
 	call LoadMenuHeader
-.asm_15722
+.loop
 	call UpdateTimePals
 	call DoNthMenu
-	jr c, .asm_15731
+	jr c, .turn_off
 	call MenuJumptable
-	jr nc, .asm_15722
-	jr .asm_15732
+	jr nc, .loop
+	jr .done
 
-.asm_15731
+.turn_off
 	xor a
 
-.asm_15732
+.done
 	jmp ExitMenu
 
 PlayersPCMenuData:
@@ -245,13 +244,13 @@ PlayersPCMenuData:
 .TurnOff:      db "Turn Off@"
 .LogOff:       db "Log Off@"
 
-WITHDRAW_ITEM EQU 0
-DEPOSIT_ITEM  EQU 1
-TOSS_ITEM     EQU 2
-MAIL_BOX      EQU 3
-DECORATION    EQU 4
-TURN_OFF      EQU 5
-LOG_OFF       EQU 6
+DEF WITHDRAW_ITEM EQU 0
+DEF DEPOSIT_ITEM  EQU 1
+DEF TOSS_ITEM     EQU 2
+DEF MAIL_BOX      EQU 3
+DEF DECORATION    EQU 4
+DEF TURN_OFF      EQU 5
+DEF LOG_OFF       EQU 6
 
 .PlayersPCMenuList1:
 	db 5
@@ -592,9 +591,8 @@ PCItemsJoypad:
 	ret
 
 .PCItemsMenuData:
-	db %01000000
-	db  1,  4 ; start coords
-	db 10, 18 ; end coords
+	db MENU_BACKUP_TILES
+	menu_coords 4, 1, 18, 10
 	dw .MenuData2
 	db 1 ; default option
 
@@ -603,7 +601,7 @@ PCItemsJoypad:
 	db 4, 8 ; rows/cols?
 	db 2 ; horizontal spacing?
 	dbw 0, wNumPCItems
-	dba PlaceMartItemName
+	dba PlaceMenuItemName
 	dba PlaceMenuItemQuantity
 	dba UpdateItemDescription
 

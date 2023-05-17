@@ -17,7 +17,8 @@ VioletPokeCenter1F_MapScriptHeader:
 	object_event 10,  2, SPRITE_SCIENTIST, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_BROWN, OBJECTTYPE_SCRIPT, 0, VioletPokeCenter1FElmsAideScript, EVENT_ELMS_AIDE_IN_VIOLET_POKEMON_CENTER
 	pc_nurse_event  5, 1
 	object_event  9,  4, SPRITE_GAMEBOY_KID, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_COMMAND, jumptextfaceplayer, VioletPokeCenter1FGameboyKidText, -1
-	object_event  2,  4, SPRITE_GENTLEMAN, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VioletPokeCenter1FGentlemanText, -1
+	object_event  2,  3	, SPRITE_GENTLEMAN, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VioletPokeCenter1FGentlemanText, -1
+	object_event  0,  5, SPRITE_SAGE, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VioletPokeCenter1FSageText, -1
 	object_event 11,  5, SPRITE_SCHOOLBOY, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_COMMAND, jumptextfaceplayer, VioletPokeCenter1FYoungsterText, -1
 
 	object_const_def
@@ -44,15 +45,14 @@ VioletPokeCenter1FElmsAideScript:
 	faceplayer
 	opentext
 	checkevent EVENT_REFUSED_TO_TAKE_EGG_FROM_ELMS_AIDE
-	iftrue .SecondTimeAsking
+	iftruefwd .SecondTimeAsking
 	writetext .IntroText
-	sjump .AskTakeEgg
+	sjumpfwd .AskTakeEgg
 .SecondTimeAsking:
 	writetext .QuestionText
 .AskTakeEgg:
 	yesorno
-	iffalse .RefusedEgg
-	readvar VAR_PARTYCOUNT
+	iffalsefwd .RefusedEgg
 	giveegg TOGEPI
 	iffalse_jumpopenedtext .PartyAndBoxFull
 	setevent EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE
@@ -63,10 +63,10 @@ VioletPokeCenter1FElmsAideScript:
 	waitbutton
 	closetext
 	readvar VAR_FACING
-	ifequal UP, .AideWalksAroundPlayer
+	ifequalfwd UP, .AideWalksAroundPlayer
 	turnobject PLAYER, DOWN
 	applymovement VIOLETPOKECENTER1F_SCIENTIST, .WalkStraightMovement
-	sjump .Finish
+	sjumpfwd .Finish
 .AideWalksAroundPlayer:
 	applymovement VIOLETPOKECENTER1F_SCIENTIST, .WalkAroundMovement
 	turnobject PLAYER, DOWN
@@ -83,7 +83,7 @@ VioletPokeCenter1FElmsAideScript:
 	cont "#mon with you."
 
 	para "You have no space"
-	line "in your box, too."
+	line "in your Box, too."
 
 	para "I'll wait here"
 	line "while you make"
@@ -180,6 +180,20 @@ VioletPokeCenter1FGentlemanText:
 	para "But justice pre-"
 	line "vailed--a young"
 	cont "kid broke 'em up."
+	done
+
+VioletPokeCenter1FSageText:
+	text "Some Bellsprout"
+	line "are found with"
+	cont "Gold Leaves."
+
+	para "And some Oddish"
+	line "are found with"
+	cont "Silver Leaves."
+
+	para "These are valued"
+	line "by a certain type"
+	cont "of person."
 	done
 
 VioletPokeCenter1FYoungsterText:

@@ -24,7 +24,6 @@ ItemEffects:
 	dw PokeBallEffect     ; FAST_BALL
 	dw PokeBallEffect     ; HEAVY_BALL
 	dw PokeBallEffect     ; LOVE_BALL
-	dw AbilityPatch       ; ABILITYPATCH
 	dw PokeBallEffect     ; REPEAT_BALL
 	dw PokeBallEffect     ; TIMER_BALL
 	dw PokeBallEffect     ; NEST_BALL
@@ -69,37 +68,11 @@ ItemEffects:
 	dw RestoreHPEffect    ; MOOMOO_MILK
 	dw HealStatusEffect   ; RAGECANDYBAR
 	dw HealStatusEffect   ; PEWTERCRUNCH
-	dw SacredAsh          ; SACRED_ASH
 	dw EnergyPowder       ; ENERGYPOWDER
 	dw EnergyRoot         ; ENERGY_ROOT
 	dw HealPowder         ; HEAL_POWDER
 	dw RevivalHerb        ; REVIVAL_HERB
-	dw XItemEffect        ; X_ATTACK
-	dw XItemEffect        ; X_DEFEND
-	dw XItemEffect        ; X_SPEED
-	dw XItemEffect        ; X_SPCL_ATK
-	dw XItemEffect        ; X_SPCL_DEF
-	dw XItemEffect        ; X_ACCURACY
-	dw DireHit            ; DIRE_HIT
-	dw GuardSpec          ; GUARD_SPEC
-	dw RepelEffect        ; REPEL
-	dw RepelEffect        ; SUPER_REPEL
-	dw RepelEffect        ; MAX_REPEL
-	dw EscapeRope         ; ESCAPE_ROPE
-	dw PokeDoll           ; POKE_DOLL
-	dw AbilityCap         ; ABILITY_CAP
-	dw EvoStoneEffect     ; LEAF_STONE
-	dw EvoStoneEffect     ; FIRE_STONE
-	dw EvoStoneEffect     ; WATER_STONE
-	dw EvoStoneEffect     ; THUNDERSTONE
-	dw EvoStoneEffect     ; MOON_STONE
-	dw EvoStoneEffect     ; SUN_STONE
-	dw EvoStoneEffect     ; DUSK_STONE
-	dw EvoStoneEffect     ; DAWN_STONE
-	dw EvoStoneEffect     ; SHINY_STONE
-	dw EvoStoneEffect     ; ICE_STONE
-	dw IsntTheTimeMessage ; EVERSTONE
-	dw IsntTheTimeMessage ; EXP_SHARE
+	dw SacredAsh          ; SACRED_ASH
 	dw HealStatusEffect   ; CHERI_BERRY
 	dw HealStatusEffect   ; CHESTO_BERRY
 	dw HealStatusEffect   ; PECHA_BERRY
@@ -131,6 +104,34 @@ ItemEffects:
 	dw IsntTheTimeMessage ; KEE_BERRY
 	dw IsntTheTimeMessage ; MARANGABERRY
 	dw RestoreHPEffect    ; BERRY_JUICE
+	dw RepelEffect        ; REPEL
+	dw RepelEffect        ; SUPER_REPEL
+	dw RepelEffect        ; MAX_REPEL
+	dw EscapeRope         ; ESCAPE_ROPE
+	dw PokeDoll           ; POKE_DOLL
+	dw IsntTheTimeMessage ; MULCH
+	dw SweetHoney         ; SWEET_HONEY
+	dw XItemEffect        ; X_ATTACK
+	dw XItemEffect        ; X_DEFEND
+	dw XItemEffect        ; X_SPEED
+	dw XItemEffect        ; X_SP_ATK
+	dw XItemEffect        ; X_SP_DEF
+	dw XItemEffect        ; X_ACCURACY
+	dw DireHit            ; DIRE_HIT
+	dw GuardSpec          ; GUARD_SPEC
+	dw AbilityCap         ; ABILITY_CAP
+	dw AbilityPatch       ; ABILITYPATCH
+	dw EvoStoneEffect     ; LEAF_STONE
+	dw EvoStoneEffect     ; FIRE_STONE
+	dw EvoStoneEffect     ; WATER_STONE
+	dw EvoStoneEffect     ; THUNDERSTONE
+	dw EvoStoneEffect     ; ICE_STONE
+	dw EvoStoneEffect     ; MOON_STONE
+	dw EvoStoneEffect     ; SUN_STONE
+	dw EvoStoneEffect     ; DUSK_STONE
+	dw EvoStoneEffect     ; SHINY_STONE
+	dw IsntTheTimeMessage ; EVERSTONE
+	dw IsntTheTimeMessage ; EXP_SHARE
 	dw IsntTheTimeMessage ; SILK_SCARF
 	dw IsntTheTimeMessage ; BLACK_BELT
 	dw IsntTheTimeMessage ; SHARP_BEAK
@@ -149,62 +150,61 @@ ItemEffects:
 	dw IsntTheTimeMessage ; DRAGON_FANG
 	dw IsntTheTimeMessage ; BLACKGLASSES
 	dw IsntTheTimeMessage ; PINK_BOW
+	dw IsntTheTimeMessage ; BERSERK_GENE
 	dw IsntTheTimeMessage ; BRIGHTPOWDER
-	dw IsntTheTimeMessage ; SCOPE_LENS
 	dw IsntTheTimeMessage ; QUICK_CLAW
 	dw IsntTheTimeMessage ; KINGS_ROCK
-	dw IsntTheTimeMessage ; FOCUS_BAND
-	dw IsntTheTimeMessage ; LEFTOVERS
-	dw IsntTheTimeMessage ; LUCKY_EGG
 	dw IsntTheTimeMessage ; AMULET_COIN
 	dw IsntTheTimeMessage ; CLEANSE_TAG
 	dw IsntTheTimeMessage ; SMOKE_BALL
-	dw IsntTheTimeMessage ; BERSERK_GENE
+	dw IsntTheTimeMessage ; FOCUS_BAND
+	dw IsntTheTimeMessage ; LUCKY_EGG
+	dw IsntTheTimeMessage ; LEFTOVERS
+	dw IsntTheTimeMessage ; SOOTHE_BELL
+	dw IsntTheTimeMessage ; SHELL_BELL
+	dw IsntTheTimeMessage ; MUSCLE_BAND
+	dw IsntTheTimeMessage ; WISE_GLASSES
+	dw IsntTheTimeMessage ; EXPERT_BELT
+	dw IsntTheTimeMessage ; LIGHT_CLAY
+	dw IsntTheTimeMessage ; LIFE_ORB
+	dw IsntTheTimeMessage ; FOCUS_SASH
+	dw IsntTheTimeMessage ; METRONOME_I
+	dw IsntTheTimeMessage ; IRON_BALL
+	dw IsntTheTimeMessage ; LAGGING_TAIL
+	dw IsntTheTimeMessage ; DESTINY_KNOT
+	dw IsntTheTimeMessage ; GRIP_CLAW
+	dw IsntTheTimeMessage ; SHED_SHELL
+	dw IsntTheTimeMessage ; BIG_ROOT
+	dw IsntTheTimeMessage ; EVIOLITE
+	dw IsntTheTimeMessage ; ROCKY_HELMET
+	dw IsntTheTimeMessage ; AIR_BALLOON
+	dw IsntTheTimeMessage ; RED_CARD
+	dw IsntTheTimeMessage ; BINDING_BAND
+	dw IsntTheTimeMessage ; EJECT_BUTTON
+	dw IsntTheTimeMessage ; WEAK_POLICY
+	dw IsntTheTimeMessage ; ASSAULT_VEST
+	dw IsntTheTimeMessage ; SAFE_GOGGLES
+	dw IsntTheTimeMessage ; PROTECT_PADS
+	dw IsntTheTimeMessage ; THROAT_SPRAY
+	dw IsntTheTimeMessage ; EJECT_PACK
+	dw IsntTheTimeMessage ; HEAVY_BOOTS
+	dw IsntTheTimeMessage ; BLUNDRPOLICY
+	dw IsntTheTimeMessage ; ROOM_SERVICE
+	dw IsntTheTimeMessage ; CLEAR_AMULET
+	dw IsntTheTimeMessage ; MIRROR_HERB
+	dw IsntTheTimeMessage ; PUNCHINGLOVE
+	dw IsntTheTimeMessage ; COVERT_CLOAK
+	dw IsntTheTimeMessage ; LOADED_DICE
 	dw IsntTheTimeMessage ; LIGHT_BALL
-	dw IsntTheTimeMessage ; STICK
+	dw IsntTheTimeMessage ; LEEK
 	dw IsntTheTimeMessage ; THICK_CLUB
 	dw IsntTheTimeMessage ; LUCKY_PUNCH
 	dw IsntTheTimeMessage ; METAL_POWDER
 	dw IsntTheTimeMessage ; QUICK_POWDER
 	dw IsntTheTimeMessage ; ARMOR_SUIT
-	dw IsntTheTimeMessage ; AIR_BALLOON
-	dw IsntTheTimeMessage ; ASSAULT_VEST
-	dw IsntTheTimeMessage ; BIG_ROOT
-	dw IsntTheTimeMessage ; BINDING_BAND
-	dw IsntTheTimeMessage ; DESTINY_KNOT
-	dw IsntTheTimeMessage ; EVIOLITE
-	dw IsntTheTimeMessage ; EXPERT_BELT
-	dw IsntTheTimeMessage ; FOCUS_SASH
-	dw IsntTheTimeMessage ; GRIP_CLAW
-	dw IsntTheTimeMessage ; LIFE_ORB
-	dw IsntTheTimeMessage ; LIGHT_CLAY
-	dw IsntTheTimeMessage ; METRONOME_I
-	dw IsntTheTimeMessage ; MUSCLE_BAND
-	dw IsntTheTimeMessage ; PROTECT_PADS
-	dw IsntTheTimeMessage ; ROCKY_HELMET
-	dw IsntTheTimeMessage ; SAFE_GOGGLES
-	dw IsntTheTimeMessage ; SHED_SHELL
-	dw IsntTheTimeMessage ; SHELL_BELL
-	dw IsntTheTimeMessage ; SOOTHE_BELL
-	dw IsntTheTimeMessage ; WEAK_POLICY
+	dw IsntTheTimeMessage ; SCOPE_LENS
 	dw IsntTheTimeMessage ; WIDE_LENS
-	dw IsntTheTimeMessage ; WISE_GLASSES
 	dw IsntTheTimeMessage ; ZOOM_LENS
-	dw IsntTheTimeMessage ; EJECT_BUTTON
-	dw IsntTheTimeMessage ; LAGGING_TAIL
-	dw IsntTheTimeMessage ; IRON_BALL
-	dw IsntTheTimeMessage ; RING_TARGET
-	dw IsntTheTimeMessage ; RED_CARD
-	dw IsntTheTimeMessage ; ABSORB_BULB
-	dw IsntTheTimeMessage ; CELL_BATTERY
-	dw IsntTheTimeMessage ; LUMINOUSMOSS
-	dw IsntTheTimeMessage ; SNOWBALL
-	dw IsntTheTimeMessage ; EJECT_PACK
-	dw IsntTheTimeMessage ; ROOM_SERVICE
-	dw IsntTheTimeMessage ; BLUNDRPOLICY
-	dw IsntTheTimeMessage ; THROAT_SPRAY
-	dw IsntTheTimeMessage ; HEAVY_BOOTS
-	dw IsntTheTimeMessage ; UTILUMBRELLA
 	dw IsntTheTimeMessage ; MENTAL_HERB
 	dw IsntTheTimeMessage ; POWER_HERB
 	dw IsntTheTimeMessage ; WHITE_HERB
@@ -233,7 +233,13 @@ ItemEffects:
 	dw IsntTheTimeMessage ; MAGMARIZER
 	dw IsntTheTimeMessage ; RAZOR_FANG
 	dw IsntTheTimeMessage ; RAZOR_CLAW
+	dw IsntTheTimeMessage ; OVAL_STONE
 	dw EvoStoneEffect     ; ODD_SOUVENIR
+	dw EvoStoneEffect     ; LINKING_CORD
+	dw IsntTheTimeMessage ; SILVER_LEAF
+	dw IsntTheTimeMessage ; GOLD_LEAF
+	dw IsntTheTimeMessage ; MINT_LEAF
+	dw IsntTheTimeMessage ; BOTTLE_CAP
 	dw IsntTheTimeMessage ; NUGGET
 	dw IsntTheTimeMessage ; BIG_NUGGET
 	dw IsntTheTimeMessage ; TINYMUSHROOM
@@ -246,16 +252,10 @@ ItemEffects:
 	dw IsntTheTimeMessage ; STAR_PIECE
 	dw IsntTheTimeMessage ; BRICK_PIECE
 	dw IsntTheTimeMessage ; RARE_BONE
-	dw IsntTheTimeMessage ; SILVER_LEAF
-	dw IsntTheTimeMessage ; GOLD_LEAF
 	dw IsntTheTimeMessage ; SLOWPOKETAIL
-	dw IsntTheTimeMessage ; BOTTLE_CAP
 	dw IsntTheTimeMessage ; HELIX_FOSSIL
 	dw IsntTheTimeMessage ; DOME_FOSSIL
 	dw IsntTheTimeMessage ; OLD_AMBER
-	dw IsntTheTimeMessage ; MULCH
-	dw IsntTheTimeMessage ; SWEET_HONEY
-	dw IsntTheTimeMessage ; MINT_LEAF
 	dw IsntTheTimeMessage ; FLOWER_MAIL
 	dw IsntTheTimeMessage ; SURF_MAIL
 	dw IsntTheTimeMessage ; LITEBLUEMAIL
@@ -286,32 +286,38 @@ KeyItemEffects:
 	dw OldRod             ; OLD_ROD
 	dw GoodRod            ; GOOD_ROD
 	dw SuperRod           ; SUPER_ROD
-	dw CoinCase           ; COIN_CASE
 	dw Itemfinder         ; ITEMFINDER
-	dw IsntTheTimeMessage ; MYSTERY_EGG
+	dw CoinCase           ; COIN_CASE
+	dw ApricornBox        ; APRICORN_BOX
+	dw WingCase           ; WING_CASE
+	dw TypeChart          ; TYPE_CHART
+	dw GBCSounds          ; GBC_SOUNDS
+	dw BlueCard           ; BLUE_CARD
 	dw SquirtBottle       ; SQUIRTBOTTLE
+	dw IsntTheTimeMessage ; SILPHSCOPE2
+	dw IsntTheTimeMessage ; MYSTERY_EGG
 	dw IsntTheTimeMessage ; SECRETPOTION
+	dw IsntTheTimeMessage ; GO_GOGGLES
 	dw IsntTheTimeMessage ; RED_SCALE
 	dw CardKey            ; CARD_KEY
 	dw BasementKey        ; BASEMENT_KEY
-	dw IsntTheTimeMessage ; S_S_TICKET
-	dw IsntTheTimeMessage ; PASS
-	dw IsntTheTimeMessage ; MACHINE_PART
 	dw IsntTheTimeMessage ; LOST_ITEM
+	dw IsntTheTimeMessage ; MACHINE_PART
 	dw IsntTheTimeMessage ; RAINBOW_WING
 	dw IsntTheTimeMessage ; SILVER_WING
 	dw IsntTheTimeMessage ; CLEAR_BELL
 	dw IsntTheTimeMessage ; GS_BALL
-	dw BlueCard           ; BLUE_CARD
+	dw IsntTheTimeMessage ; S_S_TICKET
+	dw IsntTheTimeMessage ; PASS
 	dw IsntTheTimeMessage ; ORANGETICKET
 	dw IsntTheTimeMessage ; MYSTICTICKET
 	dw IsntTheTimeMessage ; OLD_SEA_MAP
+	dw IsntTheTimeMessage ; HARSH_LURE
+	dw IsntTheTimeMessage ; POTENT_LURE
+	dw IsntTheTimeMessage ; MALIGN_LURE
 	dw IsntTheTimeMessage ; SHINY_CHARM
 	dw IsntTheTimeMessage ; OVAL_CHARM
 	dw IsntTheTimeMessage ; CATCH_CHARM
-	dw IsntTheTimeMessage ; SILPHSCOPE2
-	dw ApricornBox        ; APRICORN_BOX
-	dw TypeChart          ; TYPE_CHART
 	assert_table_length NUM_KEY_ITEMS
 
 PokeBallEffect:
@@ -331,7 +337,20 @@ PokeBallEffect:
 
 	; Everything below this are regular wild battles
 	farcall DoesNuzlockeModePreventCapture
+if !DEF(DEBUG)
 	jmp c, Ball_NuzlockeFailureMessage
+else
+	jr nc, .NoNuzlockeCheck
+
+	ld hl, .DebugNuzlockeBypassMessage
+	call PrintText
+	jr .NoNuzlockeCheck
+
+.DebugNuzlockeBypassMessage:
+	text "(Debug) Nuzlocke"
+	line "mode bypassed."
+	prompt
+endc
 
 .NoNuzlockeCheck
 	ld a, [wEnemySubStatus3] ; BATTLE_VARS_SUBSTATUS3_OPP
@@ -426,6 +445,10 @@ PokeBallEffect:
 	ld [wWildMon], a
 	ld [wCurPartySpecies], a
 	ld [wTempSpecies], a
+	ld a, [wOTPartyMon1Form]
+	and SPECIESFORM_MASK
+	ld [wCurForm], a
+	ld [wTempForm], a
 	ld a, [wBattleType]
 	cp BATTLETYPE_TUTORIAL
 	jmp z, .FinishTutorial
@@ -455,6 +478,7 @@ PokeBallEffect:
 	ld a, [wOTPartyMon1Form]
 	and SPECIESFORM_MASK
 	ld [wCurForm], a
+	ld [wTempForm], a
 	call GetBaseData
 
 	pop af
@@ -462,22 +486,15 @@ PokeBallEffect:
 	ld [wCurPartySpecies], a
 	ld [wTempSpecies], a
 
-	push af
-	cp UNOWN
-	jr nz, .unown_done
-	ld hl, wOTPartyMon1Form
-	predef GetVariant
-	farcall UpdateUnownDex
-.unown_done
-	pop af
-
-	dec a
-	call CheckCaughtMon
-
+	ld hl, wTempSpecies
+	ld a, [hli]
+	ld c, a
+	ld b, [hl]
+	push bc
+	call CheckCosmeticCaughtMon
 	ld a, c
+	pop bc
 	push af
-	ld a, [wTempSpecies]
-	dec a
 	call SetSeenAndCaughtMon
 	pop af
 	and a
@@ -493,17 +510,17 @@ PokeBallEffect:
 
 	ld a, [wOTPartyMon1Species]
 	ld [wTempSpecies], a
+	ld a, [wOTPartyMon1Form]
+	ld [wTempForm], a ; is any of this necessary?
 	farcall NewPokedexEntry
 
 .skip_pokedex
 	ld a, [wBattleType]
 	cp BATTLETYPE_CONTEST
 	jmp z, .catch_bug_contest_mon
-	cp BATTLETYPE_LEGENDARY
-	jr nz, .not_celebi ; false positive for other legendaries, but that's okay
+
 	ld hl, wBattleResult
-	set 6, [hl]
-.not_celebi
+	set BATTLERESULT_CAUGHT_POKEMON_F, [hl]
 
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
@@ -535,7 +552,6 @@ PokeBallEffect:
 	ld bc, NAME_LENGTH
 	rst CopyBytes
 	pop af
-	push af
 	ld hl, wPartyMonNicknames
 	call SkipNames
 	ld d, h
@@ -543,14 +559,6 @@ PokeBallEffect:
 	ld hl, wOTPartyMonNicknames
 	ld bc, MON_NAME_LENGTH
 	rst CopyBytes
-	pop af
-	ld b, 0
-	ld c, a
-	ld hl, wPartySpecies
-	add hl, bc
-	ld a, [wOTPartyMon1Species]
-	ld [hli], a
-	ld [hl], $ff
 
 	farcall SetCaughtData
 
@@ -581,9 +589,7 @@ PokeBallEffect:
 	bit NUZLOCKE_MODE, a
 	jr nz, .AlwaysNickname
 
-	ld a, [wCurPartySpecies]
-	ld [wNamedObjectIndex], a
-	call GetPokemonName
+	call GetPartyPokemonName
 
 	ld hl, Text_AskNicknameNewlyCaughtMon
 	call PrintText
@@ -625,10 +631,11 @@ PokeBallEffect:
 
 	farcall SetBoxMonCaughtData
 
+	; We don't care for the pointer, but we want to know about full storage.
 	farcall NewStorageBoxPointer
 	jr nc, .BoxNotFullYet
 	ld hl, wBattleResult
-	set 7, [hl]
+	set BATTLERESULT_BOX_FULL_F, [hl]
 .BoxNotFullYet:
 	ld a, [wCurItem]
 	cp FRIEND_BALL
@@ -642,9 +649,7 @@ PokeBallEffect:
 	bit NUZLOCKE_MODE, a
 	jr nz, .AlwaysNicknameBox
 
-	ld a, [wCurPartySpecies]
-	ld [wNamedObjectIndex], a
-	call GetPokemonName
+	call GetPartyPokemonName
 
 	ld hl, Text_AskNicknameNewlyCaughtMon
 	call PrintText
@@ -678,19 +683,22 @@ PokeBallEffect:
 
 	farcall UpdateStorageBoxMonFromTemp
 	farcall CurBoxFullCheck
+
+	push af
+	call SpeechTextbox
+	call ApplyAttrAndTilemapInVBlank
+	pop af
+
 	jr z, .box_not_full
 	ld hl, Text_CurBoxFull
 	push bc
-	call PrintText
+	call PrintTextNoBox
 	pop bc
 
 .box_not_full
-	ld a, [wCurBox]
-	inc a
-	ld b, a
-	farcall GetBoxName
+	farcall GetCurBoxName
 	ld hl, Text_SentToBillsPC
-	call PrintText
+	call PrintTextNoBox
 
 	ld c, 15
 	call FadeToWhite
@@ -720,7 +728,7 @@ PokeBallEffect:
 	ld a, 1 ; shiny anim
 	ld [wBattleAnimParam], a
 	ld de, ANIM_SEND_OUT_MON
-	farcall Call_PlayBattleAnim
+	farcall PlayBattleAnimDE
 	call SetPlayerTurn
 .not_shiny
 
@@ -738,6 +746,9 @@ PokeBallEffect:
 	ld a, $f
 	ld [wCryTracks], a
 	ld a, [wTempEnemyMonSpecies]
+	ld c, a
+	ld a, [wCurForm]
+	ld b, a
 	call PlayStereoCry
 
 .skip_cry
@@ -767,11 +778,10 @@ PokeBallEffect:
 	call ClearBGPalettes
 	call ClearTileMap
 
-	push af
 	ld a, CGB_BATTLE_COLORS
 	call GetCGBLayout
 	call SetPalettes
-	pop af
+	xor a
 
 .toss
 	ld hl, wNumItems
@@ -815,10 +825,10 @@ Text_GotchaMonWasCaught:
 	text_asm
 	call WaitSFX
 	push bc
-	ld de, MUSIC_NONE
+	ld e, MUSIC_NONE
 	call PlayMusic
 	call DelayFrame
-	ld de, MUSIC_CAPTURE
+	ld e, MUSIC_CAPTURE
 	call PlayMusic
 	pop bc
 	ld hl, TextJump_Waitbutton
@@ -857,8 +867,7 @@ EvoStoneEffect:
 	jmp c, ItemNotUsed_ExitMenu
 
 	ld a, MON_ITEM
-	call GetPartyParamLocation
-	ld a, [hl]
+	call GetPartyParamLocationAndValue
 	cp EVERSTONE
 	jr z, .no_effect
 
@@ -879,8 +888,7 @@ LowerEVBerry:
 	jmp c, ItemNotUsed_ExitMenu
 
 	ld a, MON_HAPPINESS
-	call GetPartyParamLocation
-	ld a, [hl]
+	call GetPartyParamLocationAndValue
 	inc a
 	push af
 	call SetUpEVModifier
@@ -909,27 +917,22 @@ ItemHappinessRoseButStatFellText:
 	text_end
 
 VitaminEffect:
+	call FixPlayerEVsAndStats
 	ld b, PARTYMENUACTION_HEALING_ITEM
 	call UseItem_SelectMon
 	jmp c, ItemNotUsed_ExitMenu
 
 	call SetUpEVModifier
-	add hl, bc
-	ld a, [hl]
-	cp 252
-	jmp nc, WontHaveAnyEffectMessage
-
-	add 10
-	jr c, .set_to_max
-	cp 252 + 1
-	jr c, .ev_value_ok
-.set_to_max
-	ld a, 252
+	ld a, 10
+	call CheckEVCap
+	jr nc, .ev_value_ok
+	and a
+	jmp z, WontHaveAnyEffectMessage
 
 .ev_value_ok
+	add [hl]
 	ld [hl], a
 	call UpdatePkmnStats
-
 	call GetStatStringAndPlayFullHealSFX
 	ld hl, ItemStatRoseText
 	call PrintText
@@ -948,35 +951,95 @@ SetUpEVModifier:
 	call UseItem_GetBaseDataAndNickParameters
 	call GetEVRelativePointer
 	ld a, MON_EVS
-	jmp GetPartyParamLocation
+	jmp GetPartyParamLocationAndValue
+
+CheckEVCap:
+; Take the EV amount in a with the stat in c, and clamp a to the max
+; amount of EVs we can give for the given stat, if a exceeds it.
+; Returns the relevant EV in hl. Returns carry if a was modified.
+; Assumes EVs obey the total limit if applicable, so run FixPlayerEVs first.
+	push de
+	push bc
+	ld b, a
+
+	; Calculate EV total excluding the relevant EV.
+	; TODO: This is basically duplicating most of GetEVTotal.
+	; Can we write this in a more optimized way by reusing that?
+	ld a, MON_EVS
+	call GetPartyParamLocationAndValue
+	ld a, 6
+	ld de, 0
+	inc c
+.loop
+	dec c
+	jr nz, .not_relevant_ev
+	push hl
+	inc hl
+	jr .next
+.not_relevant_ev
+	push af
+	ld a, [hli]
+	add e
+	ld e, a
+	adc d
+	sub e
+	ld d, a
+	pop af
+.next
+	dec a
+	jr nz, .loop
+
+	; At this point, relevant EV is on the stack. Figure out
+	; if we can apply a maximum of 252 EVs to this stat.
+	; If modern EVs aren't enabled, we can always apply 252.
+	ld a, [wInitialOptions2]
+	and EV_OPTMASK
+	cp EVS_OPT_MODERN
+	ld a, MODERN_MAX_EV
+	jr nz, .got_max_for_stat
+
+	; Otherwise, compare current EV total with (max EVs-252).
+	ld hl, -(MODERN_EV_LIMIT - MODERN_MAX_EV)
+	add hl, de
+	jr nc, .got_max_for_stat
+
+	; We can either apply exactly 252 or less.
+	; This combined with the later "sub [hl]" will never
+	; underflow because the relevant EV was not included when
+	; calculating EV total. This is also why FixPlayerEVs need
+	; to run before using this function, or we run into trouble.
+	sub l ; a = 252 - (potential EV overflow).
+
+.got_max_for_stat
+	; Retrieve EV to (potentially) change.
+	pop hl
+	sub [hl]
+	cp b
+	jr c, .modified
+	ld a, b
+.modified
+	pop bc
+	pop de
+	ret
 
 GetStatStringAndPlayFullHealSFX:
-	call GetEVRelativePointer
-	ld hl, StatStrings
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	ld de, wStringBuffer2
-	ld bc, ITEM_NAME_LENGTH
-	rst CopyBytes
+	call GetStatString
 	jmp Play_SFX_FULL_HEAL
 
-StatStrings:
-	dw .health
-	dw .attack
-	dw .defense
-	dw .speed
-	dw .spcl_atk
-	dw .spcl_def
+GetStatString:
+	call GetEVRelativePointer
+_GetStatString:
+	ld de, wStringBuffer2
+	ld hl, StatStrings
+	add hl, bc
+	ld c, [hl]
+	ld b, 0
+	add hl, bc
+	ld c, ITEM_NAME_LENGTH
+	rst CopyBytes
+	ret
 
-.health   db "Health@"
-.attack   db "Attack@"
-.defense  db "Defense@"
-.speed    db "Speed@"
-.spcl_atk db "Spcl.Atk@"
-.spcl_def db "Spcl.Def@"
+INCLUDE "data/battle/stat_strings.asm"
 
 GetEVRelativePointer:
 	ld a, [wCurItem]
@@ -993,9 +1056,7 @@ RareCandy:
 	call UseItem_GetBaseDataAndNickParameters
 
 	ld a, MON_LEVEL
-	call GetPartyParamLocation
-
-	ld a, [hl]
+	call GetPartyParamLocationAndValue
 	cp MAX_LEVEL
 	jmp nc, EvoStoneEffect.force_evolution
 
@@ -1008,7 +1069,7 @@ RareCandy:
 
 	pop de
 	ld a, MON_EXP
-	call GetPartyParamLocation
+	call GetPartyParamLocationAndValue
 
 	ldh a, [hMultiplicand]
 	ld [hli], a
@@ -1074,8 +1135,7 @@ UseStatusHealer:
 	jr z, .no_good
 	call GetItemHealingAction
 	ld a, MON_STATUS
-	call GetPartyParamLocation
-	ld a, [hl]
+	call GetPartyParamLocationAndValue
 	and c
 	jr nz, .good
 
@@ -1153,7 +1213,7 @@ GetItemHealingAction:
 	db 1 << BRN, PARTYMENUTEXT_HEAL_BRN
 	db 1 << PAR, PARTYMENUTEXT_HEAL_PAR
 	db 1 << FRZ, PARTYMENUTEXT_HEAL_FRZ
-	db SLP,      PARTYMENUTEXT_HEAL_SLP
+	db SLP_MASK, PARTYMENUTEXT_HEAL_SLP
 	db -1,       PARTYMENUTEXT_HEAL_ALL
 
 RevivalHerb:
@@ -1228,7 +1288,7 @@ FullRestore:
 	ld [wLowHealthAlarm], a
 	call ReviveFullHP
 	ld a, MON_STATUS
-	call GetPartyParamLocation
+	call GetPartyParamLocationAndValue
 	xor a
 	ld [hli], a
 	ld [hl], a
@@ -1325,6 +1385,12 @@ UseItem_SelectMon2:
 	pop hl
 	jr UseItem_DoSelectMon
 
+WingCase:
+	call FixPlayerEVsAndStats
+	ld b, PARTYMENUACTION_HEALING_ITEM ; also used for vitamins
+	ld hl, WingCase_MonSelected
+	jr UseItem_SelectMon_Loop
+
 RestoreHPEffect:
 	ld b, PARTYMENUACTION_HEALING_ITEM
 	ld hl, ItemRestoreHP
@@ -1350,8 +1416,8 @@ UseItem_SelectMon_Loop:
 	call ChoosePkmnToUseItemOn
 	jr c, .done
 	ld a, MON_IS_EGG
-	call GetPartyParamLocation
-	bit MON_IS_EGG_F, [hl]
+	call GetPartyParamLocationAndValue
+	bit MON_IS_EGG_F, a
 	jr z, .not_egg
 	call CantUseOnEggMessage
 	jr .handle_loop
@@ -1395,8 +1461,8 @@ UseItem_DoSelectMon:
 	ret c
 
 	ld a, MON_IS_EGG
-	call GetPartyParamLocation
-	bit MON_IS_EGG_F, [hl]
+	call GetPartyParamLocationAndValue
+	bit MON_IS_EGG_F, a
 	jr z, .not_egg
 
 	call CantUseOnEggMessage
@@ -1413,8 +1479,7 @@ UseItem_GetBaseDataAndNickParameters:
 	ld [wCurSpecies], a
 	ld [wTempSpecies], a
 	ld a, MON_FORM
-	call GetPartyParamLocation
-	ld a, [hl]
+	call GetPartyParamLocationAndValue
 	and SPECIESFORM_MASK
 	ld [wCurForm], a
 	call GetBaseData
@@ -1424,11 +1489,11 @@ UseItem_GetBaseDataAndNickParameters:
 
 UseItem_GetHPParameter:
 	ld a, MON_HP
-	jmp GetPartyParamLocation
+	jmp GetPartyParamLocationAndValue
 
 UseItem_GetMaxHPParameter:
 	ld a, MON_MAXHP
-	jmp GetPartyParamLocation
+	jmp GetPartyParamLocationAndValue
 
 ChoosePkmnToUseItemOn:
 	farcall InitPartyMenuLayout
@@ -1464,7 +1529,7 @@ ItemActionTextWaitButton:
 	xor a
 	ldh [hBGMapMode], a
 	hlcoord 0, 0
-	ld bc, wTileMapEnd - wTileMap
+	ld bc, wTilemapEnd - wTilemap
 	ld a, " "
 	rst ByteFill
 	ld a, [wPartyMenuActionText]
@@ -1526,8 +1591,8 @@ ReviveFullHP:
 	call LoadHPFromBuffer1
 ContinueRevive:
 	call UseItem_GetHPParameter
-	ld [hl], d
-	inc hl
+	ld a, d
+	ld [hli], a
 	ld [hl], e
 	jr LoadCurHPIntoBuffer5
 
@@ -1617,7 +1682,7 @@ GetOneFifthMaxHP:
 	ld a, 5
 	ldh [hDivisor], a
 	ld b, 2
-	call Divide
+	farcall Divide
 	ldh a, [hQuotient + 1]
 	ld d, a
 	ldh a, [hQuotient + 2]
@@ -1642,7 +1707,14 @@ GetHealingItemAmount:
 
 .figy_berry
 	call .set_de_to_hp
-	jr .half_hp
+	push bc
+	ld b, d
+	ld c, e
+	call GetThirdBC
+	ld d, b
+	ld e, c
+	pop bc
+	ret
 
 .sitrus_berry
 	call .set_de_to_hp
@@ -1769,8 +1841,8 @@ PokeDoll:
 	inc a
 	ld [wBattleEnded], a
 	ld a, [wBattleResult]
-	and 3 << 6
-	or $2
+	and BATTLERESULT_BITMASK
+	or DRAW
 	ld [wBattleResult], a
 	jmp UseItemText
 
@@ -1813,6 +1885,11 @@ XItemEffect:
 	farcall GetStatRaiseMessage
 	or 1
 	farcall DoPrintStatChange
+	push hl
+	push bc
+	farcall ResetMirrorHerb
+	pop bc
+	pop hl
 	; fallthrough
 XItemHappiness:
 	ld a, [wCurBattleMon]
@@ -1827,6 +1904,237 @@ BlueCard:
 .bluecardtext
 	text_far _BlueCardBalanceText
 	text_end
+
+WingCase_MonSelected:
+; Runs when a mon has been selected.
+	; What wing does the player want to choose?
+	ldh a, [hBGMapMode]
+	push af
+	ld a, [wMenuScrollPosition]
+	push af
+	xor a
+	ld [wMenuScrollPosition], a
+	call LoadStandardMenuHeader
+	ld hl, .WingMenu
+	call CopyMenuHeader
+	call InitScrollingMenu
+	call ScrollingMenu
+	push af
+	call ExitMenu
+	pop af
+	pop af
+	ld [wMenuScrollPosition], a
+	pop af
+	ldh [hBGMapMode], a
+	ld a, [wMenuJoypad]
+	sub B_BUTTON
+	ret z
+
+	; Which wing was chosen? -1 is cancel
+	ld a, [wMenuSelection]
+	ld c, a
+	ld b, 0
+	inc a
+	ret z
+
+	; Check if we have any in the first place.
+	ld hl, wWingAmounts + 1
+	add hl, bc
+	add hl, bc
+	ld a, [hld]
+	or [hl]
+	ld a, MODERN_MAX_EV
+	jr nz, .have_wings
+	hlcoord 1, 16
+	ld de, .YouDontHaveAny
+	rst PlaceString
+	xor a
+	ret
+
+.have_wings
+	; Check how many we can use. Cap at 252, since that's the highest
+	; useful amount.
+	ld a, [hli]
+	and a
+	jr nz, .overflow
+	ld a, [hl]
+	cp MODERN_MAX_EV + 1
+	jr c, .got_amount
+.overflow
+	ld a, MODERN_MAX_EV
+.got_amount
+	ld [wItemQuantityBuffer], a
+
+	push bc
+	; This doubles as a "blank previous text".
+	hlcoord 1, 16
+	ld de, .UseHowManyText
+	rst PlaceString
+	farcall SelectWingQuantity
+	pop bc
+	jr c, .done
+
+	; Compare the given input with the amount we can actually apply.
+	ld a, [wItemQuantityChangeBuffer]
+	call CheckEVCap
+	ld [wItemQuantityChangeBuffer], a
+	ld hl, .XWillBeAppliedText
+	jr nc, .got_apply_str
+	ld hl, .OnlyXWillBeAppliedText
+
+	; If a is zero, return. a=1 will print the "no effect" message.
+	and a
+	ld a, 1
+	ret z
+
+	; Otherwise, a was modified.
+.got_apply_str
+	push bc
+	call PrintText
+	call YesNoBox
+	pop bc
+	jr c, .done
+
+	; Add EVs
+	push bc
+	ld a, MON_EVS
+	add c
+	call GetPartyParamLocationAndValue
+	ld a, [wItemQuantityChangeBuffer]
+	push af
+	add [hl]
+	ld [hl], a
+
+	; Deduct wing amount
+	ld hl, wWingAmounts + 1
+	add hl, bc
+	add hl, bc
+	pop af
+	ld b, a
+	ld a, [hl]
+	sub b
+	ld [hld], a
+	jr nc, .no_underflow
+	dec [hl]
+
+.no_underflow
+	call UpdatePkmnStats
+	call Play_SFX_FULL_HEAL
+	farcall WritePartyMenuTilemap
+	pop bc
+	call _GetStatString
+	ld a, MON_SPECIES
+	call GetPartyParamLocationAndValue
+	ld [wNamedObjectIndex], a
+	ld bc, MON_FORM - MON_SPECIES
+	add hl, bc
+	ld a, [hl]
+	ld [wNamedObjectIndex+1], a
+	call GetPokemonName
+	ld hl, ItemStatRoseText
+	call PrintText
+
+.done
+	xor a
+	ret
+
+.WingMenu:
+	db MENU_BACKUP_TILES
+	menu_coords 7, 1, 18, 14
+	dw .MenuData
+	db 1 ; default option
+
+.MenuData:
+	db $20
+	db 7, 7
+	db SCROLLINGMENU_ITEMS_NORMAL
+	dba .MenuItems
+	dba .DisplayWingName
+	dba .DisplayWingAmount
+	dba .DisplayWingDesc
+
+.MenuItems:
+; Note that the order doesn't match the internal index order,
+; because Swift Wing (Speed) is last.
+	db NUM_WINGS
+	table_width 1
+	db HEALTH_WING
+	db MUSCLE_WING
+	db RESIST_WING
+	db GENIUS_WING
+	db CLEVER_WING
+	db SWIFT_WING
+	assert_table_length NUM_WINGS
+	db -1
+
+.DisplayWingName:
+	ld hl, WingNames
+	; fallthrough
+.DisplayNthString:
+	ld a, [wMenuSelection]
+	call GetNthString
+	call SwapHLDE
+	rst PlaceString
+	ret
+
+.DisplayWingAmount:
+	ld hl, wWingAmounts
+	ld bc, 2
+	ld a, [wMenuSelection]
+	rst AddNTimes
+	call SwapHLDE
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	ld a, "×"
+	ld [hli], a
+	lb bc, 2, 3
+	jmp PrintNum
+
+.DisplayWingDesc:
+	; This doubles as a "blank previous text".
+	hlcoord 1, 16
+	ld de, .CancelStr
+	rst PlaceString
+
+	; Check if we're hovering over cancel
+	ld a, [wMenuSelection]
+	inc a
+	ret z
+	dec a
+	ld c, a
+	ld b, 0
+	call _GetStatString
+
+	ld hl, .RaisesStat
+.got_str
+	bccoord 1, 16
+	jmp PlaceWholeStringInBoxAtOnce
+
+.RaisesStat:
+	text "Raises "
+	text_ram wStringBuffer2
+	text "."
+	done
+
+.CancelStr:
+	db "Don't use.         @"
+
+.YouDontHaveAny:
+	db "You don't have any."
+	prompt
+
+.UseHowManyText:
+	db "Use how many?     @"
+
+.OnlyXWillBeAppliedText:
+	db "Only "
+.XWillBeAppliedText:
+	text_decimal wItemQuantityChangeBuffer, 1, 3
+	text " will be"
+	line "applied. Proceed?"
+	done
+
+INCLUDE "data/items/wing_names.asm"
 
 CoinCase:
 	ld hl, .coincasetext
@@ -1855,9 +2163,8 @@ ApricornBox:
 	jmp ExitMenu
 
 .MenuDataHeader:
-	db $40 ; flags
-	db 01, 05 ; start coords
-	db 11, 19 ; end coords
+	db MENU_BACKUP_TILES
+	menu_coords 5, 1, 19, 11
 	dw vTiles0
 	db 0 ; default option
 
@@ -1892,9 +2199,15 @@ PrintAprValues:
 	inc de
 	jmp PrintNum
 
+GBCSounds:
+	call FadeToMenu
+	farcall MusicPlayer
+	jr _FinishFullscreenItem
+
 TypeChart:
 	call FadeToMenu
 	farcall _TypeChart
+_FinishFullscreenItem:
 	call ExitMenu
 	xor a
 	ldh [hBGMapMode], a
@@ -2033,8 +2346,6 @@ RestorePPEffect:
 	ld hl, PPsMaximizedText
 .ppup3
 	call PrintText
-
-FinishPPRestore:
 	jmp UseDisposableItem
 
 BattleRestorePP:
@@ -2052,8 +2363,7 @@ BattleRestorePP:
 .not_in_battle
 	call Play_SFX_FULL_HEAL
 	ld hl, PPRestoredText
-	call PrintText
-	jr FinishPPRestore
+	jr RestorePPEffect.ppup3
 
 .UpdateBattleMonPP:
 	ld a, [wCurPartyMon]
@@ -2203,12 +2513,19 @@ CardKey:
 BasementKey:
 	farjp _BasementKey
 
+SweetHoney:
+	farcall _SweetHoney
+	jr _UseDisposableItemIfEffectSucceeded
+
 SacredAsh:
 	ld a, [wInitialOptions]
 	bit NUZLOCKE_MODE, a
 	jr nz, Revive_NuzlockeFailureMessage
 
 	farcall _SacredAsh
+	; fallthrough
+
+_UseDisposableItemIfEffectSucceeded:
 	ld a, [wItemEffectSucceeded]
 	dec a
 	ret nz
@@ -2301,6 +2618,13 @@ Ball_ReplacePartyMonCaughtBall:
 	call UseItem_SelectMon
 	jr c, ItemNotUsed_ExitMenu
 
+	ld a, [wInitialOptions]
+	bit TRADED_AS_OT_OPT, a
+	jr nz, .no_trade_restriction
+	farcall CheckIfMonIsYourOT
+	jr c, CantChangeTradedMonBallMessage
+
+.no_trade_restriction
 	ld a, [wCurItem]
 	ld b, a
 	ld a, [wCurPartyMon]
@@ -2333,6 +2657,10 @@ BallReplacedText:
 
 AlreadyInThatBallMessage:
 	ld hl, AlreadyInThatBallText
+	jr CantUseItemMessage
+
+CantChangeTradedMonBallMessage:
+	ld hl, CantChangeTradedMonBallText
 	jr CantUseItemMessage
 
 CantUseOnEggMessage:
@@ -2368,6 +2696,10 @@ CantUseOnEggText:
 
 AlreadyInThatBallText:
 	text_far AlreadyInThatBallTextData
+	text_end
+
+CantChangeTradedMonBallText:
+	text_far CantChangeTradedMonBallTextData
 	text_end
 
 IsntTheTimeText:
@@ -2427,7 +2759,7 @@ UsedItemText:
 
 ApplyPPUp:
 	ld a, MON_MOVES
-	call GetPartyParamLocation
+	call GetPartyParamLocationAndValue
 	push hl
 	ld de, wBuffer1
 	predef FillPP
@@ -2471,7 +2803,7 @@ ComputeMaxPP:
 	ld a, 5
 	ldh [hDivisor], a
 	ld b, 4
-	call Divide
+	farcall Divide
 	; Get the number of PP, which are bits 6 and 7 of the PP value stored in RAM.
 	ld a, [hl]
 	ld b, a
@@ -2522,10 +2854,10 @@ RestoreTempPP:
 
 RestoreAllPP:
 	ld a, MON_PP
-	call GetPartyParamLocation
+	call GetPartyParamLocationAndValue
 	push hl
 	ld a, MON_MOVES
-	call GetPartyParamLocation
+	call GetPartyParamLocationAndValue
 	pop de
 	xor a ; PARTYMON
 	ld [wMonType], a
@@ -2656,7 +2988,7 @@ AbilityCap:
 	push hl
 	call UseItem_GetBaseDataAndNickParameters
 	ld a, MON_ABILITY
-	call GetPartyParamLocation
+	call GetPartyParamLocationAndValue
 	ld d, h
 	ld e, l
 	pop hl

@@ -169,9 +169,8 @@ Elevator_GetCurrentFloorString:
 	jr GetFloorString
 
 Elevator_MenuDataHeader:
-	db $40 ; flags
-	db 01, 12 ; start coords
-	db 09, 18 ; end coords
+	db MENU_BACKUP_TILES
+	menu_coords 12, 1, 18, 9
 	dw Elevator_MenuData2
 	db 1 ; default option
 
@@ -202,10 +201,8 @@ FloorToString:
 	ld d, 0
 	ld hl, ElevatorFloorNames
 	add hl, de
+	ld e, [hl]
 	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
 	pop de
 	ret
 

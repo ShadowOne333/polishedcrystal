@@ -67,7 +67,7 @@ if DEF(DEBUG)
 	; judge machine
 	setflag ENGINE_JUDGE_MACHINE
 	; all key items
-for x, NUM_KEY_ITEMS
+for x, 1, NUM_KEY_ITEMS + 1
 if x != MACHINE_PART
 	givekeyitem x
 endc
@@ -104,20 +104,21 @@ endr
 	giveitem FIRE_STONE, 99
 	giveitem WATER_STONE, 99
 	giveitem THUNDERSTONE, 99
+	giveitem ICE_STONE, 99
 	giveitem MOON_STONE, 99
 	giveitem SUN_STONE, 99
 	giveitem DUSK_STONE, 99
-	giveitem DAWN_STONE, 99
 	giveitem SHINY_STONE, 99
+	giveitem ODD_SOUVENIR, 99
 	giveitem EXP_SHARE, 99
 	giveitem LEFTOVERS, 99
-	giveitem BIG_NUGGET, 99
+	giveitem MULCH, 99
+	giveitem SWEET_HONEY, 99
 	giveitem SILVER_LEAF, 99
 	giveitem GOLD_LEAF, 99
-	giveitem BOTTLE_CAP, 99
-	giveitem MULCH, 99
 	giveitem MINT_LEAF, 99
-	giveitem ODD_SOUVENIR, 10
+	giveitem BOTTLE_CAP, 99
+	giveitem BIG_NUGGET, 99
 	giveitem ARMOR_SUIT, 1
 	; all decorations except Diploma
 for x, EVENT_DECO_BED_1, EVENT_DECO_BIG_LAPRAS_DOLL + 1
@@ -182,6 +183,7 @@ endr
 	setflag ENGINE_FLYPOINT_AZALEA
 	setflag ENGINE_FLYPOINT_GOLDENROD
 	setflag ENGINE_FLYPOINT_ECRUTEAK
+	setflag ENGINE_FLYPOINT_SNOWTOP_MOUNTAIN
 	setflag ENGINE_FLYPOINT_OLIVINE
 	setflag ENGINE_FLYPOINT_CIANWOOD
 	setflag ENGINE_FLYPOINT_YELLOW_FOREST
@@ -203,13 +205,15 @@ endr
 	setflag ENGINE_FLYPOINT_FUCHSIA
 	setflag ENGINE_FLYPOINT_SAFFRON
 	setflag ENGINE_FLYPOINT_CINNABAR
+	setflag ENGINE_FLYPOINT_SHAMOUTI
+	setflag ENGINE_FLYPOINT_VALENCIA
+	setflag ENGINE_FLYPOINT_NAVEL
 	; magnet train works
 	setevent EVENT_RESTORED_POWER_TO_KANTO
 	; post-e4
 	setflag ENGINE_CREDITS_SKIP
-	setflag ENGINE_HAVE_SHINY_CHARM
 	; good party
-	givepoke MEWTWO, NO_FORM, 100, BRIGHTPOWDER
+	givepoke MEWTWO, PLAIN_FORM, 100, BRIGHTPOWDER
 	loadmem wPartyMon1EVs+0, 252
 	loadmem wPartyMon1EVs+1, 252
 	loadmem wPartyMon1EVs+2, 252
@@ -230,40 +234,31 @@ endr
 	loadmem wPartyMon1Stats+7, LOW(999)
 	loadmem wPartyMon1Stats+8, HIGH(999)
 	loadmem wPartyMon1Stats+9, LOW(999)
-	; hm slaves
-	givepoke MEW, NO_FORM, 100, LEFTOVERS
-	givepoke MEW, NO_FORM, 100, LEFTOVERS
+	; hm slave
+	givepoke MEW, PLAIN_FORM, 100, LEFTOVERS
 	loadmem wPartyMon2Moves+0, FLY
-	loadmem wPartyMon2Moves+1, SURF
-	loadmem wPartyMon2Moves+2, STRENGTH
-	loadmem wPartyMon2Moves+3, CUT
+	loadmem wPartyMon2Moves+1, HEADBUTT
+	loadmem wPartyMon2Moves+2, DIG
+	loadmem wPartyMon2Moves+3, FRESH_SNACK
 	loadmem wPartyMon2PP+0, 15
 	loadmem wPartyMon2PP+1, 15
-	loadmem wPartyMon2PP+2, 15
-	loadmem wPartyMon2PP+3, 30
-	loadmem wPartyMon3Moves+0, FLASH
-	loadmem wPartyMon3Moves+1, ROCK_SMASH
-	loadmem wPartyMon3Moves+2, HEADBUTT
-	loadmem wPartyMon3Moves+3, WATERFALL
-	loadmem wPartyMon3PP+0, 20
-	loadmem wPartyMon3PP+1, 15
-	loadmem wPartyMon3PP+2, 15
-	loadmem wPartyMon3PP+3, 15
+	loadmem wPartyMon2PP+2, 10
+	loadmem wPartyMon2PP+3, 10
 	; variant form test
-	givepoke SLOWKING, GALARIAN_FORM, 50
-;	givepoke ARTICUNO, GALARIAN_FORM, 50
-;	givepoke ZAPDOS, GALARIAN_FORM, 50
-;	givepoke MOLTRES, GALARIAN_FORM, 50
+	givepoke TYPHLOSION, HISUIAN_FORM, 50
+	loadmem wPartyMon3Shiny, SHINY_MASK
+	; ext species test
+	givepoke WYRDEER, 50
+	givepoke DUDUNSPARCE, DUDUNSPARCE_THREE_SEGMENT_FORM, 50
+	givepoke FARIGIRAF, 50
 	; fill pokedex
-;	callasm FillPokedex
-	; intro events
+	callasm FillPokedex
+;	; new bark events
 	addcellnum PHONE_MOM
 	setmapscene PLAYERS_HOUSE_1F, $1
 	setevent EVENT_PLAYERS_HOUSE_MOM_1
 	clearevent EVENT_PLAYERS_HOUSE_MOM_2
-	setmapscene VERMILION_CITY, $1
-;	; prof.elm events
-;	addcellnum PHONE_ELM
+	addcellnum PHONE_ELM
 ;	setevent EVENT_GOT_CYNDAQUIL_FROM_ELM
 ;	setevent EVENT_CYNDAQUIL_POKEBALL_IN_ELMS_LAB
 ;	setevent EVENT_CHIKORITA_POKEBALL_IN_ELMS_LAB
@@ -272,36 +267,60 @@ endr
 ;	setevent EVENT_LYRA_IN_ELMS_LAB
 ;	setmapscene ELMS_LAB, $5
 ;	setmapscene NEW_BARK_TOWN, $2
+	; cherrygrove events
+	setevent EVENT_GUIDE_GENT_IN_HIS_HOUSE
+	clearevent EVENT_GUIDE_GENT_VISIBLE_IN_CHERRYGROVE
+	setmapscene CHERRYGROVE_CITY, $2
+	; route 31 events
+	setevent EVENT_TALKED_TO_MOM_AFTER_MYSTERY_EGG_QUEST
+	setevent EVENT_INTRODUCED_ROUTE_LEADERS
+	; azalea events
+	setevent EVENT_AZALEA_TOWN_SLOWPOKETAIL_ROCKET
+	setevent EVENT_KURTS_HOUSE_KURT_1
+	; goldenrod events
+	setevent EVENT_BEAT_CAMPER_TODD
+	addcellnum PHONE_LYRA
+	setmapscene DAYCARE, $1
+	setevent EVENT_LYRA_DAYCARE
+	setevent EVENT_NURSE_SAW_TRAINER_STAR
+	setevent EVENT_INTRODUCED_TEALA
+	addcellnum PHONE_BILL
+	setevent EVENT_BEAT_PICNICKER_KIM
+	setevent EVENT_BEAT_BREEDER_THERESA
+	; ecruteak events
+	setevent EVENT_RIVAL_BURNED_TOWER
+	setevent EVENT_HOLE_IN_BURNED_TOWER
+	setmapscene BURNED_TOWER_1F, $2
+	; olivine events
+	setevent EVENT_RIVAL_OLIVINE_CITY
+	setmapscene OLIVINE_CITY, $1
+	; blackthorn events
+	setevent EVENT_BEAT_DRAGON_TAMER_DARIN
+	; vermilion events
+	setmapscene VERMILION_CITY, $1
 	closetext
+	warpfacing DOWN, GOLDENROD_CITY, 13, 14
 	end
 
 FillPokedex:
-	ld a, 1
-;	ld [wUnlockedUnownMode], a
-	ld [wFirstUnownSeen], a
-	ld [wFirstMagikarpSeen], a
-;	ld hl, wUnownDex
-;	ld a, 1
-;rept NUM_UNOWN
-;	ld [hli], a
-;	inc a
-;endr
 	ld hl, wPokedexSeen
 	call .Fill
 	ld hl, wPokedexCaught
 .Fill:
 	ld a, %11111111
-	ld bc, 31 ; 001-248
+	ld bc, NUM_UNIQUE_POKEMON / 8
 	rst ByteFill
-	ld [hl], %00111111 ; 249-254
+if NUM_UNIQUE_POKEMON % 8
+	ld [hl], 2**(NUM_UNIQUE_POKEMON % 8) - 1
+endc
 	ret
 
 else
 
 	checkevent EVENT_GOT_A_POKEMON_FROM_ELM
-	iftrue .NormalRadio
+	iftruefwd .NormalRadio
 	checkevent EVENT_LISTENED_TO_INITIAL_RADIO
-	iftrue .AbbreviatedRadio
+	iftruefwd .AbbreviatedRadio
 	playmusic MUSIC_POKEMON_TALK
 	opentext
 	writetext PlayerRadioText1
@@ -349,7 +368,7 @@ PokemonJournalProfElmScript:
 PlayersHousePC:
 	opentext
 	special Special_PlayersHousePC
-	iftrue .Warp
+	iftruefwd .Warp
 	endtext
 .Warp:
 	warp NONE, 0, 0

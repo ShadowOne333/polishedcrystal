@@ -18,17 +18,17 @@ IndigoPlateauPokecenter1F_MapScriptHeader:
 	bg_event 13,  7, BGEVENT_READ, PokemonJournalGiovanniScript
 
 	def_object_events
-	object_event 14,  9, SPRITE_SILVER, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_INDIGO_PLATEAU_POKECENTER_RIVAL
+	object_event 14,  9, SPRITE_RIVAL, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_INDIGO_PLATEAU_POKECENTER_RIVAL
 	object_event 14,  9, SPRITE_LYRA, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_INDIGO_PLATEAU_POKECENTER_LYRA
 	object_event 10,  9, SPRITE_YELLOW, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, IndigoPlateauYellowScript, EVENT_INDIGO_PLATEAU_POKECENTER_YELLOW
 	pc_nurse_event  9, 7
 	mart_clerk_event  1,  9, MARTTYPE_STANDARD, MART_INDIGO_PLATEAU
 	object_event  6,  9, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, IndigoPlateauTeleportGuyScript, EVENT_TELEPORT_GUY
-	pokemon_event  5,  9, ABRA, -1, -1, PAL_NPC_BROWN, IndigoPlateauAbraText, EVENT_TELEPORT_GUY
+	pokemon_event  5,  9, ABRA, SPRITEMOVEDATA_POKEMON, -1, -1, PAL_NPC_BROWN, IndigoPlateauAbraText, EVENT_TELEPORT_GUY
 	object_event  5, 12, SPRITE_ACE_TRAINER_M, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_COMMAND, jumptextfaceplayer, IndigoPlateauCooltrainermText, -1
 
 	object_const_def
-	const INDIGOPLATEAUPOKECENTER1F_SILVER
+	const INDIGOPLATEAUPOKECENTER1F_RIVAL
 	const INDIGOPLATEAUPOKECENTER1F_LYRA
 	const INDIGOPLATEAUPOKECENTER1F_YELLOW
 
@@ -58,18 +58,18 @@ PrepareEliteFourCallback:
 	endcallback
 
 PlateauRivalBattleTrigger1:
-	moveobject INDIGOPLATEAUPOKECENTER1F_SILVER, 15, 9
+	moveobject INDIGOPLATEAUPOKECENTER1F_RIVAL, 15, 9
 	moveobject INDIGOPLATEAUPOKECENTER1F_LYRA, 15, 9
 PlateauRivalBattleTrigger2:
 	checkevent EVENT_FINAL_BATTLE_WITH_LYRA
-	iftrue .LyraFight
+	iftruefwd .LyraFight
 	readvar VAR_WEEKDAY
-	ifequal MONDAY, .MaybeRivalFight
-	ifequal TUESDAY, .MaybeLyraFight
-	ifequal WEDNESDAY, .MaybeRivalFight
-	ifequal THURSDAY, .MaybeLyraFight
-	ifequal FRIDAY, .MaybeRivalFight
-	ifequal SATURDAY, .MaybeLyraFight
+	ifequalfwd MONDAY, .MaybeRivalFight
+	ifequalfwd TUESDAY, .MaybeLyraFight
+	ifequalfwd WEDNESDAY, .MaybeRivalFight
+	ifequalfwd THURSDAY, .MaybeLyraFight
+	ifequalfwd FRIDAY, .MaybeRivalFight
+	ifequalfwd SATURDAY, .MaybeLyraFight
 	end
 
 .MaybeRivalFight:
@@ -77,42 +77,42 @@ PlateauRivalBattleTrigger2:
 	iffalse DoNothingScript
 	checkflag ENGINE_INDIGO_PLATEAU_RIVAL_FIGHT
 	iftrue DoNothingScript
-	appear INDIGOPLATEAUPOKECENTER1F_SILVER
+	appear INDIGOPLATEAUPOKECENTER1F_RIVAL
 	turnobject PLAYER, DOWN
 	showemote EMOTE_SHOCK, PLAYER, 15
 	special Special_FadeOutMusic
 	pause 15
-	applymovement INDIGOPLATEAUPOKECENTER1F_SILVER, PlateauRivalApproachesMovement
+	applymovement INDIGOPLATEAUPOKECENTER1F_RIVAL, PlateauRivalApproachesMovement
 	playmusic MUSIC_RIVAL_ENCOUNTER
-	faceobject INDIGOPLATEAUPOKECENTER1F_SILVER, PLAYER
-	faceobject PLAYER, INDIGOPLATEAUPOKECENTER1F_SILVER
+	faceobject INDIGOPLATEAUPOKECENTER1F_RIVAL, PLAYER
+	faceobject PLAYER, INDIGOPLATEAUPOKECENTER1F_RIVAL
 	showtext PlateauRivalText1
 	setevent EVENT_INDIGO_PLATEAU_POKECENTER_RIVAL
 	checkevent EVENT_GOT_TOTODILE_FROM_ELM
-	iftrue .RivalTotodile
+	iftruefwd .RivalTotodile
 	checkevent EVENT_GOT_CHIKORITA_FROM_ELM
-	iftrue .RivalChikorita
+	iftruefwd .RivalChikorita
 	; Cyndaquil
 	winlosstext PlateauRivalWinText, PlateauRivalLoseText
-	setlasttalked INDIGOPLATEAUPOKECENTER1F_SILVER
+	setlasttalked INDIGOPLATEAUPOKECENTER1F_RIVAL
 	loadtrainer RIVAL2, 6
 	startbattle
 	dontrestartmapmusic
 	reloadmapafterbattle
-	sjump .RivalPostBattle
+	sjumpfwd .RivalPostBattle
 
 .RivalTotodile:
 	winlosstext PlateauRivalWinText, PlateauRivalLoseText
-	setlasttalked INDIGOPLATEAUPOKECENTER1F_SILVER
+	setlasttalked INDIGOPLATEAUPOKECENTER1F_RIVAL
 	loadtrainer RIVAL2, 4
 	startbattle
 	dontrestartmapmusic
 	reloadmapafterbattle
-	sjump .RivalPostBattle
+	sjumpfwd .RivalPostBattle
 
 .RivalChikorita:
 	winlosstext PlateauRivalWinText, PlateauRivalLoseText
-	setlasttalked INDIGOPLATEAUPOKECENTER1F_SILVER
+	setlasttalked INDIGOPLATEAUPOKECENTER1F_RIVAL
 	loadtrainer RIVAL2, 5
 	startbattle
 	dontrestartmapmusic
@@ -122,8 +122,8 @@ PlateauRivalBattleTrigger2:
 	playmusic MUSIC_RIVAL_AFTER
 	showtext PlateauRivalText2
 	turnobject PLAYER, DOWN
-	applymovement INDIGOPLATEAUPOKECENTER1F_SILVER, PlateauRivalLeavesMovement
-	disappear INDIGOPLATEAUPOKECENTER1F_SILVER
+	applymovement INDIGOPLATEAUPOKECENTER1F_RIVAL, PlateauRivalLeavesMovement
+	disappear INDIGOPLATEAUPOKECENTER1F_RIVAL
 	setscene $0
 	playmapmusic
 	setflag ENGINE_INDIGO_PLATEAU_RIVAL_FIGHT
@@ -152,9 +152,9 @@ PlateauRivalBattleTrigger2:
 	closetext
 	setevent EVENT_INDIGO_PLATEAU_POKECENTER_LYRA
 	checkevent EVENT_GOT_TOTODILE_FROM_ELM
-	iftrue .LyraTotodile
+	iftruefwd .LyraTotodile
 	checkevent EVENT_GOT_CHIKORITA_FROM_ELM
-	iftrue .LyraChikorita
+	iftruefwd .LyraChikorita
 	; Cyndaquil
 	winlosstext PlateauLyraWinText, PlateauLyraLoseText
 	setlasttalked INDIGOPLATEAUPOKECENTER1F_LYRA
@@ -162,7 +162,7 @@ PlateauRivalBattleTrigger2:
 	startbattle
 	dontrestartmapmusic
 	reloadmapafterbattle
-	sjump .LyraPostBattle
+	sjumpfwd .LyraPostBattle
 
 .LyraTotodile:
 	winlosstext PlateauRivalWinText, PlateauRivalLoseText
@@ -171,7 +171,7 @@ PlateauRivalBattleTrigger2:
 	startbattle
 	dontrestartmapmusic
 	reloadmapafterbattle
-	sjump .LyraPostBattle
+	sjumpfwd .LyraPostBattle
 
 .LyraChikorita:
 	winlosstext PlateauRivalWinText, PlateauRivalLoseText
@@ -347,7 +347,7 @@ IndigoPlateauYellowScript:
 	faceplayer
 	opentext
 	checkevent EVENT_LISTENED_TO_YELLOW_INTRO
-	iftrue .HeardIntro
+	iftruefwd .HeardIntro
 	writetext .GreetingText
 	waitbutton
 	setevent EVENT_LISTENED_TO_YELLOW_INTRO
@@ -359,20 +359,25 @@ IndigoPlateauYellowScript:
 	promptbutton
 	waitsfx
 	checkevent EVENT_GOT_BULBASAUR_FROM_IVY
-	iftrue .Squirtle
+	iftruefwd .Squirtle
 	checkevent EVENT_GOT_CHARMANDER_FROM_IVY
-	iftrue .Bulbasaur
-	givepoke CHARMANDER, NO_FORM, 10, SITRUS_BERRY
-	sjump .Finish
+	iftruefwd .Bulbasaur
+	givepoke CHARMANDER, PLAIN_FORM, 10, SITRUS_BERRY
+	iffalse_jumpopenedtext .PartyAndBoxFullText
+	getmonname CHARMANDER, STRING_BUFFER_3
+	sjumpfwd .Finish
 
 .Bulbasaur:
-	givepoke BULBASAUR, NO_FORM, 10, SITRUS_BERRY
-	sjump .Finish
+	givepoke BULBASAUR, PLAIN_FORM, 10, SITRUS_BERRY
+	iffalse_jumpopenedtext .PartyAndBoxFullText
+	getmonname BULBASAUR, STRING_BUFFER_3
+	sjumpfwd .Finish
 
 .Squirtle:
-	givepoke SQUIRTLE, NO_FORM, 10, SITRUS_BERRY
-.Finish:
+	givepoke SQUIRTLE, PLAIN_FORM, 10, SITRUS_BERRY
 	iffalse_jumpopenedtext .PartyAndBoxFullText
+	getmonname SQUIRTLE, STRING_BUFFER_3
+.Finish:
 	writetext .GoodbyeText
 	waitbutton
 	closetext
@@ -395,7 +400,7 @@ IndigoPlateauYellowScript:
 	para "another #mon"
 	line "either…"
 
-	para "And your box is"
+	para "And your Box is"
 	line "full, too…"
 	done
 

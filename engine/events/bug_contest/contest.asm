@@ -3,18 +3,15 @@ ContestDropOffMons:
 	ld a, [hli]
 	or [hl]
 	jr z, .fainted
-; Mask the rest of your party by setting the count to 1...
+; Mask the rest of your party by setting the count to 1,
+; backing up the party count somewhere
 	ld hl, wPartyCount
-	ld a, 1
-	ld [hli], a
-	inc hl
-; ... backing up the second mon index somewhere...
 	ld a, [hl]
-	ld [wBugContestSecondPartySpecies], a
-; ... and replacing it with the terminator byte
-	ld [hl], $ff
+	ld [wBugContestBackupPartyCount], a
 	xor a
 	ldh [hScriptVar], a
+	inc a
+	ld [hl], a
 	ret
 
 .fainted
@@ -23,21 +20,8 @@ ContestDropOffMons:
 	ret
 
 ContestReturnMons:
-; Restore the species of the second mon.
-	ld hl, wPartySpecies + 1
-	ld a, [wBugContestSecondPartySpecies]
-	ld [hl], a
-; Restore the party count, which must be recomputed.
-	ld b, $1
-.loop
-	ld a, [hli]
-	cp -1
-	jr z, .done
-	inc b
-	jr .loop
-
-.done
-	ld a, b
+; Restore the party count from backup.
+	ld a, [wBugContestBackupPartyCount]
 	ld [wPartyCount], a
 	ret
 
@@ -54,7 +38,7 @@ BugCatchingContestBattleScript::
 	startbattle
 	reloadmapafterbattle
 	readmem wParkBallsRemaining
-	iffalse .OutOfBalls
+	iffalsefwd .OutOfBalls
 	end
 
 .OutOfBalls:
@@ -62,7 +46,7 @@ BugCatchingContestBattleScript::
 	opentext
 	farwritetext _BugCatchingContestIsOverText
 	waitbutton
-	sjump BugCatchingContestReturnToGateScript
+	sjumpfwd BugCatchingContestReturnToGateScript
 
 BugCatchingContestOverScript::
 	playsound SFX_ELEVATOR_END
@@ -76,7 +60,7 @@ BugCatchingContestReturnToGateScript:
 
 Script_AbortBugContest:
 	checkflag ENGINE_BUG_CONTEST_TIMER
-	iffalse .finish
+	iffalsefwd .finish
 	setflag ENGINE_DAILY_BUG_CONTEST
 	special ContestReturnMons
 .finish
@@ -87,22 +71,31 @@ _BugContestJudging:
 	call BugContest_JudgeContestants
 	ld a, [wBugContestThirdPlacePersonID]
 	call LoadContestantName
+	ld hl, wNamedObjectIndex
 	ld a, [wBugContestThirdPlaceMon]
-	ld [wNamedObjectIndex], a
+	ld [hli], a
+	ld a, [wBugContestThirdPlaceForm]
+	ld [hl], a
 	call GetPokemonName
 	ld hl, BugContest_ThirdPlaceText
 	call PrintText
 	ld a, [wBugContestSecondPlacePersonID]
 	call LoadContestantName
+	ld hl, wNamedObjectIndex
 	ld a, [wBugContestSecondPlaceMon]
-	ld [wNamedObjectIndex], a
+	ld [hli], a
+	ld a, [wBugContestSecondPlaceForm]
+	ld [hl], a
 	call GetPokemonName
 	ld hl, BugContest_SecondPlaceText
 	call PrintText
 	ld a, [wBugContestFirstPlacePersonID]
 	call LoadContestantName
+	ld hl, wNamedObjectIndex
 	ld a, [wBugContestFirstPlaceMon]
-	ld [wNamedObjectIndex], a
+	ld [hli], a
+	ld a, [wBugContestFirstPlaceForm]
+	ld [hl], a
 	call GetPokemonName
 	ld hl, BugContest_FirstPlaceText
 	call PrintText
@@ -214,7 +207,7 @@ INCLUDE "data/events/bug_contest_winners.asm"
 
 BugContest_GetPlayersResult:
 	ld hl, wBugContestThirdPlacePersonID
-	ld de, -4
+	ld de, -5
 	ld b, 3
 .loop
 	ld a, [hl]
@@ -241,7 +234,9 @@ BugContest_JudgeContestants:
 	ld hl, wBugContestTempPersonID
 	ld a, 1 ; Player
 	ld [hli], a
-	ld a, [wContestMon]
+	ld a, [wContestMonSpecies]
+	ld [hli], a
+	ld a, [wContestMonForm]
 	ld [hli], a
 	ldh a, [hProduct]
 	ld [hli], a
@@ -290,7 +285,7 @@ DetermineContestWinners:
 
 CopyTempContestant:
 	ld hl, wBugContestTempPersonID
-	ld bc, 4
+	ld bc, 5
 	rst CopyBytes
 	ret
 
@@ -317,17 +312,18 @@ ComputeAIContestantScores:
 	inc hl
 	inc hl
 .loop2
-	call Random
-	and 3
-	cp 3
-	jr z, .loop2
+	ld a, 3
+	call RandomRange
 	ld c, a
 	ld b, 0
 	add hl, bc
 	add hl, bc
 	add hl, bc
+	add hl, bc
 	ld a, [hli]
 	ld [wBugContestTempMon], a
+	ld a, [hli]
+	ld [wBugContestTempForm], a
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -381,71 +377,28 @@ ContestScore:
 	call .AddContestStat
 	ld a, [wContestMonSpeed   + 1]
 	call .AddContestStat
-	ld a, [wContestMonSpclAtk + 1]
+	ld a, [wContestMonSpAtk   + 1]
 	call .AddContestStat
-	ld a, [wContestMonSpclDef + 1]
+	ld a, [wContestMonSpDef   + 1]
 	call .AddContestStat
 
 	; DVs (6 points per DV that's at least 8)
 	lb bc, 0, 6
-
 	ld a, [wContestMonDVs + 0]
-	and $f
-	cp $8
-	jr c, .low_attack
-	ld a, b
-	add c
-	ld b, a
-.low_attack
-
+	call .AddDVBonus
 	ld a, [wContestMonDVs + 0]
 	swap a
-	and $f
-	cp $8
-	jr c, .low_hp
-	ld a, b
-	add c
-	ld b, a
-.low_hp
-
+	call .AddDVBonus
 	ld a, [wContestMonDVs + 1]
-	and $f
-	cp $8
-	jr c, .low_speed
-	ld a, b
-	add c
-	ld b, a
-.low_speed
-
+	call .AddDVBonus
 	ld a, [wContestMonDVs + 1]
 	swap a
-	and $f
-	cp $8
-	jr c, .low_defense
-	ld a, b
-	add c
-	ld b, a
-.low_defense
-
+	call .AddDVBonus
 	ld a, [wContestMonDVs + 2]
-	and $f
-	cp $8
-	jr c, .low_spcl_def
-	ld a, b
-	add c
-	ld b, a
-.low_spcl_def
-
+	call .AddDVBonus
 	ld a, [wContestMonDVs + 2]
 	swap a
-	and $f
-	cp $8
-	jr c, .low_spcl_atk
-	ld a, b
-	add c
-	ld b, a
-.low_spcl_atk
-
+	call .AddDVBonus
 	ld a, b
 	call .AddContestStat
 
@@ -457,14 +410,20 @@ ContestScore:
 	and %00011111
 	call .AddContestStat
 
-	; Whether it's holding an item
+	; Whether it's shiny (150 points)
+	ld a, [wContestMonShiny]
+	and SHINY_MASK
+	jr z, .not_shiny
+	ld a, 150
+	call .AddContestStat
+.not_shiny
+
+	; Whether it's holding an item (1 point)
 	ld a, [wContestMonItem]
 	and a
 	ret z
-
 	ld a, 1
 	; fallthrough
-
 .AddContestStat:
 	ld hl, hMultiplicand
 	add [hl]
@@ -474,23 +433,26 @@ ContestScore:
 	inc [hl]
 	ret
 
+.AddDVBonus:
+	and %1000
+	ret nz
+	ld a, b
+	add c
+	ld b, a
+	ret
+
 Special_SelectRandomBugContestContestants:
 ; Select five random people to participate in the current contest.
 
 ; First we have to make sure that any old data is cleared away.
-	ld c, 10 ; Number of people to choose from.
-	ld hl, BugCatchingContestantEventFlagTable
+	lb bc, RESET_FLAG, 10 ; Action, Number of people to choose from.
+	ld de, EVENT_BUG_CATCHING_CONTESTANT_1A ; First event in the sequence.
 .loop1
 	push bc
-	push hl
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	ld b, RESET_FLAG
+	push de
 	call EventFlagAction
-	pop hl
-	inc hl
-	inc hl
+	pop de
+	inc de
 	pop bc
 	dec c
 	jr nz, .loop1
@@ -501,26 +463,10 @@ Special_SelectRandomBugContestContestants:
 	push bc
 .next
 ; Choose a flag at uniform random to be set.
-	call Random
-	cp 250
-	jr nc, .next
-	ld c, 25
-	call SimpleDivide
-	ld e, b
-	ld d, 0
-	ld hl, BugCatchingContestantEventFlagTable
-	add hl, de
-	add hl, de
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	push de
+	ld a, 10
+	call RandomRange
 ; If we've already set it, it doesn't count.
-	ld b, CHECK_FLAG
-	call EventFlagAction
-	pop de
-	ld a, c
-	and a
+	call Special_CheckBugContestContestantFlag
 	jr nz, .next
 ; Set the flag.  This will cause that sprite to not be visible in the contest.
 	ld b, SET_FLAG
@@ -533,16 +479,14 @@ Special_SelectRandomBugContestContestants:
 
 Special_CheckBugContestContestantFlag:
 ; Checks the flag of the Bug Catching Contestant whose index is loaded in a.
-; Bug: If a >= 10 when this is called, it will read beyond the table.
-	ld hl, BugCatchingContestantEventFlagTable
+; Returns de = EVENT_BUG_CATCHING_CONTESTANT_{d:a}A.
+	add LOW(EVENT_BUG_CATCHING_CONTESTANT_1A)
 	ld e, a
-	ld d, 0
-	add hl, de
-	add hl, de
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
+	adc HIGH(EVENT_BUG_CATCHING_CONTESTANT_1A)
+	sub e
+	ld d, a
 	ld b, CHECK_FLAG
-	jmp EventFlagAction
-
-INCLUDE "data/events/bug_contest_flags.asm"
+	push de
+	call EventFlagAction
+	pop de
+	ret

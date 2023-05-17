@@ -5,9 +5,11 @@
 ; - ItemDescriptions (see data/items/descriptions.asm)
 ; - ItemAttributes (see data/items/attributes.asm)
 ; - ItemIconPointers (see data/items/icon_pointers.asm)
+; - ItemIconPalettes (see gfx/items/items.pal)
 ; - ItemEffects (see engine/items/item_effects.asm)
 	const_def
 	const NO_ITEM      ; 00
+DEF PARK_BALL EQU NO_ITEM
 
 	const POKE_BALL    ; 01
 	const GREAT_BALL   ; 02
@@ -24,208 +26,229 @@
 	const HEAVY_BALL   ; 0b
 	const LOVE_BALL    ; 0c
 
-	const ABILITYPATCH ; 0d
+	const REPEAT_BALL  ; 0d
+	const TIMER_BALL   ; 0e
+	const NEST_BALL    ; 0f
+	const NET_BALL     ; 10
+	const DIVE_BALL    ; 11
+	const LUXURY_BALL  ; 12
+	const HEAL_BALL    ; 13
+	const QUICK_BALL   ; 14
+	const DUSK_BALL    ; 15
+	const DREAM_BALL   ; 16
 
-	const REPEAT_BALL  ; 0e
-	const TIMER_BALL   ; 0f
-	const NEST_BALL    ; 10
-	const NET_BALL     ; 11
-	const DIVE_BALL    ; 12
-	const LUXURY_BALL  ; 13
-	const HEAL_BALL    ; 14
-	const QUICK_BALL   ; 15
-	const DUSK_BALL    ; 16
-	const DREAM_BALL   ; 17
-	const PREMIER_BALL ; 18
-	const CHERISH_BALL ; 19
+	const PREMIER_BALL ; 17
+	const CHERISH_BALL ; 18
+DEF NUM_POKE_BALLS EQU const_value ; PARK_BALL counts
 
-	const POTION       ; 1a
-	const SUPER_POTION ; 1b
-	const HYPER_POTION ; 1c
-	const MAX_POTION   ; 1d
+	const POTION       ; 19
+	const SUPER_POTION ; 1a
+	const HYPER_POTION ; 1b
+	const MAX_POTION   ; 1c
 
-	const ANTIDOTE     ; 1e
-	const BURN_HEAL    ; 1f
-	const PARALYZEHEAL ; 20
-	const AWAKENING    ; 21
-	const ICE_HEAL     ; 22
-	const FULL_HEAL    ; 23
-	const FULL_RESTORE ; 24
+	const ANTIDOTE     ; 1d
+	const BURN_HEAL    ; 1e
+	const PARALYZEHEAL ; 1f
+	const AWAKENING    ; 20
+	const ICE_HEAL     ; 21
+	const FULL_HEAL    ; 22
+	const FULL_RESTORE ; 23
 
-	const REVIVE       ; 25
-	const MAX_REVIVE   ; 26
+	const REVIVE       ; 24
+	const MAX_REVIVE   ; 25
 
-	const ETHER        ; 27
-	const MAX_ETHER    ; 28
-	const ELIXIR       ; 29
-	const MAX_ELIXIR   ; 2a
+	const ETHER        ; 26
+	const MAX_ETHER    ; 27
+	const ELIXIR       ; 28
+	const MAX_ELIXIR   ; 29
 
-	const HP_UP        ; 2b
-	const PROTEIN      ; 2c
-	const IRON         ; 2d
-	const CARBOS       ; 2e
-	const CALCIUM      ; 2f
-	const ZINC         ; 30
-	const RARE_CANDY   ; 31
-	const PP_UP        ; 32
-	const PP_MAX       ; 33
+	const HP_UP        ; 2a
+	const PROTEIN      ; 2b
+	const IRON         ; 2c
+	const CARBOS       ; 2d
+	const CALCIUM      ; 2e
+	const ZINC         ; 2f
+	const RARE_CANDY   ; 30
+	const PP_UP        ; 31
+	const PP_MAX       ; 32
 
-	const FRESH_WATER  ; 34
-	const SODA_POP     ; 35
-	const LEMONADE     ; 36
-	const MOOMOO_MILK  ; 37
-	const RAGECANDYBAR ; 38
-	const PEWTERCRUNCH ; 39
+	const FRESH_WATER  ; 33
+	const SODA_POP     ; 34
+	const LEMONADE     ; 35
+	const MOOMOO_MILK  ; 36
+	const RAGECANDYBAR ; 37
+	const PEWTERCRUNCH ; 38
 
-	const SACRED_ASH   ; 3a
-	const ENERGYPOWDER ; 3b
-	const ENERGY_ROOT  ; 3c
-	const HEAL_POWDER  ; 3d
-	const REVIVAL_HERB ; 3e
+	const ENERGYPOWDER ; 39
+	const ENERGY_ROOT  ; 3a
+	const HEAL_POWDER  ; 3b
+	const REVIVAL_HERB ; 3c
 
-	const X_ATTACK     ; 3f
-	const X_DEFEND     ; 40
-	const X_SPEED      ; 41
-	const X_SPCL_ATK   ; 42
-	const X_SPCL_DEF   ; 43
-	const X_ACCURACY   ; 44
-	const DIRE_HIT     ; 45
-	const GUARD_SPEC   ; 46
+	const SACRED_ASH   ; 3d
 
-	const REPEL        ; 47
-	const SUPER_REPEL  ; 48
-	const MAX_REPEL    ; 49
-	const ESCAPE_ROPE  ; 4a
-	const POKE_DOLL    ; 4b
+DEF FIRST_BERRY EQU const_value
+	const CHERI_BERRY  ; 3e
+	const CHESTO_BERRY ; 3f
+	const PECHA_BERRY  ; 40
+	const RAWST_BERRY  ; 41
+	const ASPEAR_BERRY ; 42
+	const LEPPA_BERRY  ; 43
+	const ORAN_BERRY   ; 44
+	const PERSIM_BERRY ; 45
+	const LUM_BERRY    ; 46
+	const SITRUS_BERRY ; 47
 
-	const ABILITY_CAP  ; 4c
+	const FIGY_BERRY   ; 48
 
-	const LEAF_STONE   ; 4d
-	const FIRE_STONE   ; 4e
-	const WATER_STONE  ; 4f
-	const THUNDERSTONE ; 50
-	const MOON_STONE   ; 51
-	const SUN_STONE    ; 52
-	const DUSK_STONE   ; 53
-	const DAWN_STONE   ; 54
-	const SHINY_STONE  ; 55
-	const ICE_STONE    ; 56
-	const EVERSTONE    ; 57
+	const POMEG_BERRY  ; 49
+	const KELPSY_BERRY ; 4a
+	const QUALOT_BERRY ; 4b
+	const HONDEW_BERRY ; 4c
+	const GREPA_BERRY  ; 4d
+	const TAMATO_BERRY ; 4e
 
-	const EXP_SHARE    ; 58
+	const LIECHI_BERRY ; 4f
+	const GANLON_BERRY ; 50
+	const SALAC_BERRY  ; 51
+	const PETAYA_BERRY ; 52
+	const APICOT_BERRY ; 53
+	const LANSAT_BERRY ; 54
+	const STARF_BERRY  ; 55
 
-	const CHERI_BERRY  ; 59
-	const CHESTO_BERRY ; 5a
-	const PECHA_BERRY  ; 5b
-	const RAWST_BERRY  ; 5c
-	const ASPEAR_BERRY ; 5d
-	const LEPPA_BERRY  ; 5e
-	const ORAN_BERRY   ; 5f
-	const PERSIM_BERRY ; 60
-	const LUM_BERRY    ; 61
-	const SITRUS_BERRY ; 62
-	const FIGY_BERRY   ; 63
-	const POMEG_BERRY  ; 64
-	const KELPSY_BERRY ; 65
-	const QUALOT_BERRY ; 66
-	const HONDEW_BERRY ; 67
-	const GREPA_BERRY  ; 68
-	const TAMATO_BERRY ; 69
-	const LIECHI_BERRY ; 6a
-	const GANLON_BERRY ; 6b
-	const SALAC_BERRY  ; 6c
-	const PETAYA_BERRY ; 6d
-	const APICOT_BERRY ; 6e
-	const LANSAT_BERRY ; 6f
-	const STARF_BERRY  ; 70
-	const ENIGMA_BERRY ; 71
-	const CUSTAP_BERRY ; 72
-	const JABOCA_BERRY ; 73
-	const ROWAP_BERRY  ; 74
-	const KEE_BERRY    ; 75
-	const MARANGABERRY ; 76
+	const ENIGMA_BERRY ; 56
 
-	const BERRY_JUICE  ; 77
+	const CUSTAP_BERRY ; 57
 
-	const SILK_SCARF   ; 78
-	const BLACK_BELT   ; 79
-	const SHARP_BEAK   ; 7a
-	const POISON_BARB  ; 7b
-	const SOFT_SAND    ; 7c
-	const HARD_STONE   ; 7d
-	const SILVERPOWDER ; 7e
-	const SPELL_TAG    ; 7f
-	const METAL_COAT   ; 80
-	const CHARCOAL     ; 81
-	const MYSTIC_WATER ; 82
-	const MIRACLE_SEED ; 83
-	const MAGNET       ; 84
-	const TWISTEDSPOON ; 85
-	const NEVERMELTICE ; 86
-	const DRAGON_FANG  ; 87
-	const BLACKGLASSES ; 88
-	const PINK_BOW     ; 89
+	const JABOCA_BERRY ; 58
+	const ROWAP_BERRY  ; 59
 
-	const BRIGHTPOWDER ; 8a
-	const SCOPE_LENS   ; 8b
-	const QUICK_CLAW   ; 8c
-	const KINGS_ROCK   ; 8d
-	const FOCUS_BAND   ; 8e
-	const LEFTOVERS    ; 8f
-	const LUCKY_EGG    ; 90
-	const AMULET_COIN  ; 91
-	const CLEANSE_TAG  ; 92
-	const SMOKE_BALL   ; 93
-	const BERSERK_GENE ; 94
+	const KEE_BERRY    ; 5a
+	const MARANGABERRY ; 5b
+DEF NUM_BERRIES EQU const_value - FIRST_BERRY
 
-	const LIGHT_BALL   ; 95
-	const STICK        ; 96
-	const THICK_CLUB   ; 97
-	const LUCKY_PUNCH  ; 98
-	const METAL_POWDER ; 99
-	const QUICK_POWDER ; 9a
-	const ARMOR_SUIT   ; 9b
+	const BERRY_JUICE  ; 5c
 
-	const AIR_BALLOON  ; 9c
-	const ASSAULT_VEST ; 9d
-	const BIG_ROOT     ; 9e
-	const BINDING_BAND ; 9f
+	const REPEL        ; 5d
+	const SUPER_REPEL  ; 5e
+	const MAX_REPEL    ; 5f
+
+	const ESCAPE_ROPE  ; 60
+	const POKE_DOLL    ; 61
+
+	const MULCH        ; 62
+
+	const SWEET_HONEY  ; 63
+
+	const X_ATTACK     ; 64
+	const X_DEFEND     ; 65
+	const X_SPEED      ; 66
+	const X_SP_ATK     ; 67
+	const X_SP_DEF     ; 68
+	const X_ACCURACY   ; 69
+	const DIRE_HIT     ; 6a
+	const GUARD_SPEC   ; 6b
+
+	const ABILITY_CAP  ; 6c
+	const ABILITYPATCH ; 6d
+
+DEF FIRST_STONE EQU const_value
+	const LEAF_STONE   ; 6e
+	const FIRE_STONE   ; 6f
+	const WATER_STONE  ; 70
+	const THUNDERSTONE ; 71
+	const ICE_STONE    ; 72
+	const MOON_STONE   ; 73
+	const SUN_STONE    ; 74
+	const DUSK_STONE   ; 75
+	const SHINY_STONE  ; 76
+	const EVERSTONE    ; 77
+DEF NUM_STONES EQU const_value - FIRST_STONE
+
+	const EXP_SHARE    ; 78
+
+	const SILK_SCARF   ; 79
+	const BLACK_BELT   ; 7a
+	const SHARP_BEAK   ; 7b
+	const POISON_BARB  ; 7c
+	const SOFT_SAND    ; 7d
+	const HARD_STONE   ; 7e
+	const SILVERPOWDER ; 7f
+	const SPELL_TAG    ; 80
+	const METAL_COAT   ; 81
+	const CHARCOAL     ; 82
+	const MYSTIC_WATER ; 83
+	const MIRACLE_SEED ; 84
+	const MAGNET       ; 85
+	const TWISTEDSPOON ; 86
+	const NEVERMELTICE ; 87
+	const DRAGON_FANG  ; 88
+	const BLACKGLASSES ; 89
+	const PINK_BOW     ; 8a
+
+	const BERSERK_GENE ; 8b
+	const BRIGHTPOWDER ; 8c
+	const QUICK_CLAW   ; 8d
+	const KINGS_ROCK   ; 8e
+	const AMULET_COIN  ; 8f
+	const CLEANSE_TAG  ; 90
+	const SMOKE_BALL   ; 91
+	const FOCUS_BAND   ; 92
+	const LUCKY_EGG    ; 93
+	const LEFTOVERS    ; 94
+
+	const SOOTHE_BELL  ; 95
+	const SHELL_BELL   ; 96
+
+	const MUSCLE_BAND  ; 97
+	const WISE_GLASSES ; 98
+	const EXPERT_BELT  ; 99
+	const LIGHT_CLAY   ; 9a
+	const LIFE_ORB     ; 9b
+	const FOCUS_SASH   ; 9c
+	const METRONOME_I  ; 9d
+	const IRON_BALL    ; 9e
+	const LAGGING_TAIL ; 9f
 	const DESTINY_KNOT ; a0
-	const EVIOLITE     ; a1
-	const EXPERT_BELT  ; a2
-	const FOCUS_SASH   ; a3
-	const GRIP_CLAW    ; a4
-	const LIFE_ORB     ; a5
-	const LIGHT_CLAY   ; a6
-	const METRONOME_I  ; a7
-	const MUSCLE_BAND  ; a8
-	const PROTECT_PADS ; a9
-	const ROCKY_HELMET ; aa
-	const SAFE_GOGGLES ; ab
-	const SHED_SHELL   ; ac
-	const SHELL_BELL   ; ad
-	const SOOTHE_BELL  ; ae
-	const WEAK_POLICY  ; af
-	const WIDE_LENS    ; b0
-	const WISE_GLASSES ; b1
-	const ZOOM_LENS    ; b2
+	const GRIP_CLAW    ; a1
+	const SHED_SHELL   ; a2
+	const BIG_ROOT     ; a3
 
-	const EJECT_BUTTON ; b3
-	const LAGGING_TAIL ; b4
-	const IRON_BALL    ; b5
-	const RING_TARGET  ; b6
-	const RED_CARD     ; b7
-	const ABSORB_BULB  ; b8
-	const CELL_BATTERY ; b9
-	const LUMINOUSMOSS ; ba
-	const SNOWBALL     ; bb
+	const EVIOLITE     ; a4
+	const ROCKY_HELMET ; a5
+	const AIR_BALLOON  ; a6
+	const RED_CARD     ; a7
+	const BINDING_BAND ; a8
+	const EJECT_BUTTON ; a9
 
-	const EJECT_PACK   ; bc
-	const ROOM_SERVICE ; bd
-	const BLUNDRPOLICY ; be
-	const THROAT_SPRAY ; bf
-	const HEAVY_BOOTS  ; c0
-	const UTILUMBRELLA ; c1
+	const WEAK_POLICY  ; aa
+	const ASSAULT_VEST ; ab
+	const SAFE_GOGGLES ; ac
+
+	const PROTECT_PADS ; ad
+
+	const THROAT_SPRAY ; ae
+	const EJECT_PACK   ; af
+	const HEAVY_BOOTS  ; b0
+	const BLUNDRPOLICY ; b1
+	const ROOM_SERVICE ; b2
+
+	const CLEAR_AMULET ; b3
+	const MIRROR_HERB  ; b4
+	const PUNCHINGLOVE ; b5
+	const COVERT_CLOAK ; b6
+	const LOADED_DICE  ; b7
+
+	const LIGHT_BALL   ; b8
+	const LEEK         ; b9
+	const THICK_CLUB   ; ba
+	const LUCKY_PUNCH  ; bb
+	const METAL_POWDER ; bc
+	const QUICK_POWDER ; bd
+	const ARMOR_SUIT   ; be
+
+	const SCOPE_LENS   ; bf
+	const WIDE_LENS    ; c0
+	const ZOOM_LENS    ; c1
 
 	const MENTAL_HERB  ; c2
 	const POWER_HERB   ; c3
@@ -260,33 +283,34 @@
 	const MAGMARIZER   ; db
 	const RAZOR_FANG   ; dc
 	const RAZOR_CLAW   ; dd
-	const ODD_SOUVENIR ; de
+	const OVAL_STONE   ; de
+	const ODD_SOUVENIR ; df
+	const LINKING_CORD ; e0
 
-	const NUGGET       ; df
-	const BIG_NUGGET   ; e0
-	const TINYMUSHROOM ; e1
-	const BIG_MUSHROOM ; e2
-	const BALMMUSHROOM ; e3
-	const PEARL        ; e4
-	const BIG_PEARL    ; e5
-	const PEARL_STRING ; e6
-	const STARDUST     ; e7
-	const STAR_PIECE   ; e8
-	const BRICK_PIECE  ; e9
-	const RARE_BONE    ; ea
-	const SILVER_LEAF  ; eb
-	const GOLD_LEAF    ; ec
-	const SLOWPOKETAIL ; ed
-	const BOTTLE_CAP   ; ee
+	const SILVER_LEAF  ; e1
+	const GOLD_LEAF    ; e2
+	const MINT_LEAF    ; e3
+	const BOTTLE_CAP   ; e4
 
-	const HELIX_FOSSIL ; ef
-	const DOME_FOSSIL  ; f0
-	const OLD_AMBER    ; f1
+	const NUGGET       ; e5
+	const BIG_NUGGET   ; e6
+	const TINYMUSHROOM ; e7
+	const BIG_MUSHROOM ; e8
+	const BALMMUSHROOM ; e9
+	const PEARL        ; ea
+	const BIG_PEARL    ; eb
+	const PEARL_STRING ; ec
+	const STARDUST     ; ed
+	const STAR_PIECE   ; ee
+	const BRICK_PIECE  ; ef
+	const RARE_BONE    ; f0
+	const SLOWPOKETAIL ; f1
 
-	const MULCH        ; f2
-	const SWEET_HONEY  ; f3
-	const MINT_LEAF    ; f4
+	const HELIX_FOSSIL ; f2
+	const DOME_FOSSIL  ; f3
+	const OLD_AMBER    ; f4
 
+DEF FIRST_MAIL EQU const_value
 	const FLOWER_MAIL  ; f5
 	const SURF_MAIL    ; f6
 	const LITEBLUEMAIL ; f7
@@ -297,19 +321,18 @@
 	const BLUESKY_MAIL ; fc
 	const MUSIC_MAIL   ; fd
 	const MIRAGE_MAIL  ; fe
-NUM_ITEMS EQU const_value - 1
+DEF NUM_MAILS EQU const_value - FIRST_MAIL
+DEF NUM_ITEMS EQU const_value - 1
 
-PARK_BALL      EQU $00
-USE_SCRIPT_VAR EQU $00
-ITEM_FROM_MEM  EQU $ff
-ALWAYS_ITEM_2  EQU $ff
+DEF USE_SCRIPT_VAR EQU $00
+DEF ITEM_FROM_MEM  EQU $ff
+DEF ALWAYS_ITEM_2  EQU $ff
 
 ; Alphabetical order (see data/items/name_order.asm)
 	const_def
 	const NAM_NO_ITEM
 	const NAM_ABILITY_CAP
 	const NAM_ABILITYPATCH
-	const NAM_ABSORB_BULB
 	const NAM_AIR_BALLOON
 	const NAM_AMULET_COIN
 	const NAM_ANTIDOTE
@@ -340,7 +363,6 @@ if !DEF(FAITHFUL)
 endc
 	const NAM_CALCIUM
 	const NAM_CARBOS
-	const NAM_CELL_BATTERY
 	const NAM_CHARCOAL
 	const NAM_CHERI_BERRY
 	const NAM_CHERISH_BALL
@@ -349,9 +371,10 @@ endc
 	const NAM_CHOICE_SCARF
 	const NAM_CHOICE_SPECS
 	const NAM_CLEANSE_TAG
+	const NAM_CLEAR_AMULET
+	const NAM_COVERT_CLOAK
 	const NAM_CUSTAP_BERRY
 	const NAM_DAMP_ROCK
-	const NAM_DAWN_STONE
 	const NAM_DESTINY_KNOT
 	const NAM_DIRE_HIT
 	const NAM_DIVE_BALL
@@ -401,6 +424,9 @@ endc
 	const NAM_HEAVY_BOOTS
 	const NAM_HELIX_FOSSIL
 	const NAM_HONDEW_BERRY
+if DEF(FAITHFUL)
+	const NAM_SWEET_HONEY
+endc
 	const NAM_HP_UP
 	const NAM_HYPER_POTION
 	const NAM_ICE_HEAL
@@ -415,6 +441,7 @@ endc
 	const NAM_LAGGING_TAIL
 	const NAM_LANSAT_BERRY
 	const NAM_LEAF_STONE
+	const NAM_LEEK
 	const NAM_LEFTOVERS
 	const NAM_LEMONADE
 	const NAM_LEPPA_BERRY
@@ -423,13 +450,14 @@ endc
 	const NAM_LIFE_ORB
 	const NAM_LIGHT_BALL
 	const NAM_LIGHT_CLAY
+	const NAM_LINKING_CORD
 	const NAM_LITEBLUEMAIL
+	const NAM_LOADED_DICE
 	const NAM_LOVE_BALL
 	const NAM_LOVELY_MAIL
 	const NAM_LUCKY_EGG
 	const NAM_LUCKY_PUNCH
 	const NAM_LUM_BERRY
-	const NAM_LUMINOUSMOSS
 	const NAM_LURE_BALL
 	const NAM_LUXURY_BALL
 	const NAM_MACHO_BRACE
@@ -449,6 +477,7 @@ endc
 	const NAM_MINT_LEAF
 	const NAM_MIRACLE_SEED
 	const NAM_MIRAGE_MAIL
+	const NAM_MIRROR_HERB
 	const NAM_MOOMOO_MILK
 	const NAM_MOON_BALL
 	const NAM_MOON_STONE
@@ -464,6 +493,7 @@ endc
 	const NAM_ODD_SOUVENIR
 	const NAM_OLD_AMBER
 	const NAM_ORAN_BERRY
+	const NAM_OVAL_STONE
 	const NAM_PARALYZEHEAL
 	const NAM_PEARL
 	const NAM_PEARL_STRING
@@ -491,6 +521,7 @@ endc
 	const NAM_PROTECT_PADS
 	const NAM_PROTECTOR
 	const NAM_PROTEIN
+	const NAM_PUNCHINGLOVE
 	const NAM_QUALOT_BERRY
 	const NAM_QUICK_BALL
 	const NAM_QUICK_CLAW
@@ -508,7 +539,6 @@ endc
 	const NAM_REPEL
 	const NAM_REVIVAL_HERB
 	const NAM_REVIVE
-	const NAM_RING_TARGET
 	const NAM_ROCKY_HELMET
 	const NAM_ROOM_SERVICE
 	const NAM_ROWAP_BERRY
@@ -528,7 +558,6 @@ endc
 	const NAM_SLOWPOKETAIL
 	const NAM_SMOKE_BALL
 	const NAM_SMOOTH_ROCK
-	const NAM_SNOWBALL
 	const NAM_SODA_POP
 	const NAM_SOFT_SAND
 	const NAM_SOOTHE_BELL
@@ -536,12 +565,13 @@ endc
 	const NAM_STAR_PIECE
 	const NAM_STARDUST
 	const NAM_STARF_BERRY
-	const NAM_STICK
 	const NAM_SUN_STONE
 	const NAM_SUPER_POTION
 	const NAM_SUPER_REPEL
 	const NAM_SURF_MAIL
+if !DEF(FAITHFUL)
 	const NAM_SWEET_HONEY
+endc
 	const NAM_TAMATO_BERRY
 	const NAM_THICK_CLUB
 	const NAM_THROAT_SPRAY
@@ -552,7 +582,6 @@ endc
 	const NAM_TWISTEDSPOON
 	const NAM_ULTRA_BALL
 	const NAM_UP_GRADE
-	const NAM_UTILUMBRELLA
 	const NAM_WATER_STONE
 	const NAM_WEAK_POLICY
 	const NAM_WHITE_HERB
@@ -561,11 +590,12 @@ endc
 	const NAM_X_ACCURACY
 	const NAM_X_ATTACK
 	const NAM_X_DEFEND
-	const NAM_X_SPCL_ATK
-	const NAM_X_SPCL_DEF
+	const NAM_X_SP_ATK
+	const NAM_X_SP_DEF
 	const NAM_X_SPEED
 	const NAM_ZINC
 	const NAM_ZOOM_LENS
+	assert const_value - 1 == NUM_ITEMS
 
 ; APRICORN_BOX contents
 	const_def 1
@@ -576,43 +606,101 @@ endc
 	const WHT_APRICORN ; 5
 	const BLK_APRICORN ; 6
 	const PNK_APRICORN ; 7
-NUM_APRICORNS EQU const_value - 1
+DEF NUM_APRICORNS EQU const_value - 1
+
+; WING_CASE contents
+	const_def
+	const HEALTH_WING ; 0
+	const MUSCLE_WING ; 1
+	const RESIST_WING ; 2
+	const SWIFT_WING  ; 3
+	const GENIUS_WING ; 4
+	const CLEVER_WING ; 5
+DEF NUM_WINGS EQU const_value
 
 ; key item ids
 ; indexes for:
 ; - KeyItemNames (see data/items/key_names.asm)
 ; - KeyItemDescriptions (see data/items/descriptions.asm)
 ; - KeyItemAttributes (see data/items/attributes.asm)
+; - KeyItemIconPointers (see data/items/icon_pointers.asm)
+; - KeyItemIconPalettes (see gfx/items/key_items.pal)
 ; - KeyItemEffects (see engine/items/item_effects.asm)
-	const_def
-	const BICYCLE      ; 00
-	const OLD_ROD      ; 01
-	const GOOD_ROD     ; 02
-	const SUPER_ROD    ; 03
-	const COIN_CASE    ; 04
+	const_def 1
+	const BICYCLE      ; 01
+	const OLD_ROD      ; 02
+	const GOOD_ROD     ; 03
+	const SUPER_ROD    ; 04
 	const ITEMFINDER   ; 05
-	const MYSTERY_EGG  ; 06
-	const SQUIRTBOTTLE ; 07
-	const SECRETPOTION ; 08
-	const RED_SCALE    ; 09
-	const CARD_KEY     ; 0a
-	const BASEMENT_KEY ; 0b
-	const S_S_TICKET   ; 0c
-	const PASS         ; 0d
-	const MACHINE_PART ; 0e
-	const LOST_ITEM    ; 0f
-	const RAINBOW_WING ; 10
-	const SILVER_WING  ; 11
-	const CLEAR_BELL   ; 12
-	const GS_BALL      ; 13
-	const BLUE_CARD    ; 14
-	const ORANGETICKET ; 15
-	const MYSTICTICKET ; 16
-	const OLD_SEA_MAP  ; 17
-	const SHINY_CHARM  ; 18
-	const OVAL_CHARM   ; 19
-	const CATCH_CHARM  ; 1a
-	const SILPHSCOPE2  ; 1b
-	const APRICORN_BOX ; 1c
-	const TYPE_CHART   ; 1d
-NUM_KEY_ITEMS EQU const_value
+	const COIN_CASE    ; 06
+	const APRICORN_BOX ; 07
+	const WING_CASE    ; 08
+	const TYPE_CHART   ; 09
+	const GBC_SOUNDS   ; 0a
+	const BLUE_CARD    ; 0b
+	const SQUIRTBOTTLE ; 0c
+	const SILPHSCOPE2  ; 0d
+	const MYSTERY_EGG  ; 0e
+	const SECRETPOTION ; 0f
+	const GO_GOGGLES   ; 10
+	const RED_SCALE    ; 11
+	const CARD_KEY     ; 12
+	const BASEMENT_KEY ; 13
+	const LOST_ITEM    ; 14
+	const MACHINE_PART ; 15
+	const RAINBOW_WING ; 16
+	const SILVER_WING  ; 17
+	const CLEAR_BELL   ; 18
+	const GS_BALL      ; 19
+	const S_S_TICKET   ; 1a
+	const PASS         ; 1b
+	const ORANGETICKET ; 1c
+	const MYSTICTICKET ; 1d
+	const OLD_SEA_MAP  ; 1e
+	const HARSH_LURE   ; 1f
+	const POTENT_LURE  ; 20
+	const MALIGN_LURE  ; 21
+	const SHINY_CHARM  ; 22
+	const OVAL_CHARM   ; 23
+	const CATCH_CHARM  ; 24
+DEF NUM_KEY_ITEMS EQU const_value - 1
+
+; Alphabetical order (see data/items/name_order.asm)
+	const_def 1
+	const NAM_APRICORN_BOX
+	const NAM_BASEMENT_KEY
+	const NAM_BICYCLE
+	const NAM_BLUE_CARD
+	const NAM_CARD_KEY
+	const NAM_CATCH_CHARM
+	const NAM_CLEAR_BELL
+	const NAM_COIN_CASE
+	const NAM_GBC_SOUNDS
+	const NAM_GO_GOGGLES
+	const NAM_GOOD_ROD
+	const NAM_GS_BALL
+	const NAM_HARSH_LURE
+	const NAM_ITEMFINDER
+	const NAM_LOST_ITEM
+	const NAM_MACHINE_PART
+	const NAM_MALIGN_LURE
+	const NAM_MYSTERY_EGG
+	const NAM_MYSTICTICKET
+	const NAM_OLD_ROD
+	const NAM_OLD_SEA_MAP
+	const NAM_ORANGETICKET
+	const NAM_OVAL_CHARM
+	const NAM_PASS
+	const NAM_POTENT_LURE
+	const NAM_RAINBOW_WING
+	const NAM_RED_SCALE
+	const NAM_S_S_TICKET
+	const NAM_SECRETPOTION
+	const NAM_SHINY_CHARM
+	const NAM_SILPHSCOPE2
+	const NAM_SILVER_WING
+	const NAM_SQUIRTBOTTLE
+	const NAM_SUPER_ROD
+	const NAM_TYPE_CHART
+	const NAM_WING_CASE
+	assert const_value - 1 == NUM_KEY_ITEMS

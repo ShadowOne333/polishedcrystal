@@ -1,11 +1,11 @@
-SLOTS_NOMATCH EQU -1
-SLOTS_SEVEN EQU $00
-SLOTS_POKEBALL EQU $04
-SLOTS_CHERRY EQU $08
-SLOTS_PIKACHU EQU $0c
-SLOTS_SQUIRTLE EQU $10
-SLOTS_STARYU EQU $14
-REEL_SIZE EQU 15
+DEF SLOTS_NOMATCH EQU -1
+DEF SLOTS_SEVEN EQU $00
+DEF SLOTS_POKEBALL EQU $04
+DEF SLOTS_CHERRY EQU $08
+DEF SLOTS_PIKACHU EQU $0c
+DEF SLOTS_SQUIRTLE EQU $10
+DEF SLOTS_STARYU EQU $14
+DEF REEL_SIZE EQU 15
 
 _SlotMachine:
 	ld hl, wOptions1
@@ -23,15 +23,13 @@ _SlotMachine:
 	ld hl, wOptions1
 	res NO_TEXT_SCROLL, [hl]
 	ld hl, rLCDC
-	res 2, [hl] ; 8x8 sprites
+	res rLCDC_SPRITE_SIZE, [hl]
 	ret
 
 .InitGFX:
 	call ClearBGPalettes
 	call ClearTileMap
 	call ClearSprites
-;	ld de, MUSIC_NONE
-;	call PlayMusic
 	call DelayFrame
 	call DisableLCD
 	hlbgcoord 0, 0
@@ -50,6 +48,12 @@ _SlotMachine:
 	ld de, vTiles0 tile $00
 	call Decompress
 
+	; unused? just in case
+	ld hl, vTiles0 tile $00
+	ld de, vTiles0 tile $20
+	ld bc, 32 tiles
+	rst CopyBytes
+
 	ld hl, Slots3LZ
 	ld de, vTiles0 tile $40
 	call Decompress
@@ -62,13 +66,18 @@ _SlotMachine:
 	ld de, vTiles2 tile $25
 	call Decompress
 
-	ld hl, SlotsTilemap
-	decoord 0, 0
-	ld bc, SCREEN_WIDTH * 12
+	; unused? just in case
+	ld hl, vTiles2 tile $25
+	ld de, vTiles2 tile $45
+	ld bc, 32 tiles
 	rst CopyBytes
 
+	ld hl, SlotsTilemapLZ
+	decoord 0, 0
+	call Decompress
+
 	ld hl, rLCDC
-	set 2, [hl] ; 8x16 sprites
+	set rLCDC_SPRITE_SIZE, [hl]
 	call EnableLCD
 	ld hl, wSlots
 	ld bc, wSlotsEnd - wSlots
@@ -84,17 +93,6 @@ _SlotMachine:
 	ld [wJumptableIndex], a
 	ld a, SLOTS_NOMATCH
 	ld [wSlotBias], a
-
-;	ld de, MUSIC_GAME_CORNER
-;	ld a, [wMapGroup]
-;	cp GROUP_GOLDENROD_GAME_CORNER
-;	jr nz, .celadon_game_corner
-;	ld a, [wMapNumber]
-;	cp MAP_GOLDENROD_GAME_CORNER
-;	jr nz, .celadon_game_corner
-;	ld de, MUSIC_GAME_CORNER_DPPT
-;.celadon_game_corner
-;	call PlayMusic
 
 	xor a
 	ld [wKeepSevenBiasChance], a
@@ -333,19 +331,23 @@ Slots_PayoutAnim:
 	jmp z, Slots_Next
 	ld e, [hl]
 	dec de
-	ld [hl], e
-	dec hl
+	ld a, e
+	ld [hld], a
 	ld [hl], d
 	ld hl, wCoins
-	ld d, [hl]
-	inc hl
+	ld a, [hli]
 	ld e, [hl]
-	call Slot_CheckCoinCaseFull
-	jr c, .okay
+	ld d, a
+	cp HIGH(50000)
+	jr c, .not_full
+	ld a, e
+	cp LOW(50000)
+	jr nc, .full
+.not_full
 	inc de
-.okay
-	ld [hl], e
-	dec hl
+.full
+	ld a, e
+	ld [hld], a
 	ld [hl], d
 	ld a, [wSlotsDelay]
 	and $7
@@ -384,20 +386,6 @@ Slots_LoadReelState:
 	inc de
 	ld a, [hli]
 	ld [de], a
-	ret
-
-Slot_CheckCoinCaseFull:
-	ld a, d
-	cp HIGH(50000)
-	jr c, .not_full
-	ld a, e
-	cp LOW(50000)
-	jr c, .not_full
-	scf
-	ret
-
-.not_full
-	and a
 	ret
 
 Slots_GetCurrentReelState:
@@ -499,15 +487,15 @@ InitReelTiles:
 	ld bc, wReel1
 	ld hl, wReel1OAMAddr - wReel1
 	add hl, bc
-	ld de, wVirtualOAM + 16 * 4
-	ld [hl], e
-	inc hl
+	ld de, wShadowOAM + 16 * 4
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 	ld hl, wReel1TilemapAddr - wReel1
 	add hl, bc
 	ld de, Reel1Tilemap
-	ld [hl], e
-	inc hl
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 	ld hl, wReel1XCoord - wReel1
 	add hl, bc
@@ -517,15 +505,15 @@ InitReelTiles:
 	ld bc, wReel2
 	ld hl, wReel1OAMAddr - wReel1
 	add hl, bc
-	ld de, wVirtualOAM + 24 * 4
-	ld [hl], e
-	inc hl
+	ld de, wShadowOAM + 24 * 4
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 	ld hl, wReel1TilemapAddr - wReel1
 	add hl, bc
 	ld de, Reel2Tilemap
-	ld [hl], e
-	inc hl
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 	ld hl, wReel1XCoord - wReel1
 	add hl, bc
@@ -535,15 +523,15 @@ InitReelTiles:
 	ld bc, wReel3
 	ld hl, wReel1OAMAddr - wReel1
 	add hl, bc
-	ld de, wVirtualOAM + 32 * 4
-	ld [hl], e
-	inc hl
+	ld de, wShadowOAM + 32 * 4
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 	ld hl, wReel1TilemapAddr - wReel1
 	add hl, bc
 	ld de, Reel3Tilemap
-	ld [hl], e
-	inc hl
+	ld a, e
+	ld [hli], a
 	ld [hl], d
 	ld hl, wReel1XCoord - wReel1
 	add hl, bc
@@ -907,7 +895,7 @@ ReelAction_InitGolem:
 	push af
 	depixel 12, 13
 	ld a, SPRITE_ANIM_INDEX_SLOTS_GOLEM
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_VAR3
 	add hl, bc
 	pop af
@@ -962,7 +950,7 @@ Slots_InitChansey:
 	push bc
 	depixel 12, 0
 	ld a, SPRITE_ANIM_INDEX_SLOTS_CHANSEY
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	pop bc
 	xor a
 	ld [wSlotsDelay], a
@@ -1494,9 +1482,8 @@ Slots_AskBet:
 	text_end
 
 .MenuDataHeader:
-	db $40 ; flags
-	db 10, 14 ; start coords
-	db 17, 19 ; end coords
+	db MENU_BACKUP_TILES
+	menu_coords 14, 10, 19, 17
 	dw .MenuData2
 	db 1 ; default option
 
@@ -1718,7 +1705,7 @@ SlotMachine_AnimateGolem:
 	jr c, .play_sound
 	dec [hl]
 	ld d, 14 * 8
-	call Sine
+	farcall Sine
 	ld hl, SPRITEANIMSTRUCT_YOFFSET
 	add hl, bc
 	ld [hl], a
@@ -1827,7 +1814,7 @@ Slots_AnimateChansey:
 	push bc
 	depixel 12, 13, 0, 4
 	ld a, SPRITE_ANIM_INDEX_SLOTS_EGG
-	call _InitSpriteAnimStruct
+	call InitSpriteAnimStruct
 	pop bc
 	ret
 
@@ -1908,8 +1895,8 @@ Reel3Tilemap:
 	db SLOTS_PIKACHU  ;  1
 	db SLOTS_CHERRY   ;  2
 
-SlotsTilemap:
-INCBIN "gfx/slots/slots.tilemap"
+SlotsTilemapLZ:
+INCBIN "gfx/slots/slots.tilemap.lz"
 
 Slots1LZ:
 INCBIN "gfx/slots/slots_1.2bpp.lz"

@@ -69,11 +69,25 @@ CopyDataUntil::
 	jr nz, CopyDataUntil
 	ret
 
-PrintNum::
-	homecall _PrintNum
+PrintNumFromReg::
+	homecall _PrintNumFromReg
+	ret
+
+FastPrintNum::
+	homecall _FastPrintNum
 	ret
 
 FarPrintText::
-	ldh [hBuffer], a
-	homecall PrintText, [hBuffer]
+	push de
+	ld d, a
+	ldh a, [hROMBank]
+	ld e, a
+	ld a, d
+	rst Bankswitch
+	push de
+	call PrintText
+	pop de
+	ld a, e
+	rst Bankswitch
+	pop de
 	ret

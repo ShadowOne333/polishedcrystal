@@ -1,11 +1,10 @@
 ; Written by Sanqui
 ; https://github.com/froggestspirit/CrystalComplete/blob/master/misc/musicplayer.asm
 
-INCLUDE "constants.asm"
-
-MP_METER0 EQU $20
-MP_METER8 EQU $28
-MP_DUTY0 EQU $29
+DEF MP_METER0 EQU $20
+DEF MP_METER8 EQU $28
+DEF MP_DUTY0 EQU $29
+DEF MP_WAVEFORM0 EQU $2d
 
 
 SECTION "Music Player Graphics", ROMX
@@ -19,21 +18,21 @@ INCBIN "gfx/music_player/note_lines.2bpp.lz"
 
 SECTION "Music Player", ROMX
 
-jrbutton: MACRO
+MACRO jrbutton
 ; assumes hl == hJoyPressed
 	ld a, [hl]
 	and \1
 	jr nz, \2
 ENDM
 
-jpbutton: MACRO
+MACRO jpbutton
 ; assumes hl == hJoyPressed
 	ld a, [hl]
 	and \1
 	jmp nz, \2
 ENDM
 
-jrheldbutton: MACRO
+MACRO jrheldbutton
 ; assumes hl == hJoyDown
 	ld a, [wTextDelayFrames]
 	and a
@@ -47,7 +46,7 @@ jrheldbutton: MACRO
 .no\@:
 ENDM
 
-jpheldbutton: MACRO
+MACRO jpheldbutton
 ; assumes hl == hJoyDown
 	ld a, [wTextDelayFrames]
 	and a
@@ -62,48 +61,7 @@ jpheldbutton: MACRO
 ENDM
 
 MusicPlayerPals:
-if !DEF(MONOCHROME)
-; bg
-	RGB 02, 03, 04
-	RGB 02, 03, 04
-	RGB 10, 12, 14
-	RGB 26, 28, 30
-; green
-	RGB 02, 03, 04
-	RGB 02, 03, 04
-	RGB 06, 26, 06
-	RGB 26, 28, 30
-; blue
-	RGB 02, 03, 04
-	RGB 02, 03, 04
-	RGB 07, 07, 31
-	RGB 26, 28, 30
-; red
-	RGB 02, 03, 04
-	RGB 02, 03, 04
-	RGB 31, 07, 07
-	RGB 26, 28, 30
-else
-rept 4
-	RGB_MONOCHROME_BLACK
-	RGB_MONOCHROME_BLACK
-	RGB_MONOCHROME_DARK
-	RGB_MONOCHROME_WHITE
-endr
-endc
-
-MusicPlayerNotePals:
-if !DEF(MONOCHROME)
-	RGB 02, 03, 04 ; bg
-	RGB 06, 26, 06 ; green
-	RGB 07, 07, 31 ; blue
-	RGB 31, 07, 07 ; red
-else
-	RGB_MONOCHROME_BLACK
-	RGB_MONOCHROME_WHITE
-	RGB_MONOCHROME_DARK
-	RGB_MONOCHROME_LIGHT
-endc
+INCLUDE "gfx/music_player/music_player.pal"
 
 MusicPlayer::
 	call ClearTileMap
@@ -126,9 +84,9 @@ MusicPlayer::
 	ld bc, 4 palettes
 	rst CopyBytes
 
-	ld hl, MusicPlayerNotePals
+	ld hl, MusicPlayerPals
 	ld de, wOBPals2
-	ld bc, 1 palettes
+	ld bc, 4 palettes
 	rst CopyBytes
 
 	pop af
@@ -136,14 +94,14 @@ MusicPlayer::
 
 ; Apply palettes
 	xor a
-	hlcoord 0, 0, wAttrMap
+	hlcoord 0, 0, wAttrmap
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	rst ByteFill
-	hlcoord 3, 17, wAttrMap
+	hlcoord 3, MP_HUD_TOP + 2, wAttrmap
 	ld [hl], $3
-	hlcoord 8, 17, wAttrMap
+	hlcoord 8, MP_HUD_TOP + 2, wAttrmap
 	ld [hl], $2
-	hlcoord 12, 17, wAttrMap
+	hlcoord 13, MP_HUD_TOP + 2, wAttrmap
 	ld a, $1
 	ld [hli], a
 	ld [hl], a
@@ -160,18 +118,18 @@ MusicPlayer::
 ; Load graphics
 	ld hl, MusicPlayerGFX
 	ld de, vTiles2
-	lb bc, BANK(MusicPlayerGFX), $45
+	lb bc, BANK(MusicPlayerGFX), $47
 	call DecompressRequest2bpp
 
 	ld hl, NotesGFX
 	ld de, vTiles0
-	lb bc, BANK(NotesGFX), $80
+	lb bc, BANK(NotesGFX), $1
 	call DecompressRequest2bpp
 
 	call DelayFrame
 
 	ld hl, rLCDC
-	set 7, [hl] ; lcd on
+	set rLCDC_ENABLE, [hl]
 	ei
 
 	call ClearSprites
@@ -205,25 +163,13 @@ RenderMusicPlayer:
 
 	ld bc, 4 * 3
 	ld hl, NoteOAM
-	ld de, wVirtualOAM
+	ld de, wShadowOAM
 	rst CopyBytes
 	call DelayFrame
 	xor a
 	ldh [hOAMUpdate], a ; we will manually do it in LCD interrupt
 
-	ld hl, wChannelSelectorSwitches
-	ld a, NUM_MUSIC_CHANS - 1
-.ch_label_loop:
-	ld [wChannelSelector], a
-	ld a, [hli]
-	push hl
-	call DrawChannelLabel
-	pop hl
-	ld a, [wChannelSelector]
-	dec a
-	cp -1
-	jr nz, .ch_label_loop
-
+	call RedrawChannelLabels
 	call DelayFrame
 
 	ldh a, [rSVBK]
@@ -236,7 +182,7 @@ RenderMusicPlayer:
 	and a
 	jr nz, _RedrawMusicPlayer
 .bad_selection
-	ld a, MUSIC_MAIN_MENU
+	ld a, [wMapMusic]
 ; fallthrough
 
 _RedrawMusicPlayer:
@@ -331,7 +277,7 @@ MusicPlayerLoop:
 	ldh [rSVBK], a
 	call ClearSprites
 	ld hl, rLCDC
-	res 2, [hl] ; 8x8 sprites
+	res rLCDC_SPRITE_SIZE, [hl]
 	ld hl, rIE
 	res LCD_STAT, [hl]
 
@@ -360,14 +306,15 @@ MusicPlayerLoop:
 SongEditor:
 	call MPUpdateUIAndGetJoypad
 	ld hl, hJoyDown
-	jrheldbutton D_UP, .up, 10
+	jpheldbutton D_UP, .up, 10
 	jpheldbutton D_DOWN, .down, 10
 	ld hl, hJoyPressed
 	jrbutton D_LEFT, .left
 	jrbutton D_RIGHT, .right
 	jrbutton A_BUTTON, .a
+	jpbutton B_BUTTON, .b
 	jpbutton START, .start
-	jpbutton SELECT | B_BUTTON, .select_b
+	jpbutton SELECT, .select
 
 	; prioritize refreshing the note display
 	ld a, 2
@@ -406,7 +353,7 @@ SongEditor:
 ; otherwise: toggle editable field
 	ld a, [wChannelSelector]
 	cp MP_EDIT_PITCH
-	jr z, SongEditor
+	jmp z, SongEditor
 	cp MP_EDIT_TEMPO
 	jmp z, AdjustTempo
 	ld c, a
@@ -464,9 +411,27 @@ SongEditor:
 	call DrawPianoRollOverlay
 	jmp SongEditor
 
-.select_b:
+.b:
+; clear settings
+	xor a
+	ld hl, wChannelSelectorSwitches
+rept 4
+	ld [hli], a
+endr
+	ld [hli], a ; wPitchTransposition
+	cp [hl]
+	ld [hl], a ; wTempoAdjustment
+
+	ld d, a
+	ld a, [wSongSelection]
+	ld e, a
+; If wTempoAdjustment was not zero, restart the song at default tempo
+	call nz, PlayMusic2
+
+.select:
 ; exit song editor
 	call ClearChannelSelector
+	call RedrawChannelLabels
 	xor a ; ld a, MP_EDIT_CH1
 	ld [wChannelSelector], a
 	call DrawPitchTransposition
@@ -507,6 +472,8 @@ SongEditor:
 .change_ch1_2:
 	ld [hl], a
 	ld [wCurTrackDuty], a
+	call GetFlags2Addr
+	res SOUND_DUTY_LOOP, [hl]
 	ret
 
 .up_wave:
@@ -533,8 +500,6 @@ SongEditor:
 	and $f0
 	or b
 	ld [wChannel3Intensity], a
-	ld [wCurTrackIntensity], a
-	farcall ReloadWaveform
 	ret
 
 .up_noise:
@@ -812,13 +777,35 @@ ClearChannelSelector:
 	ret
 
 _LocateChannelSelector:
-	ld c, 5
-	call SimpleMultiply
+	add LOW(.x_coords)
+	ld l, a
+	adc HIGH(.x_coords)
+	sub l
+	ld h, a
+	ld a, [hl]
 	hlcoord 3, MP_HUD_TOP
 	add l
 	ld l, a
 	ret nc
 	inc h
+	ret
+
+.x_coords
+	db 0, 5, 10, 16
+
+RedrawChannelLabels:
+	xor a
+	ld hl, wChannelSelectorSwitches
+.ch_label_loop:
+	ld [wChannelSelector], a
+	ld a, [hli]
+	push hl
+	call DrawChannelLabel
+	pop hl
+	ld a, [wChannelSelector]
+	inc a
+	cp NUM_MUSIC_CHANS
+	jr nz, .ch_label_loop
 	ret
 
 DrawChannelLabel:
@@ -831,32 +818,29 @@ DrawChannelLabel:
 .draw
 	ld a, [wChannelSelector]
 	ld l, a
-	ld h, 0
-	add hl, hl
+	add a
+	add a
 	add l
 	ld l, a
+	ld h, 0
 	add hl, de
-	push hl
-
-	hlcoord 0, MP_HUD_TOP
-	ld a, [wChannelSelector]
-	ld c, 5
-	call SimpleMultiply
+	ld a, [hli]
 	ld e, a
-	ld d, 0
-	add hl, de
-	push hl
-	pop de
-	pop hl
-rept 3
+	ld a, [hli]
+	ld d, a
 	ld a, [hli]
 	ld [de], a
 	inc de
-endr
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
 	ret
 
 DrawChData:
 	hlcoord 0, MP_HUD_TOP + 1
+	xor a
 .loop:
 	ld [wTmpCh], a
 	call _DrawCh1_2_3
@@ -867,7 +851,7 @@ DrawChData:
 	jr c, .loop
 
 	; channel 4
-	hlcoord 18, MP_HUD_TOP + 1
+	hlcoord 19, MP_HUD_TOP + 1
 	ld a, [wMusicNoiseSampleSet]
 	add "0"
 	ld [hl], a
@@ -892,7 +876,7 @@ _DrawCh1_2_3:
 	push af
 	push hl
 	call CheckChannelOn
-	ld a, 0
+	ld a, 0 ; no-optimize a = 0
 	jr c, .blank_note_name
 	call GetPitchAddr
 	ld a, [hl]
@@ -929,9 +913,8 @@ _DrawCh1_2_3:
 	ld a, [hl]
 	pop hl
 	and %11000000
-	swap a
-	srl a
-	srl a
+	rlca
+	rlca
 	add MP_DUTY0
 	ld [hl], a
 	pop hl
@@ -950,14 +933,13 @@ _DrawCh1_2_3:
 	push hl
 	call CheckChannelOn
 	pop hl
-	ld a, 0
+	ld a, 0 ; no-optimize a = 0
 	jr c, .blank_volume
 	push hl
 	call GetPitchAddr
 	ld a, [hl]
 	and a
 	pop hl
-	ld a, 0
 	jr z, .blank_volume
 	push hl
 	call GetIntensityAddr
@@ -965,20 +947,30 @@ _DrawCh1_2_3:
 	pop hl
 .blank_volume
 	and $f
-	srl a
-	add MP_METER0
+	rra
+	adc MP_METER0
 	ld [hli], a
 	ld [hld], a
 	ld a, [wTmpCh]
 	cp 2
 	jr nz, .finish
 
-	hlcoord 12, MP_HUD_TOP + 2
+	ld a, [wChannel3Intensity]
+	and $f
+	add "0"
+	cp "9" + 1
+	jr c, .got_digit
+	sub "9" + 1 - "A"
+.got_digit
+	hlcoord 14, MP_HUD_TOP + 1
+	ld [hl], a
+
+	hlcoord 13, MP_HUD_TOP + 2
 	; pick the waveform
 	ld a, [wChannel3Intensity]
 	and $f
-	sla a
-	add $2d
+	add a
+	add MP_WAVEFORM0
 	ld [hli], a
 	inc a
 	ld [hl], a
@@ -1349,7 +1341,7 @@ AddNoteToOld:
 	add a
 	ld c, a
 	ld b, 0
-	ld hl, wVirtualOAM + 3 * 4
+	ld hl, wShadowOAM + 3 * 4
 	add hl, bc
 	push hl
 	pop de
@@ -1377,6 +1369,10 @@ GetPitchAddr:
 
 GetOctaveAddr:
 	ld hl, wChannel1Octave
+	jr _GetChannelMemberAddr
+
+GetFlags2Addr:
+	ld hl, wChannel1Flags2
 	jr _GetChannelMemberAddr
 
 GetDutyCycleAddr:
@@ -1533,7 +1529,7 @@ SongSelector:
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	rst ByteFill
 	ld hl, rLCDC
-	res 1, [hl] ; hide sprites
+	res rLCDC_SPRITES_ENABLE, [hl]
 	call ClearSprites
 
 	hlcoord 0, 0
@@ -1633,7 +1629,7 @@ SongSelector:
 .finish:
 	ld [wSongSelection], a
 	ld hl, rLCDC
-	set 1, [hl] ; show sprites
+	set rLCDC_SPRITES_ENABLE, [hl]
 	ret
 
 UpdateSelectorNames:
@@ -1748,16 +1744,29 @@ MPLPlaceString:
 
 MPTilemap:
 INCBIN "gfx/music_player/music_player.tilemap"
+
+MACRO ch_name
+	dwcoord \1, \2 ; x, y
+	db \3, \4, \5 ; tile ids
+ENDM
+
 ChannelsOnTilemaps:
-INCBIN "gfx/music_player/channels_on.tilemap"
+	ch_name  0, MP_HUD_TOP, $07, $08, $09
+	ch_name  5, MP_HUD_TOP, $07, $08, $0a
+	ch_name 10, MP_HUD_TOP, $0b, $0c, $0d
+	ch_name 16, MP_HUD_TOP, $0e, $0f, $10
+
 ChannelsOffTilemaps:
-INCBIN "gfx/music_player/channels_off.tilemap"
+	ch_name  0, MP_HUD_TOP, $11, $12, $13
+	ch_name  5, MP_HUD_TOP, $11, $12, $14
+	ch_name 10, MP_HUD_TOP, $15, $16, $17
+	ch_name 16, MP_HUD_TOP, $18, $19, $1a
 
 NoteOAM:
 	; y, x, tile id, OAM attributes
-	db 0, 0, $20, PRIORITY
-	db 0, 0, $40, PRIORITY
-	db 0, 0, $60, PRIORITY
+	db 0, 0, $00, PRIORITY | 3 ; red
+	db 0, 0, $00, PRIORITY | 2 ; blue
+	db 0, 0, $00, PRIORITY | 1 ; green
 
 INCLUDE "data/music_player/notes.asm"
 INCLUDE "data/music_player/song_info.asm"
