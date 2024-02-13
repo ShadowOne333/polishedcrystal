@@ -431,7 +431,13 @@ BattleAnim_ThrowPokeBall:
 	anim_jumpif MASTER_BALL, .MasterBall
 	; any other ball
 	anim_3gfx ANIM_GFX_POKE_BALL, ANIM_GFX_POKE_BALL_BG, ANIM_GFX_SMOKE
+	anim_checkcriticalcapture
+	anim_jumpvar $10, .CriticalSFX
 	anim_sound 6, 2, SFX_THROW_BALL
+	anim_jump .DoneSFX
+.CriticalSFX:
+	anim_sound 6, 1, SFX_CRITICAL_CAPTURE
+.DoneSFX:
 	anim_obj ANIM_OBJ_POKE_BALL,   8, 4,  11, 4, $40
 	anim_obj ANIM_OBJ_POKE_BALL_BG,   8, 4,  11, 4, $40
 	anim_wait 36
@@ -483,7 +489,19 @@ BattleAnim_ThrowPokeBall:
 	anim_sound 0, 1, SFX_CHANGE_DEX_MODE
 	anim_incobj 1
 	anim_incobj 2
-	anim_wait 32
+	anim_wait 16
+	anim_checkcriticalcapture
+	anim_jumpvar 0, .not_critical
+	anim_setobj 1, $c
+	anim_setobj 2, $c
+	anim_wait 12
+	anim_incobj 1
+	anim_incobj 2
+	anim_wait 24
+	anim_setobj 1, 4
+	anim_setobj 2, 4
+.not_critical
+	anim_wait 16
 	anim_sound 0, 1, SFX_BALL_BOUNCE
 	anim_wait 32
 	anim_wait 32
@@ -5982,9 +6000,8 @@ BattleAnim_StatUp:
 	anim_1gfx ANIM_GFX_SPEED
 	anim_call BattleAnim_TargetObj_1Row
 	anim_bgeffect ANIM_BG_FADE_MON_TO_LIGHT, $0, $1, $40
-	; anim_bgeffect ANIM_BG_CYCLE_OBPALS_GRAY_AND_YELLOW, $0, $2, $0
 .loop
-	; anim_sound 0, 0, SFX_SWORDS_DANCE
+	anim_sound 0, 0, SFX_STAT_UP
 	anim_obj ANIM_OBJ_STAT_UP,   5, 4,  13, 6, $6
 	anim_wait 2
 	anim_obj ANIM_OBJ_STAT_UP,   4, 4,  13, 6, $6
@@ -6009,9 +6026,8 @@ BattleAnim_StatDown:
 	anim_1gfx ANIM_GFX_SPEED
 	anim_call BattleAnim_TargetObj_1Row
 	anim_bgeffect ANIM_BG_FADE_MON_TO_LIGHT, $0, $1, $40
-	; anim_bgeffect ANIM_BG_CYCLE_OBPALS_GRAY_AND_YELLOW, $0, $2, $0
 .loop
-	; anim_sound 0, 0, SFX_SWORDS_DANCE
+	anim_sound 0, 0, SFX_STAT_DOWN
 	anim_obj ANIM_OBJ_STAT_DOWN, 5, 4,  7, 6, $6
 	anim_wait 2
 	anim_obj ANIM_OBJ_STAT_DOWN, 4, 4,  7, 6, $6

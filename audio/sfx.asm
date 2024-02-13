@@ -5646,4 +5646,56 @@ Sfx_AbilitySlideout:
 	pitch_sweep 0, 8
 	sound_ret
 
+Sfx_CriticalCapture:
+	; This is serviceable but could be improved by someone more experienced.
+	channel_count 1
+	channel 5, .Ch5
+
+.Ch5:
+	duty_cycle 1
+	pitch_sweep 14, 7
+	square_note 5, 14, 8, 2000
+	pitch_sweep 0, 0
+	square_note 5, 14, 8, 2016
+	sound_ret
+
+
+Sfx_StatUp:
+	channel_count 1
+	channel 5, .Ch5
+
+.Ch5:
+	duty_cycle 1
+	pitch_sweep 9, 7
+	square_note 4, 14, 8, 1800
+	square_note 4, 14, 8, 1820
+	square_note 4, 14, 8, 1840
+	square_note 4, 14, 8, 1860
+	square_note 4, 14, 8, 1880
+	square_note 4, 14, 8, 1900
+	square_note 4, 14, 8, 1920
+	square_note 4, 14, 8, 1940
+	square_note 4, 14, 8, 1960
+	sound_ret
+
+
+Sfx_StatDown:
+	channel_count 1
+	channel 5, .Ch5
+
+.Ch5:
+	duty_cycle 1
+	pitch_sweep 9, -7
+	square_note 4, 14, 8, 2000
+	square_note 4, 14, 8, 1980
+	square_note 4, 14, 8, 1960
+	square_note 4, 14, 8, 1940
+	square_note 4, 14, 8, 1920
+	square_note 4, 14, 8, 1900
+	square_note 4, 14, 8, 1880
+	square_note 4, 14, 8, 1860
+	square_note 4, 14, 8, 1840
+	sound_ret
+
+
 ENDSECTION

@@ -98,7 +98,7 @@ DoBattle:
 	call AutomaticBattleWeather
 	call SpikesDamageBoth ; for Air Balloon
 	call BoostGiovannisArmoredMewtwo
-	call RunBothActivationAbilities
+	call RunBothEntryAbilities
 	jr BattleTurn
 
 WildFled_EnemyFled_LinkBattleCanceled:
@@ -966,7 +966,7 @@ ForceDeferredSwitch:
 .regular_spikes
 	call SpikesDamage
 .done_spikes
-	call RunActivationAbilities
+	call RunEntryAbilities
 
 .all_done
 	xor a
@@ -2096,14 +2096,14 @@ SuppressUserNeutralizingGas:
 	ld [hl], -1
 
 	; Unless opponent also has Neutralizing Gas or Unnerve, (re-)run its
-	; activation abilities. Yes, this means that it might run more than once.
+	; entry abilities. Yes, this means that it might run more than once.
 	call GetOpponentAbility
 	cp NEUTRALIZING_GAS
 	ret z
 	cp UNNERVE
 	ret z
 	call SwitchTurn
-	call RunActivationAbilities
+	call RunEntryAbilities
 	jmp SwitchTurn
 
 CheckEnemyTrainerDefeated:
@@ -3141,8 +3141,8 @@ PostBattleTasks::
 	pop bc
 	ret
 
-RunBothActivationAbilities:
-; runs both pokémon's activation abilities (Intimidate, etc.).
+RunBothEntryAbilities:
+; runs both pokémon's entry abilities (Intimidate, etc.).
 ; The faster Pokémon activates abilities first. This mostly
 ; just matter for weather abilities.
 	; Only show Neutralizing Gas message once.
@@ -3161,20 +3161,20 @@ RunBothActivationAbilities:
 	ldh a, [hBattleTurn]
 	push af
 	call SetFastestTurn
-	farcall RunActivationAbilitiesInner
+	farcall RunEntryAbilitiesInner
 	call SwitchTurn
 .single_run
-	farcall RunActivationAbilitiesInner
+	farcall RunEntryAbilitiesInner
 	pop af
 	ldh [hBattleTurn], a
 	ret
 
-RunActivationAbilities:
+RunEntryAbilities:
 ; Trace will, on failure, copy a later switched in Pokémon's
 ; Ability. To handle this correctly without redundancy except
 ; on double switch-ins or similar, we need to do some extra
 ; handling around it.
-	farcall RunActivationAbilitiesInner
+	farcall RunEntryAbilitiesInner
 	call HasUserFainted
 	call nz, HasOpponentFainted
 	ret z
@@ -3187,7 +3187,7 @@ RunActivationAbilities:
 	ret nz
 	; invert whose turn it is to properly handle abilities.
 	call SwitchTurn
-	farcall RunActivationAbilitiesInner
+	farcall RunEntryAbilitiesInner
 	jmp SwitchTurn
 
 SpikesDamage_CheckMoldBreaker:
@@ -4528,6 +4528,11 @@ UserCanSwitch:
 	ld a, b
 	cp HELD_SHED_SHELL
 	ret z
+if !DEF(FAITHFUL)
+	call GetTrueUserAbility
+	cp RUN_AWAY
+	ret z
+endc
 	call CheckIfUserIsGhostType
 	ret z
 	farcall CheckIfTrappedByAbility
