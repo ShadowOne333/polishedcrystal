@@ -376,7 +376,7 @@ BasementDoorScript::
 	waitbutton
 	closetext
 	changeblock 16, 6, $2e
-	reloadmappart
+	refreshmap
 	setevent EVENT_USED_BASEMENT_KEY
 	endtext
 

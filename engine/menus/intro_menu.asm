@@ -769,7 +769,7 @@ GenderMenu::
 	;inc a
 	;ld [hl], a
 	; load opaque palettes
-	call SetPalettes
+	call SetDefaultBGPAndOBP
 	; make other palettes transparent
 	ld hl, wBGPals2 palette 0 + 2
 	call .MakeTransparent
@@ -785,7 +785,7 @@ GenderMenu::
 	inc a
 	ld [hl], a
 	; load opaque palettes
-	call SetPalettes
+	call SetDefaultBGPAndOBP
 	; make other palettes transparent
 	ld hl, wBGPals2 palette 2 + 2
 	call .MakeTransparent
@@ -801,8 +801,8 @@ GenderMenu::
 	inc a
 	ld [hl], a
 	; load opaque palettes
-	call SetPalettes
-	; make other palettes transparent
+	call SetDefaultBGPAndOBP
+	; make other paletees transparent
 	ld hl, wBGPals2 palette 0 + 2
 	call .MakeTransparent
 	ld hl, wBGPals2 palette 3 + 2
