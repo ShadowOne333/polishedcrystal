@@ -458,7 +458,7 @@ ElmAskBattleScript:
 	setevent EVENT_BATTLED_PROF_ELM
 	startbattle
 	reloadmap
-	special HealPartyEvenForNuzlocke
+	special HealParty
 	jumptextfaceplayer ElmAfterBattleText
 
 ElmGiveTicketScript:
@@ -624,7 +624,7 @@ LyraBattleScript:
 	turnobject PLAYER, DOWN
 	applymovement ELMSLAB_LYRA, LyraLeavesMovement
 	disappear ELMSLAB_LYRA
-	special HealPartyEvenForNuzlocke
+	special HealParty
 	setscene $5
 	playmapmusic
 	end

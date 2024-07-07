@@ -197,6 +197,8 @@ wLinkOtherPlayerGender:: db
 
 wPalFlags:: db
 
+wPlayerCurrentOAMSlot:: db
+
 
 SECTION "Sprite Animations", WRAM0
 
@@ -1323,6 +1325,14 @@ wOBP1:: db
 
 wNumHits:: db
 
+wOverworldWeatherTimer:: db
+wOverworldWeatherCooldown:: db
+wSpriteOverlapCount:: db
+wWeatherFlags:: db
+wPrevWeather:: db
+wCurWeather:: db
+wPrevOvercastIndex:: db
+
 
 SECTION "Options", WRAM0
 
@@ -1372,7 +1382,7 @@ wInitialOptions::
 ; bit 2: color variation off/on
 ; bit 3: perfect IVs off/on
 ; bit 4: traded behavior off/on
-; bit 5: nuzlocke mode off/on
+; bit 5: affection bonuses off/on
 ; bit 6: scaled exp on/off
 ; bit 7: physical-special split on/off
 	db
