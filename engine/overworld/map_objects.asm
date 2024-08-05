@@ -2,13 +2,15 @@ INCLUDE "data/sprites/facings.asm"
 
 DeleteMapObject::
 	push bc
-	ld hl, OBJECT_MAP_OBJECT_INDEX
-	add hl, bc
-	ld a, [hl]
-	push af
 	ld h, b
 	ld l, c
-	ld bc, OBJECT_LENGTH
+	xor a
+	ld [hli], a
+	ld a, [hl]
+	push af
+	ld a, -1
+	ld [hli], a
+	ld bc, OBJECT_LENGTH - 2
 	xor a
 	rst ByteFill
 	pop af
@@ -242,6 +244,19 @@ CopyCurCoordsToNextCoords:
 	add hl, bc
 	ld [hl], a
 	ret
+
+GrottoUpdatePlayerTallGrassFlags::
+	ld bc, wPlayerStruct
+	ld hl, OBJECT_MAP_X
+	add hl, bc
+	ld d, [hl]
+	ld hl, OBJECT_MAP_Y
+	add hl, bc
+	ld e, [hl]
+	push bc
+	call GetCoordTileCollision
+	pop bc
+	jr SetTallGrassFlags
 
 UpdateTallGrassFlags:
 	ld hl, OBJECT_FLAGS2
@@ -2481,6 +2496,8 @@ ContinueSpawnFacing:
 	jmp SetSpriteDirection
 
 StartFollow::
+	ld hl, wPlayerFlags + 1
+	set HIGH_PRIORITY_F, [hl]
 	push bc
 	ld a, b
 	call SetLeaderIfVisible
@@ -2514,6 +2531,8 @@ SetFollowerIfVisible:
 	ret
 
 StopFollow::
+	ld hl, wPlayerFlags + 1
+	res HIGH_PRIORITY_F, [hl]
 	ld a, -1
 	ld [wObjectFollow_Leader], a
 	; fallthrough
