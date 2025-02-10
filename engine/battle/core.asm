@@ -1346,6 +1346,10 @@ endr
 	and a
 	jr nz, .enemy_extras_done
 
+	ld a, [wBattleType]
+	cp BATTLETYPE_GHOST
+	jr z, .skip_set_seen_mon
+
 	ld a, [wCurPartySpecies]
 	ld c, a
 	ld a, [wCurForm]
@@ -1354,6 +1358,7 @@ endr
 	call SetSeenMon
 	pop bc
 
+.skip_set_seen_mon
 	ld a, [wBaseExp]
 	ld [wEnemyMonBaseExp], a
 
@@ -3965,7 +3970,7 @@ DrawEnemyHUD:
 
 	ld a, [wBattleType]
 	cp BATTLETYPE_GHOST
-	ld de, .ghost_nickname
+	ld de, GhostNicknameText
 	jr z, .got_nickname
 	ld de, wEnemyMonNickname
 .got_nickname
@@ -4086,9 +4091,6 @@ endr
 	ld [hli], a
 	ld [hl], $58
 	jmp FinishBattleAnim
-
-.ghost_nickname:
-	db "Ghost@"
 
 BattleAnimateHPBar:
 	predef AnimateHPBar
@@ -4423,20 +4425,9 @@ BattleMenuPKMN_Loop:
 	jmp z, TryPlayerSwitch
 	dec a ; STATS
 	jr z, .Stats
-	dec a ; MOVES
-	jr z, .Moves
 	dec a ; CANCEL
 	jr z, .Cancel
 	jr .loop
-
-.Moves:
-	ld a, [wCurPartyMon]
-	ld hl, wPartyMon1IsEgg
-	call GetPartyLocation
-	bit MON_IS_EGG_F, [hl]
-	jr nz, .Cancel
-	farcall ManagePokemonMoves
-	call GetMonBackpic
 
 .Cancel: ; no-optimize stub jump
 	jr BattleMenuPKMN_Loop
@@ -4449,6 +4440,8 @@ BattleMenuPKMN_Loop:
 	call ClearSprites
 	call ClearPalettes
 	call DelayFrame
+	call GetMonBackpic
+	call GetMonFrontpic
 	call _LoadStatusIcons
 	call GetMonBackpic
 	call CloseWindow
@@ -4497,21 +4490,20 @@ BattleMenuPKMN_Loop:
 
 .MenuHeader:
 	db $00 ; flags
-	menu_coords 11, 9, 19, 17
+	menu_coords 10, 11, 19, 17
 	dw .MenuData
 	db 1 ; default option
 
 .MenuData:
 	db $c0 ; flags
-	db 4 ; items
+	db 3 ; items
 	db "Switch@"
-	db "Stats@"
-	db "Moves@"
+	db "Summary@"
 	db "Cancel@"
 
 .EggMenuHeader:
 	db $00 ; flags
-	menu_coords 11, 11, 19, 17
+	menu_coords 10, 11, 19, 17
 	dw .EggMenuData
 	db 1 ; default option
 
@@ -4519,7 +4511,7 @@ BattleMenuPKMN_Loop:
 	db $c0 ; flags
 	db 3 ; items
 	db "Switch@"
-	db "Stats@"
+	db "Summary@"
 	db "Cancel@"
 
 Battle_StatsScreen:
@@ -4533,7 +4525,7 @@ Battle_StatsScreen:
 	ld bc, $31 tiles
 	rst CopyBytes
 	call EnableLCD
-	farcall OpenPartyStats
+	farcall OpenPartySummary
 	call DisableLCD
 	ld hl, vTiles0
 	ld de, vTiles2 tile $31
@@ -7859,6 +7851,13 @@ BattleIntro:
 	call StdBattleTextbox
 	ld a, BATTLETYPE_NORMAL
 	ld [wBattleType], a
+	ld a, [wCurPartySpecies]
+	ld c, a
+	ld a, [wEnemyMonForm]
+	ld b, a
+	push bc
+	call SetSeenMon
+	pop bc
 .skip_ghost_reveal
 	ld hl, rLCDC
 	set rLCDC_WINDOW_TILEMAP, [hl]
