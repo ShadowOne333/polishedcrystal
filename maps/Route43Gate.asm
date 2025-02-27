@@ -47,8 +47,8 @@ RocketScript_Southbound:
 	opentext
 	writetext RocketText_TollFee
 	promptbutton
-	checkmoney $0, ROUTE43GATE_TOLL - 1
-	ifequalfwd $0, RocketScript_TollSouth
+	checkmoney YOUR_MONEY, ROUTE43GATE_TOLL - 1
+	ifequalfwd HAVE_MORE, RocketScript_TollSouth
 	sjumpfwd RocketScript_YoureBrokeSouth
 
 RocketScript_TollSouth:
@@ -79,8 +79,8 @@ RocketScript_Northbound:
 	opentext
 	writetext RocketText_TollFee
 	promptbutton
-	checkmoney $0, ROUTE43GATE_TOLL - 1
-	ifequalfwd $0, RocketScript_TollNorth
+	checkmoney YOUR_MONEY, ROUTE43GATE_TOLL - 1
+	ifequalfwd HAVE_MORE, RocketScript_TollNorth
 	sjumpfwd RocketScript_YoureBrokeNorth
 
 RocketScript_TollNorth:
@@ -103,7 +103,7 @@ RocketScript_ShakeDownNorth:
 	end
 
 RocketScript_TakeToll:
-	takemoney $0, ROUTE43GATE_TOLL
+	takemoney YOUR_MONEY, ROUTE43GATE_TOLL
 	waitsfx
 	playsound SFX_TRANSACTION
 	end

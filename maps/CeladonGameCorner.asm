@@ -104,8 +104,8 @@ CeladonGameCornerFisherScript:
 	checkkeyitem COIN_CASE
 	iffalsefwd .NoCoinCase
 	checkcoins 49999
-	ifequalfwd $0, .FullCoinCase
-	getstring .coinname, $1
+	ifequalfwd HAVE_MORE, .FullCoinCase
+	getstring .coinname, STRING_BUFFER_4
 	callstd receiveitem
 	givecoins 18
 	setevent EVENT_GOT_COINS_FROM_GAMBLER_AT_CELADON
@@ -114,7 +114,7 @@ CeladonGameCornerFisherScript:
 	yesorno
 	iffalsefwd .GotCoins
 	checkcoins 50
-	ifequalfwd $2, .FisherNotEnough
+	ifequalfwd HAVE_LESS, .FisherNotEnough
 	takecoins 50
 	playsound SFX_TRANSACTION
 	scall MapCeladonGameCornerSignpost16Script

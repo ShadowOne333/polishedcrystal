@@ -83,19 +83,19 @@ endc
 	done
 
 .Buy1:
-	checkmoney $0, 1000
-	ifequalfwd $2, .NotEnoughMoney
+	checkmoney YOUR_MONEY, 1000
+	ifequalfwd HAVE_LESS, .NotEnoughMoney
 	giveitem SWEET_HONEY
 	iffalse_jumpopenedtext .BagFullText
-	takemoney $0, 1000
+	takemoney YOUR_MONEY, 1000
 	sjumpfwd .Done
 
 .Buy10:
-	checkmoney $0, 10000
-	ifequalfwd $2, .NotEnoughMoney
+	checkmoney YOUR_MONEY, 10000
+	ifequalfwd HAVE_LESS, .NotEnoughMoney
 	giveitem SWEET_HONEY, 10
 	iffalse_jumpopenedtext .BagFullText
-	takemoney $0, 10000
+	takemoney YOUR_MONEY, 10000
 
 .Done:
 	special PlaceMoneyTopRight

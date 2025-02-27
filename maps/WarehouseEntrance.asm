@@ -218,8 +218,8 @@ OlderHaircutBrotherScript:
 	writetext GoldenrodUndergroundOlderHaircutBrotherOfferHaircutText
 	yesorno
 	iffalsefwd .Refused
-	checkmoney $0, 500
-	ifequalfwd $2, .NotEnoughMoney
+	checkmoney YOUR_MONEY, 500
+	ifequalfwd HAVE_LESS, .NotEnoughMoney
 	writetext GoldenrodUndergroundOlderHaircutBrotherAskWhichMonText
 	promptbutton
 	special Special_OlderHaircutBrother
@@ -249,7 +249,7 @@ OlderHaircutBrotherScript:
 	; fallthrough
 
 .then
-	takemoney $0, 500
+	takemoney YOUR_MONEY, 500
 	special PlaceMoneyTopRight
 	writetext GoldenrodUndergroundOlderHaircutBrotherWatchItBecomeBeautifulText
 	waitbutton
@@ -293,8 +293,8 @@ YoungerHaircutBrotherScript:
 	writetext GoldenrodUndergroundYoungerHaircutBrotherOfferHaircutText
 	yesorno
 	iffalsefwd .Refused
-	checkmoney $0, 300
-	ifequalfwd $2, .NotEnoughMoney
+	checkmoney YOUR_MONEY, 300
+	ifequalfwd HAVE_LESS, .NotEnoughMoney
 	writetext GoldenrodUndergroundYoungerHaircutBrotherAskWhichMonText
 	promptbutton
 	special Special_YoungerHaircutBrother
@@ -322,7 +322,7 @@ YoungerHaircutBrotherScript:
 	clearevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_2
 	setevent EVENT_TEMPORARY_UNTIL_MAP_RELOAD_3
 .then
-	takemoney $0, 300
+	takemoney YOUR_MONEY, 300
 	special PlaceMoneyTopRight
 	writetext GoldenrodUndergroundYoungerHaircutBrotherIllMakeItLookCoolText
 	waitbutton

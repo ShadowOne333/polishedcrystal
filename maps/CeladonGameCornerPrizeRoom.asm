@@ -46,8 +46,8 @@ CeladonPrizeRoom_tmcounterloop:
 	checktmhm TM_DOUBLE_TEAM
 	iftruefwd CeladonPrizeRoom_alreadyhavetm
 	checkcoins CELADONGAMECORNERPRIZEROOM_TM32_COINS
-	ifequalfwd $2, CeladonPrizeRoom_notenoughcoins
-	gettmhmname TM_DOUBLE_TEAM, $0
+	ifequalfwd HAVE_LESS, CeladonPrizeRoom_notenoughcoins
+	gettmhmname TM_DOUBLE_TEAM, STRING_BUFFER_3
 	scall CeladonPrizeRoom_askbuytm
 	iffalse_jumpopenedtext CeladonPrizeRoom_ComeAgainText
 	givetmhm TM_DOUBLE_TEAM
@@ -58,8 +58,8 @@ CeladonPrizeRoom_tmcounterloop:
 	checktmhm TM_TOXIC
 	iftruefwd CeladonPrizeRoom_alreadyhavetm
 	checkcoins CELADONGAMECORNERPRIZEROOM_TM06_COINS
-	ifequalfwd $2, CeladonPrizeRoom_notenoughcoins
-	gettmhmname TM_TOXIC, $0
+	ifequalfwd HAVE_LESS, CeladonPrizeRoom_notenoughcoins
+	gettmhmname TM_TOXIC, STRING_BUFFER_3
 	scall CeladonPrizeRoom_askbuytm
 	iffalse_jumpopenedtext CeladonPrizeRoom_ComeAgainText
 	givetmhm TM_TOXIC
@@ -70,8 +70,8 @@ CeladonPrizeRoom_tmcounterloop:
 	checktmhm TM_GIGA_IMPACT
 	iftruefwd CeladonPrizeRoom_alreadyhavetm
 	checkcoins CELADONGAMECORNERPRIZEROOM_TM68_COINS
-	ifequalfwd $2, CeladonPrizeRoom_notenoughcoins
-	gettmhmname TM_GIGA_IMPACT, $0
+	ifequalfwd HAVE_LESS, CeladonPrizeRoom_notenoughcoins
+	gettmhmname TM_GIGA_IMPACT, STRING_BUFFER_3
 	scall CeladonPrizeRoom_askbuytm
 	iffalse_jumpopenedtext CeladonPrizeRoom_ComeAgainText
 	givetmhm TM_GIGA_IMPACT
@@ -137,8 +137,8 @@ CeladonGameCornerPokemonVendor:
 
 .mr__mime
 	checkcoins CELADONGAMECORNERPRIZEROOM_MR__MIME_COINS
-	ifequal $2, CeladonPrizeRoom_notenoughcoins
-	getmonname MR__MIME, $0
+	ifequal HAVE_LESS, CeladonPrizeRoom_notenoughcoins
+	getmonname MR__MIME, STRING_BUFFER_3
 	scall CeladonPrizeRoom_askbuy
 	iffalse_jumpopenedtext CeladonPrizeRoom_ComeAgainText
 	waitsfx
@@ -154,8 +154,8 @@ CeladonGameCornerPokemonVendor:
 
 .eevee
 	checkcoins CELADONGAMECORNERPRIZEROOM_EEVEE_COINS
-	ifequal $2, CeladonPrizeRoom_notenoughcoins
-	getmonname EEVEE, $0
+	ifequal HAVE_LESS, CeladonPrizeRoom_notenoughcoins
+	getmonname EEVEE, STRING_BUFFER_3
 	scall CeladonPrizeRoom_askbuy
 	iffalse_jumpopenedtext CeladonPrizeRoom_ComeAgainText
 	waitsfx
@@ -171,8 +171,8 @@ CeladonGameCornerPokemonVendor:
 
 .porygon
 	checkcoins CELADONGAMECORNERPRIZEROOM_PORYGON_COINS
-	ifequal $2, CeladonPrizeRoom_notenoughcoins
-	getmonname PORYGON, $0
+	ifequal HAVE_LESS, CeladonPrizeRoom_notenoughcoins
+	getmonname PORYGON, STRING_BUFFER_3
 	scall CeladonPrizeRoom_askbuy
 	iffalse_jumpopenedtext CeladonPrizeRoom_ComeAgainText
 	waitsfx

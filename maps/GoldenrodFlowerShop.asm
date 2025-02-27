@@ -64,19 +64,19 @@ FlowerShopTeacherScript:
 	jumpopenedtext DontBuyMulchText
 
 .Buy1:
-	checkmoney $0, 200
-	ifequalfwd $2, .NotEnoughMoney
+	checkmoney YOUR_MONEY, 200
+	ifequalfwd HAVE_LESS, .NotEnoughMoney
 	giveitem MULCH
 	iffalse_jumpopenedtext NoRoomForMulchText
-	takemoney $0, 200
+	takemoney YOUR_MONEY, 200
 	sjumpfwd .Done
 
 .Buy10:
-	checkmoney $0, 2000
-	ifequalfwd $2, .NotEnoughMoney
+	checkmoney YOUR_MONEY, 2000
+	ifequalfwd HAVE_LESS, .NotEnoughMoney
 	giveitem MULCH, 10
 	iffalse_jumpopenedtext NoRoomForMulchText
-	takemoney $0, 2000
+	takemoney YOUR_MONEY, 2000
 
 .Done:
 	special PlaceMoneyTopRight
