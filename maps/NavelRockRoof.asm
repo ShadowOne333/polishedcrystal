@@ -33,6 +33,10 @@ NavelRockRoofDailyLeafRematchCallback:
 .Disappear
 	endcallback
 
+.Appear:
+	appear NAVELROCKROOF_GREEN
+	endcallback
+
 Leaf:
 	special Special_FadeOutMusic
 	showtextfaceplayer LeafText

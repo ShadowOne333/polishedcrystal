@@ -791,29 +791,34 @@ Music_MewtwoBattleStadium_Ch2:
 	duty_cycle 1
 	octave 3
 	note_type 6, 12, 1
+	volume_envelope 3, 0
 	note B_, 1
 	note A#, 1
 	note A_, 1
 	note G#, 1
 	octave 4
+	volume_envelope 4, 0
 	note C_, 1
 	octave 3
 	note B_, 1
 	note A#, 1
 	note A_, 1
 	octave 4
+	volume_envelope 5, 0
 	note C#, 1
 	note C_, 1
 	octave 3
 	note B_, 1
 	note A_, 1
 	octave 4
+	volume_envelope 6, 0
 	note D_, 1
 	note C#, 1
 	note C_, 1
 	octave 3
 	note B_, 1
 	octave 4
+	volume_envelope 7, 0
 	note D#, 1
 	note D_, 1
 	note C#, 1

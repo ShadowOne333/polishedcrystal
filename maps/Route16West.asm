@@ -27,7 +27,7 @@ GenericTrainerLassGina:
 
 	text "My strappy sandals"
 	line "look sooo cute,"
-	cont "though! ♥"
+	cont "though!"
 	done
 
 .SeenText:
@@ -52,7 +52,7 @@ GenericTrainerLassAlice:
 	text "Our eyes met!"
 
 	para "Now you must date"
-	line "me! ♥"
+	line "me!"
 
 	para "No wait, I mean,"
 	line "we must battle!"
@@ -98,7 +98,7 @@ GenericTrainerCooltrainerfSera:
 	done
 
 .BeatenText:
-	text "Congrats! ♥"
+	text "Congrats!"
 	done
 
 GenericTrainerBeautyNicole:

@@ -550,6 +550,9 @@ INCLUDE "audio/music/prism/gymleaderbattle.asm"
 SECTION "Song - prism/palettebattle", ROMX
 INCLUDE "audio/music/prism/palettebattle.asm"
 
+SECTION "Song - rby/kantogymleader", ROMX
+INCLUDE "audio/music/rby/kantogymleader.asm"
+
 SECTION "Song - go/wildbattle", ROMX
 INCLUDE "audio/music/go/wildbattle.asm"
 
@@ -562,7 +565,7 @@ INCLUDE "audio/music/stadium/mewtwobattle.asm"
 SECTION "Song - m02/lugiassong", ROMX
 INCLUDE "audio/music/m02/lugiassong.asm"
 
-SECTION "Song - undertale/megalovania", ROMX
-INCLUDE "audio/music/undertale/megalovania.asm"
+SECTION "Song - rby/kantochampionbattle", ROMX
+INCLUDE "audio/music/rby/kantochampionbattle.asm"
 
 ENDSECTION
