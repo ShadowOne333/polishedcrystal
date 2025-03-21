@@ -2413,7 +2413,8 @@ _AskQuantityThrowAwayText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	line ""
 	text_ram wStringBuffer2
-	text "(s)?"
+	text_plural
+	text "?"
 	done
 
 SECTION "_ThrewAwayText", ROMX
@@ -2421,7 +2422,8 @@ _ThrewAwayText::
 	text "Threw away"
 	line ""
 	text_ram wStringBuffer2
-	text "(s)."
+	text_plural
+	text "."
 	prompt
 
 SECTION "_OakThisIsntTheTimeText", ROMX
@@ -2818,7 +2820,8 @@ _PlayersPCWithdrewItemsText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	line ""
 	text_ram wStringBuffer2
-	text "(s)."
+	text_plural
+	text "."
 	prompt
 
 SECTION "_PlayersPCNoRoomWithdrawText", ROMX
@@ -2850,7 +2853,8 @@ _PlayersPCDepositItemsText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	line ""
 	text_ram wStringBuffer2
-	text "(s)."
+	text_plural
+	text "."
 	prompt
 
 SECTION "_PlayersPCNoRoomDepositText", ROMX
@@ -3111,16 +3115,8 @@ _ItemsTossOutHowManyText::
 	text "Toss out how many"
 	line ""
 	text_ram wStringBuffer2
-	text "(s)?"
-	done
-
-SECTION "_ItemsThrowAwayText", ROMX
-_ItemsThrowAwayText::
-	text "Throw away "
-	text_decimal wItemQuantityChangeBuffer, 1, 2
-	line ""
-	text_ram wStringBuffer2
-	text "(s)?"
+	text_plural
+	text "?"
 	done
 
 SECTION "_ItemsDiscardedText", ROMX
@@ -3128,7 +3124,8 @@ _ItemsDiscardedText::
 	text "Discarded"
 	line ""
 	text_ram wStringBuffer1
-	text "(s)."
+	text_plural
+	text "."
 	prompt
 
 SECTION "_ItemsOakWarningText", ROMX
@@ -3567,7 +3564,7 @@ _MartFinalPriceText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	text " "
 	text_ram wStringBuffer2
-	text "(s)"
+	text_plural
 	line "will be ¥"
 	text_decimal hMoneyTemp, 3, 7
 	text "."
@@ -3599,7 +3596,7 @@ _HerbalLadyFinalPriceText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	text " "
 	text_ram wStringBuffer2
-	text "(s)"
+	text_plural
 	line "will be ¥"
 	text_decimal hMoneyTemp, 3, 7
 	text "."
@@ -3696,7 +3693,7 @@ _PharmacyFinalPriceText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	text " "
 	text_ram wStringBuffer2
-	text "(s)"
+	text_plural
 	line "will cost ¥"
 	text_decimal hMoneyTemp, 3, 7
 	text "."
@@ -3788,7 +3785,8 @@ _MartBoughtText::
 	text " for"
 	line ""
 	text_ram wStringBuffer2
-	text "(s)."
+	text_plural
+	text "."
 	done
 
 SECTION "_SlotsBetHowManyCoinsText", ROMX
@@ -3822,7 +3820,7 @@ BTMartCostsThisMuchText::
 	text_decimal wItemQuantityChangeBuffer, 1, 2
 	text " "
 	text_ram wStringBuffer1
-	text "(s)"
+	text_plural
 	line "will cost "
 	text_decimal hMoneyTemp+1, 2, 4
 	text " BP."
