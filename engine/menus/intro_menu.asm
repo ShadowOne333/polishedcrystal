@@ -700,7 +700,7 @@ ElmText2:
 	text_far _ElmText2
 	text_asm
 	lp bc, ESPEON
-	call PlayCry
+	call PlayMonCry
 	ld hl, ElmText3
 	ret
 
