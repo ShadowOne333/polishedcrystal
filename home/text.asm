@@ -393,7 +393,12 @@ PlaceEnemysName::
 	rst PlaceString
 	ld h, b
 	ld l, c
+	ld a, [wTextboxFlags]
+	bit NEWLINE_ENEMY_F, a
 	ld de, SpaceText
+	jr z, .no_wordwrap
+	ld de, ContChar
+.no_wordwrap
 	rst PlaceString
 	push bc
 	farcall Battle_GetTrainerName
@@ -407,6 +412,9 @@ PlaceCommandCharacter::
 	ld l, c
 	pop de
 	jmp NextChar
+
+ContChar:
+	db "<CONT>@"
 
 TextCommand_PLURAL:
 ; Pluralize the last word. Might perform edits on it (Candy -> Candies).
@@ -455,8 +463,6 @@ TextCommand_PLURAL:
 	ld l, c
 	pop bc
 	call PlaceString
-	inc hl
-	ld [hl], "@"
 	pop hl
 	ret
 
@@ -843,15 +849,16 @@ DecompressString::
 
 DecompressStringToRAM::
 ; input: hl = string, de = destination
-
+.outer_loop
 	ld a, [hl]
 	cp "<CTXT>"
 	jr nz, .copy_loop
 
 	inc hl ; skip "<CTXT>"
 
+.do_decompression
 	ld b, 1 ; start with no bits to read a byte right away
-.character_loop
+.decompress_loop
 
 	push de
 	call ReadHuffmanChar
@@ -864,10 +871,12 @@ DecompressStringToRAM::
 	; Store decompressed char to WRAM and advance
 	ld [de], a
 	inc de
-	jr .character_loop
+	jr .decompress_loop
 
 .copy_loop
 	ld a, [hli]
+	cp "<CTXT>"
+	jr z, .do_decompression
 	call CheckTerminatorChar
 	jr z, .append_terminator
 	ld [de], a
@@ -875,6 +884,9 @@ DecompressStringToRAM::
 	jr .copy_loop
 
 .append_terminator
+	; to maintain generic usage, this function will return on
+	; any terminator encountered. it is up to the caller to decide
+	; what to do with the given terminator returned in a
 	ld [de], a
 	ret
 
