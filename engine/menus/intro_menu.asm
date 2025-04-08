@@ -764,13 +764,13 @@ InitGender:
 GenderMenu::
 	; erase previous cursors
 	ld a, " "
-	hlcoord 2, 3	; hlcoord 2, 3
+	hlcoord 2, 3
 	ld [hli], a
 	ld [hl], a
-	hlcoord 5, 3	; hlcoord 9, 3
+	hlcoord 5, 3	; 9,3
 	ld [hli], a
 	ld [hl], a
-	hlcoord 12, 3	; hlcoord 16, 3
+	hlcoord 12, 3	; 16,3
 	ld [hli], a
 	ld [hl], a
 
@@ -782,11 +782,11 @@ GenderMenu::
 
 ; PLAYER_ENBY
 	; place cursor
-	;ld a, $69
-	;hlcoord 16, 3
-	;ld [hli], a
-	;inc a
-	;ld [hl], a
+	ld a, $00	; $69 - Cursor tile ID
+	hlcoord 16, 3
+	ld [hli], a
+	inc a
+	ld [hl], a
 	; load opaque palettes
 	call SetDefaultBGPAndOBP
 	; make other palettes transparent
@@ -799,7 +799,7 @@ GenderMenu::
 .male
 	; place cursor
 	ld a, $69
-	hlcoord 5, 3	; hlcoord 2, 3
+	hlcoord 5, 3	; 2,3
 	ld [hli], a
 	inc a
 	ld [hl], a
@@ -815,7 +815,7 @@ GenderMenu::
 .female
 	; place cursor
 	ld a, $69
-	hlcoord 12, 3	; hlcoord 9, 3
+	hlcoord 12, 3	; 9,3
 	ld [hli], a
 	inc a
 	ld [hl], a
@@ -854,7 +854,7 @@ GenderMenu::
 
 .d_right
 	ld a, [wPlayerGender]
-	cp PLAYER_ENBY	; cp PLAYER_FEMALE to allow only MALE/FEMALE
+	cp PLAYER_FEMALE	; PLAYER_ENBY
 	jr z, .got_gender
 	inc a ; male->female, female->enby
 .got_gender
@@ -895,11 +895,11 @@ InitGenderGraphics:
 	lb bc, BANK(ChrisCardPic), 5 * 7
 	call DecompressRequest2bpp
 	ld hl, KrisCardPic
-	ld de, vTiles2 tile $31	; ld de, vTiles2 tile $23
+	ld de, vTiles2 tile $31	; $23
 	lb bc, BANK(KrisCardPic), 5 * 7
 	call DecompressRequest2bpp
 	ld hl, CrysCardPic
-	;ld de, vTiles2 tile $46
+	ld de, vTiles2 tile $54	; $46
 	lb bc, BANK(CrysCardPic), 5 * 7
 	call DecompressRequest2bpp
 
@@ -938,17 +938,17 @@ endr
 
 	xor a
 	ldh [hGraphicStartTile], a
-	hlcoord 3, 4	; hlcoord 0, 4
-	lb bc, 5, 7	; lb bc, 5, 7
+	hlcoord 3, 4	; 0,4
+	lb bc, 5, 7
 	predef PlaceGraphic
-	ld a, $31
+	ld a, $31	; $23
 	ldh [hGraphicStartTile], a
-	hlcoord 10,4	; hlcoord 7, 4
-	lb bc, 5, 7	; lb bc, 5, 7
+	hlcoord 10, 4	; 7,4
+	lb bc, 5, 7
 	;predef PlaceGraphic
-	;ld a, $46
+	;ld a, $54	; $46
 	;ldh [hGraphicStartTile], a
-	;hlcoord 14, 4
+	;hlcoord 16, 4	; 14,4
 	;lb bc, 5, 7
 	predef_jump PlaceGraphic
 

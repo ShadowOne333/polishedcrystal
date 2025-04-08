@@ -2,7 +2,6 @@
 * Remove Lyra: ElmsLab.asm, NewbarkTown.asm, Route34.asm, Route34DayCare.asm, IndigoPlateau Center, phone calls (maybe not? Simply change the girlfriend/boyfriend lines in DayCare)
 
 * Replace Sylveon in the intro menu with another Pokemon (possibly Espeon, originally Wooper) (engine/menus/intro_menu.asm)
-* Remove Cosplayer trainers from the Underground ASM map file
 * Remove the line about the Rival dropping his Trainer Card (CherrygroveCity.asm, remove AfterFight2 stuff)
 * Change TitleScreen song to remain the same after E4 (engine/menus/intro_menu.asm -1053)
 * Changed E4 and Champion to the original Crystal ones, made Agatha and Lorelei use the Gen 1 Kanto Gym Leader track, and Red now uses the Gen 1 Champion theme instead of whatever the current one was. (audio/music.asm, audio/music/rby/songs-here, music_constants.asm, data/music_player/song_info.asm, /data/battle/music.asm - trainers, music_pointers)
@@ -12,4 +11,5 @@
 * Reorder the Trainer Card for the Kanto Gym Leaders (engine/menus , gfx/trainer_card)
 * Flip Bellossom's normal and shiny palettes (same for ending credits colors) (gfx/pokemon/bellossom/normal-shiny.pal)
 
-* 3rd player option hidden. (engine/menus/intro_menu.asm, line 385)
+* 3rd player option hidden. (engine/menus/intro_menu.asm, in GenderMenu: line 764) To remove ENBY and have only Ethan and Kris selectable, change line at 857 from cp PLAYER_ENBY to cp PLAYER_FEMALE
+	cgb_layouts.asm lines 1336, 1337 and 1341 are the palette positions for each character
