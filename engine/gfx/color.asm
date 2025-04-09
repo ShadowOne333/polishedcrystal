@@ -460,26 +460,6 @@ ApplyPals:
 	ld bc, 16 palettes
 	jmp FarCopyColorWRAM
 
-LoadMailPalettes:
-	ld l, a
-	ld h, 0
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	ld de, MailPals
-	add hl, de
-	ld de, wBGPals1
-	ld bc, 1 palettes
-	jmp FarCopyColorWRAM
-
-MailPals:
-INCLUDE "gfx/mail/mail.pal"
-
-LoadAndApplyMailPalettes:
-	call LoadMailPalettes
-	call ApplyPals
-	call WipeAttrMap
-	; fallthrough
 ApplyAttrMap:
 	ldh a, [rLCDC]
 	bit rLCDC_ENABLE, a
@@ -520,16 +500,14 @@ ApplyAttrMapVBank0::
 	ret
 
 ApplyPartyMenuHPPals:
-	ld hl, wHPPals
 	ld a, [wHPPalIndex]
-	ld e, a
-	ld d, $0
-	add hl, de
-	ld e, l
-	ld d, h
-	ld a, [de]
-	inc a
-	ld e, a
+	add LOW(wHPPals)
+	ld l, a
+	adc HIGH(wHPPals)
+	sub l
+	ld h, a
+	ld e, [hl]
+	inc e
 	hlcoord 11, 2, wAttrmap
 	ld bc, 2 * SCREEN_WIDTH
 	ld a, [wHPPalIndex]
