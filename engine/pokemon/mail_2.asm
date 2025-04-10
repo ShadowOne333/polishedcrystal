@@ -53,7 +53,7 @@ ReadAnyMail:
 	pop bc
 	call StackJumpTable
 
-LoadMailGFXJumptable:
+.Jumptable:
 ; entries correspond to mail items
 	table_width 2
 	dw LoadFlowerMailGFX
@@ -348,7 +348,7 @@ LoadBlueSkyMailGFX:
 	ld de, BlueSkyMailGrassGFX
 	ld c, 1 * 8
 	call LoadMailGFX_Color3
-	ld de, MailDragoniteGFX
+	ld de, MailDragoniteAndSentretGFX
 	ld c, 23 * 8
 	call LoadMailGFX_Color3
 	ld de, MailCloudGFX

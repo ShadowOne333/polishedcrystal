@@ -537,7 +537,7 @@ PlayTalkObject:
 	pop de
 	push bc
 	ld c, 3
-	call SFXDelayFrames
+	call DelayFrames
 	pop bc
 	ret
 
@@ -570,7 +570,7 @@ TryObjectEvent:
 
 	call StackJumpTable
 
-ObjectEventTypeArray:
+.Jumptable:
 	table_width 2
 	dw .script   ; OBJECTTYPE_SCRIPT
 	dw .itemball ; OBJECTTYPE_ITEMBALL
