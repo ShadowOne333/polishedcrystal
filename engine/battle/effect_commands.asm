@@ -1087,6 +1087,10 @@ BattleCommand_doturn:
 BattleCommand_hastarget:
 	ld a, BATTLE_VARS_MOVE_EFFECT
 	call GetBattleVar
+	cp EFFECT_SPIKES
+	jr z, .allow_fainted
+	cp EFFECT_TOXIC_SPIKES
+	jr z, .allow_fainted
 	cp EFFECT_FLY
 	jr z, .chargeup_move
 	cp EFFECT_SOLAR_BEAM
@@ -1096,7 +1100,7 @@ BattleCommand_hastarget:
 	ld a, BATTLE_VARS_SUBSTATUS3
 	call GetBattleVar
 	and 1 << SUBSTATUS_CHARGED
-	jr z, .not_fainted
+	jr z, .allow_fainted
 
 .regular
 	; If the target is fainted, abort the move
@@ -1108,6 +1112,12 @@ BattleCommand_hastarget:
 	call StdBattleTextbox
 	call CantMove
 	jmp EndMoveEffect
+
+.allow_fainted
+	; We still need to check if the target is fainted, because if they are, we
+	; should not proc Pressure.
+	call HasOpponentFainted
+	ret z
 
 .not_fainted
 	; Handle Pressure
@@ -6061,7 +6071,10 @@ BattleCommand_heal:
 	call UpdateUserInParty
 	call RefreshBattleHuds
 	ld hl, RegainedHealthText
-	jmp StdBattleTextbox
+	call StdBattleTextbox
+	call SwitchTurn
+	call PostStatus
+	jmp SwitchTurn
 
 .ability_prevents_rest
 	farcall BeginAbility

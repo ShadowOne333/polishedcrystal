@@ -101,6 +101,8 @@ MACRO genders
 	for i, 1, _NARG + 1
 		if !STRCMP("\<i>", "FEMALE")
 			def x |= y
+		else
+			static_assert !STRCMP("\<i>", "MALE")
 		endc
 		def y <<= 1
 	endr
@@ -114,19 +116,33 @@ MACRO with_each
 	endr
 ENDM
 
+; _all is used in macros when we want to allow "All" to cover all 6 stats.
 DEF with_each_stat EQUS "with_each HP, ATK, DEF, SPE, SAT, SDF,"
+DEF with_each_stat_all EQUS "with_each ALL, HP, ATK, DEF, SPE, SAT, SDF,"
+
+MACRO def_dvs
+; each arg: 0-15 All/HP/Atk/Def/Spe/SAt/SDf (All sets all 6 stats).
+; based on showdown importable syntax
+	with_each_stat "def EV_? = 15"
+	def EV_ALL = 0
+	def_dvs_or_evs \#
+ENDM
 
 MACRO def_evs
-; each arg: 0-3 Atk/Def/Spe/SAt/SDf
+; each arg: 0-252 All/HP/Atk/Def/Spe/SAt/SDf (All sets all 6 stats).
 ; based on showdown importable syntax
-	with_each_stat "def EV_? = 0"
+	with_each_stat_all "def EV_? = 0"
+	def_dvs_or_evs \#
+ENDM
+
+MACRO def_dvs_or_evs
 	def EV_TOTAL = 0
 	rept _NARG
 		def _got_ev = 0
-		with_each_stat """
-			def x = STRRIN(STRUPR("\1"), " ?")
-			if !_got_ev && x
-				redef _EV_VALUE EQUS STRSUB("\1", 1, x - 1)
+		with_each_stat_all """
+			def x = STRRFIND(STRUPR("\1"), " ?")
+			if !_got_ev && x != -1
+				redef _EV_VALUE EQUS STRSLICE("\1", 0, x)
 				def EV_? = \{_EV_VALUE}
 				def EV_TOTAL += EV_?
 				def _got_ev = 1
@@ -134,6 +150,11 @@ MACRO def_evs
 			"""
 		if !_got_ev
 			fail "invalid EV \1"
+		endc
+		if EV_ALL != 0
+			def EV_TOTAL = EV_ALL
+			with_each_stat "def EV_? = {EV_TOTAL}"
+			def EV_TOTAL *= 6
 		endc
 		shift
 	endr
