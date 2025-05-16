@@ -419,28 +419,20 @@ ForewarnAbility:
 	ld a, [hli]
 	and a
 	jr z, .done
-	push af
-	push hl
+
 	; Check for special cases
-	ld hl, DynamicPowerMoves
-	call IsInByteArray
+	ld b, a
+	push hl
+	farcall GetMoveEffect
 	pop hl
-	pop bc
-	jr nc, .not_special
-	; Counter/Mirror Coat are regarded as 160BP moves, everything else as 80BP
-	ld c, 160
-	cp COUNTER
+	ld c, 120
+	cp EFFECT_COUNTER
 	jr z, .compare_power
-	cp MIRROR_COAT
-	jr z, .compare_power
-	ld c, 80
-	jr .compare_power
 .not_special
 	ld a, b
-	dec a
 	push hl
 	ld hl, Moves + MOVE_POWER
-	call GetMoveAttr
+	call GetMoveProperty
 	pop hl
 	ld c, a
 	; Status moves have 0 power
@@ -489,8 +481,6 @@ ForewarnAbility:
 	call StdBattleTextbox
 	jmp EndAbility
 
-INCLUDE "data/moves/dynamic_power_moves.asm"
-
 FriskAbility:
 	farcall GetOpponentItem
 	ld a, [hl]
@@ -504,8 +494,6 @@ FriskAbility:
 	jmp EndAbility
 
 ScreenCleanerAbility:
-	; Text order is player 1's screens fade, then player 2's.
-	; Preserves current battle turn (i.e. when mon is switched out via Roar)
 	ld a, [wPlayerScreens]
 	and a
 	jr nz, .screens_up
@@ -517,21 +505,14 @@ ScreenCleanerAbility:
 	call ShowAbilityActivation
 	ldh a, [hBattleTurn]
 	push af
-	ldh a, [hSerialConnectionStatus]
-	cp USING_INTERNAL_CLOCK
-	ld a, 1
-	jr z, .player_2
-	dec a
-.player_2
-	ldh [hBattleTurn], a
-	call .clear_screens
+	call .do_it
 	call SwitchTurn
-	call .clear_screens
+	call .do_it
 	pop af
 	ldh [hBattleTurn], a
 	jmp EndAbility
 
-.clear_screens
+.do_it
 	farcall GetTurnAndPlacePrefix
 	ld hl, wPlayerScreens
 	jr z, .got_screens
@@ -811,8 +792,8 @@ PoisonTouchAbility:
 	; Poison Touch is the same as an opposing Poison Point, and since
 	; abilities always run from the ability user's POV...
 	; Doesn't apply when opponent has a Substitute up...
-	ld b, 0
-	jr DoPoisonAbility
+	farcall CheckSubHit
+	ret nz
 PoisonPointAbility:
 	ld b, 1
 	; fallthrough
@@ -1729,9 +1710,8 @@ RivalryAbility:
 
 SheerForceAbility:
 ; 130% damage if a secondary effect is suppressed
-	ld a, [wEffectFailed]
-	and a
-	ret z
+	farcall CheckSheerForceNegation
+	ret nz
 	ln a, 13, 10 ; x1.3
 	jmp MultiplyAndDivide
 
