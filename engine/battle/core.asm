@@ -919,7 +919,7 @@ ForceDeferredSwitch:
 	; Regenerator, Natural Cure, suppress Neutralizing Gas
 	push hl
 	farcall RunSwitchAbilities
-	call SuppressUserNeutralizingGas
+	call SuppressUserAbilities
 	call UpdateUserInParty
 	pop hl
 
@@ -2109,14 +2109,21 @@ FaintUserPokemon:
 	call StdBattleTextbox
 	call LoadTileMapToTempTileMap
 
-SuppressUserNeutralizingGas:
-; Use -1 as sentinel, not 0. This is because Transform (via Imposter) should
-; regain Neutralizing Gas in case it procs.
+SuppressUserAbilities:
 	ld a, BATTLE_VARS_ABILITY
 	call GetBattleVarAddr
 	ld a, [hl]
+	ld [hl], NO_ABILITY
 	cp NEUTRALIZING_GAS
+	jr z, .neutralizing_gas
+	cp UNNERVE
 	ret nz
+	farcall HandleLeppaBerry
+	farjp HandleHealingItems
+
+.neutralizing_gas
+	; Use -1 as sentinel, not 0. This is because Transform (via Imposter) should
+	; regain Neutralizing Gas in case it procs.
 	ld [hl], -1
 
 	; Unless opponent also has Neutralizing Gas or Unnerve, (re-)run its
@@ -3249,10 +3256,13 @@ SpikesDamage:
 	ld c, 1
 SpikesDamage_GotAbility:
 ; Input: b: ability, c: 0 if forced out, 1 otherwise
+	push de
 	push bc
 	call SetParticipant
-	call HandleAirBalloon
+	ld d, 0
+	farcall CheckAirborne_GotAbility
 	pop bc
+	pop de
 	ret z
 
 	push bc
@@ -3261,20 +3271,7 @@ SpikesDamage_GotAbility:
 	cp HELD_HEAVY_BOOTS
 	pop bc
 	ret z
-	cp HELD_IRON_BALL
-	jr z, .iron_ball
 
-	ld a, b
-	cp LEVITATE
-	ret z
-
-	; Flying-types aren't affected by Spikes.
-	push bc
-	call CheckIfUserIsFlyingType
-	pop bc
-	ret z
-
-.iron_ball
 	ldh a, [hBattleTurn]
 	and a
 	ld hl, wPlayerHazards
