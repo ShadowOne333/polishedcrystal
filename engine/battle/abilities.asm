@@ -269,7 +269,7 @@ IntimidateAbility:
 
 .continue
 	call EndAbility
-	farcall CheckStatHerbs
+	farcall CheckStatHerbsAfterIntimidate
 	call SwitchTurn
 	farjp CheckMirrorHerb
 
@@ -631,7 +631,7 @@ AftermathAbility:
 	call ShowAbilityActivation
 	call SwitchTurn
 	call GetQuarterMaxHP
-	predef SubtractHPFromUser
+	farcall SubtractHPFromUser_OverrideFaintOrder
 	ld hl, IsHurtText
 	call StdBattleTextbox
 	call EndAbility
