@@ -4032,6 +4032,7 @@ GetOpponentActiveScreens:
 	; Set move anim param to notify that we are breaking screens.
 	call .GetScreen
 	ld [wBattleAnimParam], a
+.ret_z
 	xor a
 	ret
 
@@ -4041,7 +4042,7 @@ GetOpponentActiveScreens:
 	ret z
 
 	call CheckCrit
-	ret nz
+	jr nz, .ret_z
 	; fallthrough
 .GetScreen:
 	ldh a, [hBattleTurn]
@@ -5875,16 +5876,9 @@ BattleCommand_traptarget:
 	ret nz
 	call CheckSubstituteOpp
 	ret nz
-	push bc
-	push de
-	push hl
-	call GetUserItem
-	ld a, b
-	cp HELD_PROLONG_WRAP
-	pop hl
-	pop de
-	pop bc
-	jr z, .seven_turns
+	ld a, HELD_PROLONG_WRAP
+	call GetItemBoostedDuration
+	jr z, .got_count
 	call BattleRandom
 	and 1
 	add 4
@@ -6209,17 +6203,19 @@ ResetActorDisable:
 	ret
 
 GetItemBoostedDuration:
+; Returns actual count and z if held item matches, otherwise 5 and nz. 5 isn't
+; necessarily the regular duration, but is set by default since it usually is.
 	push bc
 	push hl
-	ld c, a
-	push bc
+	ld h, a
+	push hl
 	call GetUserItem
+	pop hl
 	ld a, b
-	pop bc
-	cp c
+	cp h
 	ld a, 5
 	jr nz, .got_duration
-	ld a, 8
+	ld a, c
 .got_duration
 	pop hl
 	pop bc
