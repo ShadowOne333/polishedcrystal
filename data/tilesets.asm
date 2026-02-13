@@ -12,6 +12,7 @@ Tilesets::
 	tileset TilesetJohtoTraditional
 	tileset TilesetJohtoModern
 	tileset TilesetJohtoOutlands
+	tileset TilesetJohtoAncient
 	tileset TilesetBattleTowerOutside
 	tileset TilesetEcruteakShrine
 	tileset TilesetKanto
@@ -50,7 +51,6 @@ Tilesets::
 	tileset TilesetPark
 	tileset TilesetSafariZone
 	tileset TilesetRuinsOfAlph
-	tileset TilesetAlphWordRoom
 	tileset TilesetPokemonMansion
 	tileset TilesetBattleFactory
 	tileset TilesetSnowtopMountain
@@ -64,6 +64,7 @@ SECTION "Tileset Graphics - johto common vram0", ROMX
 TilesetJohtoTraditionalGFX0::
 TilesetJohtoModernGFX0::
 TilesetJohtoOutlandsGFX0::
+TilesetJohtoAncientGFX0::
 TilesetBattleTowerOutsideGFX0::
 TilesetEcruteakShrineGFX0:: INCBIN "gfx/tilesets/johto_common.2bpp.lzp"
 
@@ -114,6 +115,18 @@ SECTION "Tileset Data - johto outlands", ROMX
 TilesetJohtoOutlandsMeta:: INCBIN "data/tilesets/johto_outlands_metatiles.bin.lzp"
 TilesetJohtoOutlandsAttr:: INCBIN "data/tilesets/johto_outlands_attributes.bin.lzp"
 TilesetJohtoOutlandsColl:: INCBIN "data/tilesets/johto_outlands_collision.bin.lzp"
+
+
+SECTION "Tileset Graphics - johto ancient vram1", ROMX
+
+TilesetJohtoAncientGFX1:: INCBIN "gfx/tilesets/johto_ancient.johto_common.2bpp.vram0.lzp"
+
+
+SECTION "Tileset Data - johto ancient", ROMX
+
+TilesetJohtoAncientMeta:: INCBIN "data/tilesets/johto_ancient_metatiles.bin.lzp"
+TilesetJohtoAncientAttr:: INCBIN "data/tilesets/johto_ancient_attributes.bin.lzp"
+TilesetJohtoAncientColl:: INCBIN "data/tilesets/johto_ancient_collision.bin.lzp"
 
 
 SECTION "Tileset Graphics - battle tower outside vram1", ROMX
@@ -728,14 +741,12 @@ TilesetSafariZoneColl:: INCBIN "data/tilesets/safari_zone_collision.bin.lzp"
 
 SECTION "Tileset Graphics - ruins of alph vram0", ROMX
 
-TilesetRuinsOfAlphGFX0::
-TilesetAlphWordRoomGFX0:: INCBIN "gfx/tilesets/ruins_of_alph.2bpp.vram0.lzp"
+TilesetRuinsOfAlphGFX0:: INCBIN "gfx/tilesets/ruins_of_alph.2bpp.vram0.lzp"
 
 
 SECTION "Tileset Graphics - ruins of alph vram1", ROMX
 
-TilesetRuinsOfAlphGFX1::
-TilesetAlphWordRoomGFX1:: INCBIN "gfx/tilesets/ruins_of_alph.2bpp.vram1.lzp"
+TilesetRuinsOfAlphGFX1:: INCBIN "gfx/tilesets/ruins_of_alph.2bpp.vram1.lzp"
 
 
 SECTION "Tileset Data - ruins of alph", ROMX
@@ -743,13 +754,6 @@ SECTION "Tileset Data - ruins of alph", ROMX
 TilesetRuinsOfAlphMeta:: INCBIN "data/tilesets/ruins_of_alph_metatiles.bin.lzp"
 TilesetRuinsOfAlphAttr:: INCBIN "data/tilesets/ruins_of_alph_attributes.bin.lzp"
 TilesetRuinsOfAlphColl:: INCBIN "data/tilesets/ruins_of_alph_collision.bin.lzp"
-
-
-SECTION "Tileset Data - alph word room", ROMX
-
-TilesetAlphWordRoomMeta:: INCBIN "data/tilesets/alph_word_room_metatiles.bin.lzp"
-TilesetAlphWordRoomAttr:: INCBIN "data/tilesets/alph_word_room_attributes.bin.lzp"
-TilesetAlphWordRoomColl:: INCBIN "data/tilesets/alph_word_room_collision.bin.lzp"
 
 
 SECTION "Tileset Graphics - pokemon mansion vram0", ROMX
@@ -840,6 +844,7 @@ TilesetPeaksColl:: INCBIN "data/tilesets/peaks_collision.bin.lzp"
 SECTION "Tileset Graphics - Terminator vram2", ROMX
 
 TilesetJohtoOutlandsGFX2::
+TilesetJohtoAncientGFX2::
 TilesetBattleTowerOutsideGFX2::
 TilesetKantoGFX2::
 TilesetIndigoPlateauGFX2::
@@ -877,7 +882,6 @@ TilesetForestGFX2::
 TilesetParkGFX2::
 TilesetSafariZoneGFX2::
 TilesetRuinsOfAlphGFX2::
-TilesetAlphWordRoomGFX2::
 TilesetPokemonMansionGFX2::
 TilesetBattleFactoryGFX2::
 TilesetSnowtopMountainGFX2::

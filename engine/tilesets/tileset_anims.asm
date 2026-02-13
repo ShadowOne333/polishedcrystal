@@ -32,6 +32,7 @@ _AnimateTileset::
 TilesetJohtoTraditionalAnim::
 TilesetJohtoModernAnim::
 TilesetJohtoOutlandsAnim::
+TilesetJohtoAncientAnim::
 TilesetBattleTowerOutsideAnim::
 TilesetEcruteakShrineAnim::
 	dw vTiles2 tile $14, AnimateWaterTile
@@ -363,7 +364,6 @@ TilesetPokeComCenterAnim::
 TilesetBattleTowerInsideAnim::
 TilesetRuinsOfAlphAnim::
 TilesetRadioTowerAnim::
-TilesetAlphWordRoomAnim::
 TilesetPokemonMansionAnim::
 TilesetDecorAnim::
 TilesetMuseumAnim::
