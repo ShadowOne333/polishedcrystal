@@ -628,10 +628,10 @@ if !DEF(DEBUG)
 	call FadeToWhite
 	call ClearTileMap
 
-	ld a, LOW(GLACEON)
+	ld a, LOW(ESPEON)
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
-	ld a, HIGH(GLACEON) << MON_EXTSPECIES_F
+	ld a, HIGH(ESPEON) << MON_EXTSPECIES_F
 	ld [wCurForm], a
 	ld [wTempMonForm], a
 	call GetBaseData
@@ -702,7 +702,7 @@ ElmText1:
 ElmText2:
 	text_far _ElmText2
 	text_asm
-	lp bc, GLACEON
+	lp bc, ESPEON
 	call PlayMonCry
 	ld hl, ElmText3
 	ret
@@ -1235,7 +1235,7 @@ TitleScreenEntrance:
 	ld hl, wStatusFlags
 	bit 6, [hl] ; hall of fame
 	jr z, .ok
-	ld e, MUSIC_TITLE_XY
+	ld e, MUSIC_TITLE
 .ok
 	call PlayMusic
 

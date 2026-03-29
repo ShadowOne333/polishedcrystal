@@ -27,4 +27,5 @@ SongArtists:
 	li "Cat333Pokemon"
 	li "NotFroggestSpirit"
 	li "ShinkoNetCavy,      ShockSlayer"
+	li "ShadowOne333"
 	assert_list_length NUM_SONG_ARTISTS

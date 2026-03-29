@@ -3380,6 +3380,7 @@ endc
 
 	evos_attacks Quilava
 	evo_data EVOLVE_LEVEL, 36, TYPHLOSION
+	evo_data EVOLVE_LOCATION, SINJOH_RUINS, TYPHLOSION, HISUIAN_FORM
 	learnset 1, TACKLE
 	learnset 1, LEER
 	learnset 6, SMOKESCREEN
