@@ -202,7 +202,7 @@ SpriteHeaders:
 	overworld_sprite BeachGuySpriteGFX, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite BeachGirlSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
 	overworld_sprite PiersSpriteGFX, STANDING_SPRITE, PAL_OW_RED
-	overworld_sprite KatySpriteGFX, WALKING_SPRITE, PAL_OW_BROWN
+	overworld_sprite LarrySpriteGFX, STANDING_SPRITE, PAL_OW_GRAY
 	overworld_sprite AlolanExeggutorSpriteGFX, BIG_GYARADOS_SPRITE, PAL_OW_BROWN
 	overworld_sprite SoldierSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
 	overworld_sprite CrysSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
@@ -219,4 +219,5 @@ SpriteHeaders:
 	overworld_sprite BetaBikeSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
 	overworld_sprite BetaSurfSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
 	overworld_sprite BetaRunSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
+	overworld_sprite FloatingBallSpriteGFX, STANDING_SPRITE, PAL_OW_ENV_RED
 	assert_table_length NUM_OVERWORLD_SPRITES
