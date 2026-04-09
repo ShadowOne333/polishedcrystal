@@ -43,7 +43,7 @@ CutGrassBlockPointers:
 
 .indigo_plateau
 	db $0b, $0a
-	db $a2, $f9
+	db $a2, $79
 	db $a3, $14
 	db $bc, $0a
 	db $bd, $0a
@@ -61,7 +61,7 @@ CutGrassBlockPointers:
 	db $d2, $6f
 	db $e5, $e8
 	db $ea, $c2
-	db $ed, $fa
+	db $ed, $7b
 	db -1
 
 .shamouti_island
@@ -116,15 +116,12 @@ CutGrassBlockPointers:
 
 WhirlpoolBlockPointers:
 	dbw TILESET_JOHTO_TRADITIONAL, .johto_traditional
-	dbw TILESET_JOHTO_MODERN, .johto_modern
+	dbw TILESET_JOHTO_COAST, .johto_coast
 	dbw TILESET_JOHTO_OUTLANDS, .johto_outlands
 	db -1
 
 .johto_traditional
+.johto_coast
 .johto_outlands
 	db $07, $07
-	db -1
-
-.johto_modern
-	db $83, $83
 	db -1
