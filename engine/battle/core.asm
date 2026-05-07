@@ -710,7 +710,7 @@ PerformMove:
 	call GetBattleVarAddr
 	res SUBSTATUS_IN_ABILITY, [hl]
 
-	farcall TickDisableAfterMove
+	farcall TickDisableAndEncoreAfterMove
 
 	ld a, BATTLE_VARS_SUBSTATUS1_OPP
 	call GetBattleVarAddr
