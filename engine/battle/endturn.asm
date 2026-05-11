@@ -826,7 +826,7 @@ TickDisableAndEncoreAfterMove:
 .MaybeDecrement:
 	sub [hl]
 	and $f
-	ret z
+	ret nz
 	dec [hl]
 	ret
 
