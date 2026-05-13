@@ -1004,7 +1004,7 @@ endr
 	ld hl, OBJECT_STEP_DURATION
 	add hl, de
 	ld a, [hl]
-	add -1
+	dec a
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	ld [hl], a
@@ -1953,7 +1953,7 @@ INCLUDE "engine/overworld/movement.asm"
 ApplyMovementToFollower:
 	ld e, a
 	ld a, [wObjectFollow_Follower]
-	cp -1
+	inc a ; -1?
 	ret z
 	ld a, [wObjectFollow_Leader]
 	ld d, a
@@ -1993,10 +1993,10 @@ ApplyMovementToFollower:
 GetFollowerNextMovementByte:
 	ld hl, wFollowerMovementQueueLength
 	ld a, [hl]
-	and a
-	jr z, .done
-	cp -1
-	jr z, .done
+	inc a ; -1?
+	jr z, .CancelFollowIfLeaderMissing
+	dec a ; 0?
+	jr z, .CancelFollowIfLeaderMissing
 	dec [hl]
 	ld e, a
 	ld d, 0
@@ -2012,16 +2012,11 @@ GetFollowerNextMovementByte:
 	jr nz, .loop
 	ret
 
-.done
-	call .CancelFollowIfLeaderMissing
-	ret c
-	ld a, movement_step_sleep_1
-	ret
-
 .CancelFollowIfLeaderMissing:
 	ld a, [wObjectFollow_Leader]
-	cp -1
+	inc a ; -1?
 	jr z, .nope
+	dec a
 	push bc
 	call GetObjectStruct
 	ld hl, OBJECT_SPRITE
@@ -2030,14 +2025,13 @@ GetFollowerNextMovementByte:
 	pop bc
 	and a
 	jr z, .nope
-	and a
+	ld a, movement_step_sleep_1
 	ret
 
 .nope
-	ld a, -1
+	dec a ; --0 = -1
 	ld [wObjectFollow_Follower], a
 	ld a, movement_step_end
-	scf
 	ret
 
 SpawnShadow:
