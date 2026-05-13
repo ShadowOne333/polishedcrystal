@@ -105,7 +105,7 @@ _CheckObjectStillVisible:
 .ok
 	ld hl, OBJECT_FLAGS2
 	add hl, bc
-	set 6, [hl]
+	set OFF_SCREEN_F, [hl]
 	ld a, [wXCoord]
 	ld e, a
 	ld hl, OBJECT_INIT_X
@@ -142,7 +142,7 @@ _CheckObjectStillVisible:
 .yes2
 	ld hl, OBJECT_FLAGS2
 	add hl, bc
-	set 6, [hl]
+	set OFF_SCREEN_F, [hl]
 	and a
 	ret
 
@@ -2548,8 +2548,9 @@ StopFollow::
 	; fallthrough
 ResetFollower:
 	ld a, [wObjectFollow_Follower]
-	cp -1
+	inc a ; -1?
 	ret z
+	dec a
 	call GetObjectStruct
 	call ResetObject
 	ld a, -1
@@ -2565,7 +2566,7 @@ FreezeAllOtherObjects::
 	pop bc
 	ld hl, OBJECT_FLAGS2
 	add hl, bc
-	res 5, [hl]
+	res FROZEN_F, [hl]
 	xor a
 	ret
 
