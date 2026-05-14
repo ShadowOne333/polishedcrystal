@@ -308,9 +308,9 @@ InitStep:
 	add hl, bc
 	bit FIXED_FACING_F, [hl]
 	jr nz, GetNextTile
+	and %00000011
 	add a
 	add a
-	and %00001100
 	ld hl, OBJECT_DIRECTION
 	add hl, bc
 	ld [hl], a
@@ -390,14 +390,14 @@ GetStepVector:
 	ld hl, OBJECT_WALKING
 	add hl, bc
 	ld a, [hl]
-	cp (STEP_SLOW << 2 | RIGHT) + 1
-	jr c, .slowStep
 	pop hl
+	and %00001100
+	assert STEP_SLOW == 0
+	jr z, .slowStep
 	pop af
 	and a
 	ret
 .slowStep
-	pop hl
 	pop af
 	scf
 	ret
