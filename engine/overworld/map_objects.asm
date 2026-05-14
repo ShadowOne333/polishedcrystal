@@ -568,20 +568,16 @@ endr
 	dw .MovementBoulderDust          ; SPRITEMOVEFN_BOULDERDUST
 	dw .MovementShakingGrass         ; SPRITEMOVEFN_GRASS
 	dw .MovementSplashingPuddle      ; SPRITEMOVEFN_PUDDLE
-	dw .MovementCutTree              ; SPRITEMOVEFN_CUT_TREE
 	dw .MovementFruit                ; SPRITEMOVEFN_FRUIT
 	dw .MovementBigGyarados          ; SPRITEMOVEFN_BIG_GYARADOS
 	dw .StandingFlip                 ; SPRITEMOVEFN_STANDING_FLIP
-	dw .MovementPokecomNews          ; SPRITEMOVEFN_POKECOM_NEWS
 	dw .MovementMuseumDrill          ; SPRITEMOVEFN_MUSEUM_DRILL
 	dw .MovementSailboatTop          ; SPRITEMOVEFN_SAILBOAT_TOP
 	dw .MovementSailboatBottom       ; SPRITEMOVEFN_SAILBOAT_BOTTOM
 	dw .MovementAlolanExeggutor      ; SPRITEMOVEFN_ALOLAN_EXEGGUTOR
 	dw .MovementTinyWindows          ; SPRITEMOVEFN_TINY_WINDOWS
-	dw .MovementMicrophone           ; SPRITEMOVEFN_MICROPHONE
 	dw .MovementBigHoOh              ; SPRITEMOVEFN_BIG_HO_OH
 	dw .MovementBigLugia             ; SPRITEMOVEFN_BIG_LUGIA
-	dw .MovementAdminMeowth          ; SPRITEMOVEFN_ADMIN_MEOWTH
 	assert_table_length NUM_SPRITEMOVEFN
 
 .RandomWalkY:
@@ -767,14 +763,6 @@ endr
 	ld a, OBJECT_ACTION_BIG_GYARADOS
 	jr ._ActionA_StepFunction_Standing
 
-.MovementPokecomNews:
-	ld a, OBJECT_ACTION_POKECOM_NEWS
-	jr ._ActionA_StepFunction_Standing
-
-.MovementCutTree:
-	ld a, OBJECT_ACTION_CUT_TREE
-	jr ._ActionA_StepFunction_Standing
-
 .MovementFruit:
 	ld a, OBJECT_ACTION_FRUIT
 	jr ._ActionA_StepFunction_Standing
@@ -799,20 +787,12 @@ endr
 	ld a, OBJECT_ACTION_TINY_WINDOWS
 	jr ._ActionA_StepFunction_Standing
 
-.MovementMicrophone:
-	ld a, OBJECT_ACTION_MICROPHONE
-	jr ._ActionA_StepFunction_Standing
-
 .MovementBigHoOh:
 	ld a, OBJECT_ACTION_BIG_HO_OH
 	jr ._ActionA_StepFunction_Standing
 
 .MovementBigLugia:
 	ld a, OBJECT_ACTION_BIG_LUGIA
-	jr ._ActionA_StepFunction_Standing
-
-.MovementAdminMeowth:
-	ld a, OBJECT_ACTION_ADMIN_MEOWTH
 	jr ._ActionA_StepFunction_Standing
 
 .StandingFlip:
@@ -2387,10 +2367,10 @@ CheckCurSpriteCoveredByTextbox:
 	sub TILEMAP_HEIGHT
 .ok6
 	ldh [hCurSpriteYCoord], a
-	; priority check
+; Account for big objects that are twice as wide and high.
 	ld hl, OBJECT_PALETTE
 	add hl, bc
-	bit B_OAM_PRIO, [hl]
+	bit BIG_OBJECT_F, [hl]
 	jr z, .ok7
 	ld a, d
 	add 2
@@ -2920,6 +2900,12 @@ InitSprites:
 	add hl, bc
 	add [hl]
 	add OAM_Y_OFS - 4
+	ld hl, OBJECT_PALETTE
+	add hl, bc
+	bit BG_ALIGNED_F, [hl]
+	jr z, .not_bg_aligned
+	add 4
+.not_bg_aligned
 	ld e, a
 	ld a, [wPlayerBGMapOffsetY]
 	add e
