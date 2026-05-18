@@ -183,10 +183,10 @@ _HandleStepType:
 	table_width 2
 	dw StepFunction_Reset           ; STEP_TYPE_RESET
 	dw StepFunction_FromMovement    ; STEP_TYPE_FROM_MOVEMENT
-	dw StepFunction_NPCWalk         ; STEP_TYPE_NPC_WALK
 	dw StepFunction_Sleep           ; STEP_TYPE_SLEEP
 	dw StepFunction_Standing        ; STEP_TYPE_STANDING
 	dw StepFunction_Restore         ; STEP_TYPE_RESTORE
+	dw StepFunction_NPCWalk         ; STEP_TYPE_NPC_WALK
 	dw StepFunction_PlayerWalk      ; STEP_TYPE_PLAYER_WALK
 	dw StepFunction_ContinueWalk    ; STEP_TYPE_CONTINUE_WALK
 	dw StepFunction_NPCJump         ; STEP_TYPE_NPC_JUMP
@@ -205,6 +205,9 @@ _HandleStepType:
 	dw StepFunction_SkyfallTop      ; STEP_TYPE_SKYFALL_TOP
 	dw StepFunction_NPCStairs       ; STEP_TYPE_NPC_STAIRS
 	dw StepFunction_PlayerStairs    ; STEP_TYPE_PLAYER_STAIRS
+	dw StepFunction_Half1           ; STEP_TYPE_HALF1
+	dw StepFunction_NPCHalf2        ; STEP_TYPE_NPC_HALF2
+	dw StepFunction_PlayerHalf2     ; STEP_TYPE_NPC_HALF2
 	assert_table_length NUM_STEP_TYPES
 
 CopyNextCoordsTileToStandingCoordsTile:
@@ -300,7 +303,7 @@ EndSpriteMovement:
 	ld [hl], STANDING
 	ret
 
-InitStep:
+StartInitStep:
 	ld hl, OBJECT_WALKING
 	add hl, bc
 	ld [hl], a
@@ -314,6 +317,10 @@ InitStep:
 	ld hl, OBJECT_DIRECTION
 	add hl, bc
 	ld [hl], a
+	ret
+
+InitStep:
+	call StartInitStep
 GetNextTile:
 	call GetStepVector
 	ld hl, OBJECT_STEP_DURATION
@@ -440,6 +447,7 @@ UpdatePlayerStep:
 	and %00000011
 	ld [wPlayerStepDirection], a
 	call AddStepVector
+ApplyPlayerStep:
 	ld a, [wPlayerStepVectorX]
 	add d
 	ld [wPlayerStepVectorX], a
@@ -1511,8 +1519,32 @@ StepFunction_Standing:
 	ld [hl], STANDING
 	ret
 
+UndoHalfStepOffset:
+	ld hl, OBJECT_STEP_DURATION
+	add hl, bc
+	ld a, [hl]
+	and %1
+	ret nz
+	ld hl, OBJECT_SPRITE_X_OFFSET
+	add hl, bc
+	ld a, [hl]
+	sub d
+	ld [hl], a
+	ld hl, OBJECT_SPRITE_Y_OFFSET
+	add hl, bc
+	ld a, [hl]
+	sub e
+	ld [hl], a
+	ret
+
+StepFunction_NPCHalf2:
+	call AddStepVector
+	call UndoHalfStepOffset
+	jr _ContinueNPCWalk
+
 StepFunction_NPCWalk:
 	call AddStepVector
+_ContinueNPCWalk:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
@@ -1535,8 +1567,7 @@ StepFunction_ContinueWalk:
 	call CopyNextCoordsTileToStandingCoordsTile
 	jmp RandomStepDuration_Slow
 
-StepFunction_PlayerWalk:
-; AnimateStep?
+StepFunction_PlayerHalf2:
 	call Field1cAnonymousJumptable
 ; anonymous dw
 	dw .init
@@ -1548,6 +1579,22 @@ StepFunction_PlayerWalk:
 	call IncrementObjectStructField1c
 .step
 	call UpdatePlayerStep
+	call UndoHalfStepOffset
+	jr _ContinuePlayerWalk
+
+StepFunction_PlayerWalk:
+	call Field1cAnonymousJumptable
+; anonymous dw
+	dw .init
+	dw .step
+
+.init
+	ld hl, wPlayerStepFlags
+	set PLAYERSTEP_START_F, [hl]
+	call IncrementObjectStructField1c
+.step
+	call UpdatePlayerStep
+_ContinuePlayerWalk:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
@@ -1885,15 +1932,9 @@ UpdateDiagonalStairsPosition:
 	ret
 
 GetPlayerNextMovementByte:
-; copy [wPlayerNextMovement] to [wPlayerMovement]
-	ld a, [wPlayerNextMovement]
-	ld hl, wPlayerMovement
-	ld [hl], a
-; load [wPlayerNextMovement] with movement_step_sleep_1
-	ld a, movement_step_sleep_1
-	ld [wPlayerNextMovement], a
-; recover the previous value of [wPlayerNextMovement]
+	ld hl, wPlayerNextMovement
 	ld a, [hl]
+	ld [hl], movement_step_sleep_1
 	ret
 
 GetMovementByte:
@@ -1959,6 +2000,11 @@ ApplyMovementToFollower:
 	ld d, 0
 	ld hl, wFollowMovementQueue
 	add hl, de
+	ld a, [wFollowInSync]
+	and a
+	jr z, .no_sync
+	dec hl
+.no_sync
 	pop af
 	ld [hl], a
 	ret
@@ -2455,7 +2501,6 @@ HandleNPCStep::
 RefreshPlayerSprite:
 	ld a, movement_step_sleep_1
 	ld [wPlayerNextMovement], a
-	ld [wPlayerMovement], a
 	xor a
 	ld [wPlayerTurningDirection], a
 	ld [wPlayerStepFrame], a
@@ -3019,4 +3064,37 @@ endr
 	cpl
 	add (OAM_COUNT - 4) * OBJ_SIZE + 1
 	ld [wPlayerCurrentOAMSlot], a
+	ret
+
+StepFunction_Half1:
+	call GetStepVector
+	jr nc, .ok
+	ld hl, OBJECT_STEP_DURATION
+	add hl, bc
+	ld a, [hl]
+	and %1
+	jr nz, .ok
+	lb de, 0, 0
+.ok
+	ld hl, OBJECT_SPRITE_X_OFFSET
+	add hl, bc
+	ld a, [hl]
+	add d
+	ld [hl], a
+	ld hl, OBJECT_SPRITE_Y_OFFSET
+	add hl, bc
+	ld a, [hl]
+	add e
+	ld [hl], a
+
+	ld hl, OBJECT_STEP_DURATION
+	add hl, bc
+	dec [hl]
+	ret nz
+	ld hl, OBJECT_WALKING
+	add hl, bc
+	ld [hl], STANDING
+	ld hl, OBJECT_STEP_TYPE
+	add hl, bc
+	ld [hl], STEP_TYPE_FROM_MOVEMENT
 	ret
