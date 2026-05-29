@@ -782,7 +782,7 @@ AnimateFireTiles:
 	sub l
 	ld h, a
 
-	jr WriteTwoTilesHLToDE
+	jmp WriteTwoTilesHLToDE
 
 AnimateTorchTile:
 	ld hl, sp + 0
@@ -803,6 +803,19 @@ AnimateTorchTile:
 	ld h, a
 
 	jmp WriteTileHLToDE
+
+AnimateTubeLightTiles:
+	ld hl, sp + 0
+	ld b, h
+	ld c, l
+
+	ldh a, [hVBlankCounter]
+	and %10
+	ld hl, vTiles2 tile $48
+	jr z, WriteFourTilesHLToDE
+	assert HIGH(vTiles2 tile $48) == HIGH(vTiles2 tile $4c)
+	ld l, LOW(vTiles2 tile $4c)
+	; fallthrough
 
 WriteFourTilesHLToDE:
 	ld sp, hl

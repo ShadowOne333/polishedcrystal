@@ -103,6 +103,21 @@ TilesetTowerAnim::
 	tileframe StandingTileFrame
 	tileframe DoneTileAnimation
 
+TilesetUndergroundAnim::
+	tileframe AnimateTubeLightTiles,    $0:44
+	tileframe DoNothing
+	tileframe AnimateTubeLightTiles,    $0:44
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe AnimateTubeLightTiles,    $0:44
+	tileframe DoNothing
+	tileframe AnimateTubeLightTiles,    $0:44
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe DoneTileAnimation
+
 TilesetCaveAnim::
 TilesetQuietCaveAnim::
 	tileframe FlickeringCaveEntrancePalette
@@ -283,7 +298,6 @@ TilesetMansionAnim::
 TilesetGameCornerAnim::
 TilesetMagnetTrainAnim::
 TilesetLighthouseAnim::
-TilesetUndergroundAnim::
 TilesetPokeComCenterAnim::
 TilesetBattleTowerInsideAnim::
 TilesetRuinsOfAlphAnim::
