@@ -220,6 +220,14 @@ TilesetTraditionalHouseAnim::
 	tileframe StandingTileFrame8
 	tileframe DoneTileAnimation
 
+TilesetPokeComCenterAnim::
+	tileframe CycleJudgeMachinePalette
+	tileframe AnimateJudgeMachineTiles, $1:57
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe StandingTileFrame
+	tileframe DoneTileAnimation
+
 TilesetTunnelAnim::
 	tileframe FlickeringCaveEntrancePalette
 	tileframe ScrollTileRightLeft,      $0:26
@@ -262,13 +270,13 @@ TilesetSnowtopMountainAnim::
 
 TilesetFacilityAnim::
 	tileframe AnimateTurbineTiles,      $0:6c
-	tileframe StandingTileFrame8
+	tileframe DoNothing
 	tileframe AnimateFountainTile,      $0:4d
 	tileframe AnimateTurbineTiles,      $0:6c
-	tileframe StandingTileFrame8
+	tileframe DoNothing
 	tileframe DoNothing
 	tileframe AnimateTurbineTiles,      $0:6c
-	tileframe StandingTileFrame8
+	tileframe DoNothing
 	tileframe DoNothing
 	tileframe AnimateTurbineTiles,      $0:6c
 	tileframe StandingTileFrame8
@@ -276,13 +284,13 @@ TilesetFacilityAnim::
 
 TilesetHideoutAnim::
 	tileframe AnimateTurbineTiles,      $0:6c
-	tileframe StandingTileFrame8
+	tileframe DoNothing
 	tileframe AnimateSpinnerTile,       $0:07
 	tileframe AnimateTurbineTiles,      $0:6c
-	tileframe StandingTileFrame8
+	tileframe DoNothing
 	tileframe DoNothing
 	tileframe AnimateTurbineTiles,      $0:6c
-	tileframe StandingTileFrame8
+	tileframe DoNothing
 	tileframe DoNothing
 	tileframe AnimateTurbineTiles,      $0:6c
 	tileframe StandingTileFrame8
@@ -298,7 +306,6 @@ TilesetMansionAnim::
 TilesetGameCornerAnim::
 TilesetMagnetTrainAnim::
 TilesetLighthouseAnim::
-TilesetPokeComCenterAnim::
 TilesetBattleTowerInsideAnim::
 TilesetRuinsOfAlphAnim::
 TilesetRadioTowerAnim::
