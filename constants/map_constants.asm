@@ -35,7 +35,7 @@ ENDM
 	map_const OLIVINE_CAFE,                                5,  4 ;  6
 	map_const OLIVINE_MART,                                6,  4 ;  7
 	map_const ROUTE_38_ECRUTEAK_GATE,                      5,  4 ;  8
-	map_const ROUTE_39_BARN,                               4,  4 ;  9
+	map_const ROUTE_39_BARN,                               7,  4 ;  9
 	map_const ROUTE_39_FARMHOUSE,                          4,  4 ; 10
 	map_const ROUTE_38,                                   20,  9 ; 11
 	map_const ROUTE_39,                                   10, 27 ; 12
@@ -67,7 +67,7 @@ ENDM
 	map_const TIN_TOWER_2F,                                8,  8 ;  5
 	map_const TIN_TOWER_3F,                                8,  8 ;  6
 	map_const TIN_TOWER_4F,                                8,  8 ;  7
-	map_const TIN_TOWER_5F,                                8,  8 ;  8
+	map_const TIN_TOWER_5F,                                8,  9 ;  8
 	map_const TIN_TOWER_6F,                                8,  8 ;  9
 	map_const TIN_TOWER_7F,                                8,  8 ; 10
 	map_const TIN_TOWER_8F,                                8,  8 ; 11
