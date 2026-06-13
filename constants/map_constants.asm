@@ -443,7 +443,7 @@ ENDM
 	map_const ROUTE_7,                                    10,  9 ;  1
 	map_const ROUTE_16_EAST,                              14,  7 ;  2
 	map_const ROUTE_17_NORTH,                             12, 10 ;  3
-	map_const ROUTE_17_SOUTH,                             10, 63 ;  4
+	map_const ROUTE_17_SOUTH,                             10, 62 ;  4
 	map_const ROUTE_18_WEST,                              12,  9 ;  5
 	map_const URAGA_CHANNEL_EAST,                         23,  9 ;  6
 	map_const CELADON_CITY,                               22, 18 ;  7
@@ -521,7 +521,7 @@ ENDM
 
 	newgroup                                                     ; 23
 	map_const ROUTE_2_SOUTH,                              12, 18 ;  1
-	map_const ROUTE_22,                                   15,  9 ;  2
+	map_const ROUTE_22,                                   17,  9 ;  2
 	map_const VIRIDIAN_CITY,                              20, 18 ;  3
 	map_const VIRIDIAN_GYM,                                7, 22 ;  4
 	map_const VIRIDIAN_NICKNAME_SPEECH_HOUSE,              4,  4 ;  5
