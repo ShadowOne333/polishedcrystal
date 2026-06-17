@@ -56,19 +56,32 @@ StandingTileFrame8:
 	ld [wTileAnimationTimer], a
 	ret
 
+ScrollFourTilesUpDownLeftRight:
+	ld h, d
+	ld l, e
+	call _ScrollTileUp
+	ld bc, TILE_SIZE + 1
+	add hl, bc
+	call _ScrollTileDown
+	call _ScrollTileLeft
+	jr _ScrollTileRight
+
 ScrollTileRightLeft:
 ; Scroll right for 4 ticks, then left for 4 ticks.
+	ld h, d
+	ld l, e
 	ld a, [wTileAnimationTimer]
 	inc a
 	and %111
 	ld [wTileAnimationTimer], a
 	and %100
-	jr nz, ScrollTileLeft
+	jr nz, _ScrollTileLeft
 	; fallthrough
 
-ScrollTileRight:
-	ld h, d
-	ld l, e
+;ScrollTileRight:
+;	ld h, d
+;	ld l, e
+_ScrollTileRight:
 	ld c, TILE_SIZE / 4
 .loop
 rept 4
@@ -80,9 +93,10 @@ endr
 	jr nz, .loop
 	ret
 
-ScrollTileLeft:
-	ld h, d
-	ld l, e
+;ScrollTileLeft:
+;	ld h, d
+;	ld l, e
+_ScrollTileLeft:
 	ld c, TILE_SIZE / 4
 .loop
 rept 4
@@ -104,9 +118,10 @@ endr
 ;	jr nz, ScrollTileDown
 ;	; fallthrough
 
-ScrollTileUp:
-	ld h, d
-	ld l, e
+;ScrollTileUp:
+;	ld h, d
+;	ld l, e
+_ScrollTileUp:
 	ld a, [hli]
 	ld e, [hl]
 	ld d, a
@@ -130,9 +145,10 @@ ScrollTileUp:
 	jr nz, .loop
 	ret
 
-ScrollTileDown:
-	ld h, d
-	ld l, e
+;ScrollTileDown:
+;	ld h, d
+;	ld l, e
+_ScrollTileDown:
 	ld de, TILE_SIZE - 2
 	push hl
 	add hl, de
@@ -266,12 +282,10 @@ AnimateKantoWaterTile:
 	ld b, h
 	ld c, l
 
-	; period 4, every 2 frames, offset to 1 tile (16 bytes)
+	; period 8, offset to 1 tile (16 bytes)
 	ld a, [wTileAnimationTimer]
-	maskbits 4, 1
-	add a
-	add a
-	add a
+	maskbits 8
+	swap a
 
 	add LOW(.KantoWaterTileFrames)
 	ld l, a
