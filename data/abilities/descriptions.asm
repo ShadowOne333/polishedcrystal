@@ -133,6 +133,7 @@ AbilityDescriptions:
 	dw SapSipperDescription
 	dw PranksterDescription
 	dw SandForceDescription
+	dw IronBarbsDescription
 	dw FurCoatDescription
 	dw BulletproofDescription
 	dw CompetitiveDescription
@@ -811,8 +812,13 @@ PranksterDescription:
 	done
 
 SandForceDescription:
-	text "Boosts some moves"
-	next "in a sandstorm."
+	text "Ups Rock, Ground,"
+	next "and Steel in sand."
+	done
+
+IronBarbsDescription:
+	text "Hurts foes who"
+	next "make contact."
 	done
 
 FurCoatDescription:
