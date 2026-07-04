@@ -5941,4 +5941,3 @@ endc
 	EggEvosAttacks:
 	db -1 ; no more evolutions
 	db -1 ; no more level-up moves
-

@@ -1786,4 +1786,3 @@ ElmsLabTrashcanText:
 	line "the snack Prof.Elm"
 	cont "ate is in there…"
 	done
-
