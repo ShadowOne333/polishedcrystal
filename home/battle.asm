@@ -707,7 +707,7 @@ CheckMoveSpeed::
 	ldh [hBattleTurn], a
 	ld a, d ; +1/+2: player, -1/-2: enemy, 0: both/neither
 	and a
-	jmp z, CheckSpeed
+	jr z, CheckSpeed
 	dec a
 	ret z
 	dec a
@@ -736,8 +736,7 @@ CheckMoveSpeed::
 	cp 30
 	jr nc, .quick_draw_done
 
-	farcall BeginAbility
-	farcall ShowAbilityActivation
+	farcall BeginAndShowUserAbility
 	ld hl, BattleText_UserItemLetItMoveFirst
 	call StdBattleTextbox
 	farcall EndAbility
