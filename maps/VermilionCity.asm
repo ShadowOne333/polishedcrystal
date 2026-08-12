@@ -22,8 +22,7 @@ VermilionCity_MapScriptHeader:
 	warp_event 29, 35, SEAGALLOP_FERRY_VERMILION_GATE, 1
 	warp_event 13,  5, VERMILION_POLLUTION_SPEECH_HOUSE, 1
 	warp_event 19,  5, VERMILION_S_S_ANNE_SPEECH_HOUSE, 1
-	warp_event 27,  9, BATTLE_FACTORY_1F, 1
-	warp_event 28,  9, BATTLE_FACTORY_1F, 2
+	warp_event 28,  9, BATTLE_FACTORY_1F, 1
 
 	def_coord_events
 
@@ -36,6 +35,7 @@ VermilionCity_MapScriptHeader:
 	bg_event 23,  9, BGEVENT_JUMPTEXT, VermilionCityBattleFactorySignText
 	bg_event 10, 27, BGEVENT_JUMPTEXT, VermilionCityAdvancedTipsSignText
 	bg_event 12, 23, BGEVENT_ITEM + FULL_HEAL, EVENT_VERMILION_CITY_HIDDEN_FULL_HEAL
+	bg_event 32,  6, BGEVENT_ITEM + MAX_ETHER, EVENT_VERMILION_CITY_HIDDEN_MAX_ETHER
 
 	def_object_events
 	object_event 35, 18, SPRITE_BIG_SNORLAX, SPRITEMOVEDATA_SNORLAX, 0, 0, -1, 0, OBJECTTYPE_SCRIPT, 0, VermilionSnorlax, EVENT_VERMILION_CITY_SNORLAX
@@ -47,8 +47,7 @@ VermilionCity_MapScriptHeader:
 	object_event 31, 12, SPRITE_POKEMANIAC, SPRITEMOVEDATA_WALK_UP_DOWN, 1, 0, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, VermilionCitySuperNerd2Script, -1
 	object_event 11,  8, SPRITE_SAILOR, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 0, 3, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCitySailorText, -1
 	object_event 19, 17, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, PAL_NPC_PURPLE, OBJECTTYPE_SCRIPT, 0, VermilionGymBadgeGuy, -1
-	object_event 27, 10, SPRITE_OFFICER_F, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCityOfficerFText, EVENT_RESTORED_POWER_TO_KANTO
-	object_event 28, 10, SPRITE_OFFICER, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCityOfficerText, EVENT_RESTORED_POWER_TO_KANTO
+	object_event 28, 10, SPRITE_OFFICER_F, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, 0, OBJECTTYPE_COMMAND, jumptextfaceplayer, VermilionCityOfficerFText, EVENT_RESTORED_POWER_TO_KANTO
 	cuttree_event 13, 23, EVENT_VERMILION_CITY_CUT_TREE
 
 	object_const_def
@@ -69,14 +68,7 @@ VermilionCitySetupLawrenceCallback:
 VermilionCitySetupBattleFactoryCallback:
 	checkevent EVENT_RESTORED_POWER_TO_KANTO
 	iftruefwd .done
-	changeblock 24,  6, $a8
-	changeblock 26,  6, $a9
-	changeblock 28,  6, $a9
-	changeblock 30,  6, $aa
-	changeblock 24,  8, $e4
-	changeblock 26,  8, $e5
-	changeblock 28,  8, $e6
-	changeblock 30,  8, $e7
+	changeblock 28,  8, $f3
 .done
 	endcallback
 
@@ -368,15 +360,6 @@ VermilionCitySuperNerd2Text:
 	done
 
 VermilionCityOfficerFText:
-	text "The Power Plant's"
-	line "generator is shut"
-	cont "down, so it's not"
-
-	para "safe to open the"
-	line "Battle Factory."
-	done
-
-VermilionCityOfficerText:
 	text "Sorry, the Battle"
 	line "Factory is closed"
 
@@ -390,7 +373,6 @@ VermilionCitySailorText:
 	line "good sea air!"
 	done
 
-
 VermilionCityRadioNearSnorlaxText:
 	text "The #gear was"
 	line "placed near the"
@@ -400,9 +382,6 @@ VermilionCityRadioNearSnorlaxText:
 
 	para "Snorlax woke up!"
 	done
-
-
-
 
 VermilionCityBadgeGuyAllBadgesText:
 	text "Congratulations!"
