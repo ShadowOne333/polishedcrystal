@@ -8,6 +8,7 @@
 	const_def 1
 	const PAL_SINGLE
 	const PAL_TIMEOFDAY
+	const PAL_TIMEWEATHER
 	const PAL_SPECIAL
 
 LoadBlindingFlashPalette::
@@ -46,6 +47,8 @@ LoadSpecialMapPalette:
 	jr z, LoadSevenBGPalettes
 	dec a ; PAL_TIMEOFDAY?
 	jr z, LoadSevenTimeOfDayBGPalettes
+	dec a ; PAL_TIMEWEATHER?
+	jr z, LoadSevenTimeWeatherBGPalettes
 	; PAL_SPECIAL
 	jp hl
 
@@ -59,12 +62,23 @@ endr
 	and a
 	ret
 
+LoadSevenTimeWeatherBGPalettes:
+	push hl
+	farcall GetOvercastIndex
+	pop hl
+	and a
+	jr z, LoadSevenTimeOfDayBGPalettes
+	; skip the four regular time-of-day pals to reach the four overcast time-of-day pals
+	assert (8 palettes) * 4 == 256
+	inc h ; add 256 to hl
+	; fallthrough
 ; don't copy the eighth palette, it's loaded based on the map's sign
 LoadSevenTimeOfDayBGPalettes:
 	ld a, [wTimeOfDayPal]
 	and 3
 	ld bc, 8 palettes
 	rst AddNTimes
+	; fallthrough
 LoadSevenBGPalettes:
 	ld de, wBGPals1
 	ld bc, 7 palettes
@@ -120,6 +134,19 @@ MartSpecialCase:
 	scf
 	ret
 
+MagnetTrainSpecialCase:
+	; The Magnet Train animation sets the environment to TOWN instead of INDOOR.
+	ld a, [wEnvironment]
+	assert TOWN == 1
+	dec a
+	ret z
+	; The Mart palette just replaces YELLOW (for the seats and caution stripes)
+	; with the more muted Goldenrod roof palette.
+	ld hl, MartPalette
+	call LoadSevenBGPalettes
+	scf
+	ret
+
 HiddenGrottoSpecialCase:
 	ld a, [wTimeOfDayPal]
 	and 3
@@ -130,27 +157,30 @@ HiddenGrottoSpecialCase:
 .got_palette
 	call LoadSevenBGPalettes
 	ld a, [wBackupMapGroup]
+	ld hl, wBGPals1 palette PAL_BG_RED
 	cp GROUP_BELLCHIME_TRAIL
 	jr nz, .not_bellchime_trail_grotto
 	ld a, [wBackupMapNumber]
 	cp MAP_BELLCHIME_TRAIL
-	jr nz, .not_bellchime_trail_grotto
-	ld hl, wBGPals1 palette PAL_BG_RED
-	ld de, wBGPals1 palette PAL_BG_GREEN
-	ld bc, 1 palettes
-	call FarCopyColorWRAM
-	jr .continue
+	jr z, .continue
 .not_bellchime_trail_grotto
+	ld hl, wBGPals1 palette PAL_BG_GRAY
 	cp GROUP_CHERRYGROVE_BAY
-	jr nz, .done
+	jr nz, .not_cherrygrove_bay
 	ld a, [wBackupMapNumber]
 	cp MAP_CHERRYGROVE_BAY
+	jr z, .continue
+.not_cherrygrove_bay
+	ld hl, wBGPals1 palette PAL_BG_WATER
+	cp GROUP_YELLOW_FOREST
 	jr nz, .done
-	ld hl, wBGPals1 palette PAL_BG_GRAY
+	ld a, [wBackupMapNumber]
+	cp MAP_YELLOW_FOREST
+	jr nz, .done
+.continue
 	ld de, wBGPals1 palette PAL_BG_GREEN
 	ld bc, 1 palettes
 	call FarCopyColorWRAM
-.continue
 	ld hl, wBGPals1 palette PAL_BG_GREEN color 1
 	ld de, wBGPals1 palette PAL_BG_ROOF color 1
 	ld bc, 3 colors
@@ -217,4 +247,3 @@ CheckIfSpecialPaletteApplies:
 	ret
 
 INCLUDE "data/maps/palettes.asm"
-INCLUDE "data/maps/palettes_overcast.asm"
