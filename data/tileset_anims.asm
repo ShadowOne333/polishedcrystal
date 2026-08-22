@@ -63,39 +63,50 @@ TilesetJohtoCoastAnim::
 	tileframe DoneTileAnimation
 
 TilesetKantoAnim::
-TilesetKantoUrbanAnim::
 	tileframe AnimateKantoWaterTile,          $0:14
-	tileframe ScrollFourTilesUpDownLeftRight, $0:10
-	tileframe AnimateFountainTile,            $1:3e
+	tileframe AnimateKantoBuoyTiles,          $0:6c
 	tileframe DoNothing
-	tileframe AnimateGameCornerTiles,         $0:6b
+	tileframe DoNothing
+	tileframe DoNothing
 	tileframe AnimateKantoFlowerTile,         $0:03
-	tileframe ScrollFourTilesUpDownLeftRight, $0:10
+	tileframe DoNothing
 	tileframe DoNothing
 	tileframe StandingTileFrame8
 	tileframe DoneTileAnimation
 
 TilesetKantoNorthAnim::
 	tileframe AnimateKantoWaterTile,          $0:14
-	tileframe ScrollFourTilesUpDownLeftRight, $0:10
+	tileframe AnimateKantoBuoyTiles,          $0:6c
 	tileframe DoNothing
 	tileframe DoNothing
-	tileframe AnimateGameCornerTiles,         $0:6b
+	tileframe DoNothing
 	tileframe AnimateKantoFlowerTile,         $0:03
-	tileframe ScrollFourTilesUpDownLeftRight, $0:10
+	tileframe DoNothing
 	tileframe AnimateWaterfallTiles,          $1:0c
+	tileframe StandingTileFrame8
+	tileframe DoneTileAnimation
+
+TilesetKantoUrbanAnim::
+	tileframe AnimateKantoWaterTile,          $0:14
+	tileframe AnimateKantoBuoyTiles,          $0:6c
+	tileframe AnimateFountainTile,            $1:1a
+	tileframe DoNothing
+	tileframe AnimateGameCornerTiles,         $1:16
+	tileframe AnimateKantoFlowerTile,         $0:03
+	tileframe DoNothing
+	tileframe DoNothing
 	tileframe StandingTileFrame8
 	tileframe DoneTileAnimation
 
 TilesetIndigoPlateauAnim::
 	tileframe AnimateKantoWaterTile,          $0:14
-	tileframe ScrollFourTilesUpDownLeftRight, $0:10
+	tileframe AnimateKantoBuoyTiles,          $0:6c
+	tileframe ScrollFourTilesUpDownLeftRight, $1:49
 	tileframe DoNothing
 	tileframe DoNothing
-	tileframe AnimateGameCornerTiles,         $0:6b
 	tileframe AnimateKantoFlowerTile,         $0:03
-	tileframe ScrollFourTilesUpDownLeftRight, $0:10
 	tileframe DoNothing
+	tileframe ScrollFourTilesUpDownLeftRight, $1:49
 	tileframe StandingTileFrame8
 	tileframe DoneTileAnimation
 
@@ -334,6 +345,20 @@ TilesetHideoutAnim::
 	tileframe StandingTileFrame8
 	tileframe DoneTileAnimation
 
+TilesetPokemonMansionAnim::
+	tileframe AnimateTurbineTiles,            $0:64
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe AnimateTurbineTiles,            $0:64
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe AnimateTurbineTiles,            $0:64
+	tileframe DoNothing
+	tileframe DoNothing
+	tileframe AnimateTurbineTiles,            $0:64
+	tileframe StandingTileFrame8
+	tileframe DoneTileAnimation
+
 TilesetJohtoHouseAnim::
 TilesetKantoHouseAnim::
 TilesetPokeCenterAnim::
@@ -347,7 +372,6 @@ TilesetLighthouseAnim::
 TilesetBattleTowerInsideAnim::
 TilesetRuinsOfAlphAnim::
 TilesetRadioTowerAnim::
-TilesetPokemonMansionAnim::
 TilesetDecorAnim::
 TilesetMuseumAnim::
 TilesetHotelAnim::

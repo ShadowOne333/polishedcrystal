@@ -148,22 +148,21 @@ ENDM
 	map_const VICTORY_ROAD_3F,                            12,  9 ; 86
 
 	newgroup                                                     ;  4
-	map_const ROUTE_35,                                   12, 18 ;  1
-	map_const ROUTE_37,                                   10, 10 ;  2
-	map_const ECRUTEAK_CITY,                              20, 18 ;  3
-	map_const ECRUTEAK_HOUSE,                             10,  9 ;  4
-	map_const WISE_TRIOS_ROOM,                             4,  4 ;  5
-	map_const ECRUTEAK_POKECENTER_1F,                      6,  4 ;  6
-	map_const ECRUTEAK_LUGIA_SPEECH_HOUSE,                 4,  4 ;  7
-	map_const DANCE_THEATRE,                               6,  8 ;  8
-	map_const ECRUTEAK_MART,                               6,  4 ;  9
-	map_const ECRUTEAK_GYM,                                5, 11 ; 10
-	map_const ECRUTEAK_ITEMFINDER_HOUSE,                   4,  4 ; 12
-	map_const ROUTE_36_RUINS_OF_ALPH_GATE,                 5,  4 ; 13
-	map_const ROUTE_36_VIOLET_GATE,                        5,  4 ; 14
-	map_const VALERIES_HOUSE,                              4,  4 ; 15
-	map_const ECRUTEAK_CHERISH_BALL_HOUSE,                 4,  4 ; 16
-	map_const ECRUTEAK_DESTINY_KNOT_HOUSE,                 4,  4 ; 17
+	map_const ROUTE_37,                                   10, 10 ;  1
+	map_const ECRUTEAK_CITY,                              20, 18 ;  2
+	map_const ECRUTEAK_HOUSE,                             10,  9 ;  3
+	map_const WISE_TRIOS_ROOM,                             4,  4 ;  4
+	map_const ECRUTEAK_POKECENTER_1F,                      6,  4 ;  5
+	map_const ECRUTEAK_LUGIA_SPEECH_HOUSE,                 4,  4 ;  6
+	map_const DANCE_THEATRE,                               6,  8 ;  7
+	map_const ECRUTEAK_MART,                               6,  4 ;  8
+	map_const ECRUTEAK_GYM,                                5, 11 ;  9
+	map_const ECRUTEAK_ITEMFINDER_HOUSE,                   4,  4 ; 10
+	map_const ROUTE_36_RUINS_OF_ALPH_GATE,                 5,  4 ; 12
+	map_const ROUTE_36_VIOLET_GATE,                        5,  4 ; 13
+	map_const VALERIES_HOUSE,                              4,  4 ; 14
+	map_const ECRUTEAK_CHERISH_BALL_HOUSE,                 4,  4 ; 15
+	map_const ECRUTEAK_DESTINY_KNOT_HOUSE,                 4,  4 ; 16
 
 	newgroup                                                     ;  5
 	map_const BLACKTHORN_GYM_1F,                           5,  9 ;  1
@@ -245,20 +244,19 @@ ENDM
 	newgroup                                                     ; 10
 	map_const ROUTE_32,                                   10, 45 ;  1
 	map_const ROUTE_32_COAST,                             15, 35 ;  2
-	map_const ROUTE_36,                                   23,  9 ;  3
-	map_const VIOLET_CITY,                                20, 18 ;  4
-	map_const VIOLET_MART,                                 6,  4 ;  5
-	map_const VIOLET_GYM,                                  5,  9 ;  6
-	map_const EARLS_POKEMON_ACADEMY,                       4,  8 ;  7
-	map_const VIOLET_NICKNAME_SPEECH_HOUSE,                4,  4 ;  8
-	map_const VIOLET_POKECENTER_1F,                        6,  4 ;  9
-	map_const VIOLET_ONIX_TRADE_HOUSE,                     4,  4 ; 10
-	map_const ROUTE_32_RUINS_OF_ALPH_GATE,                 5,  4 ; 11
-	map_const ROUTE_32_POKECENTER_1F,                      6,  4 ; 12
-	map_const ROUTE_32_COAST_HOUSE,                        4,  4 ; 13
-	map_const MAGNET_TUNNEL_EAST,                         10, 10 ; 14
-	map_const VIOLET_OUTSKIRTS,                           20, 10 ; 15
-	map_const VIOLET_OUTSKIRTS_HOUSE,                      4,  4 ; 16
+	map_const VIOLET_CITY,                                20, 18 ;  3
+	map_const VIOLET_MART,                                 6,  4 ;  4
+	map_const VIOLET_GYM,                                  5,  9 ;  5
+	map_const EARLS_POKEMON_ACADEMY,                       4,  8 ;  6
+	map_const VIOLET_NICKNAME_SPEECH_HOUSE,                4,  4 ;  7
+	map_const VIOLET_POKECENTER_1F,                        6,  4 ;  8
+	map_const VIOLET_ONIX_TRADE_HOUSE,                     4,  4 ;  9
+	map_const ROUTE_32_RUINS_OF_ALPH_GATE,                 5,  4 ; 10
+	map_const ROUTE_32_POKECENTER_1F,                      6,  4 ; 11
+	map_const ROUTE_32_COAST_HOUSE,                        4,  4 ; 12
+	map_const MAGNET_TUNNEL_EAST,                         10, 10 ; 13
+	map_const VIOLET_OUTSKIRTS,                           20, 10 ; 14
+	map_const VIOLET_OUTSKIRTS_HOUSE,                      4,  4 ; 15
 
 	newgroup                                                     ; 11
 	map_const ROUTE_34,                                   10, 27 ;  1
@@ -426,11 +424,12 @@ ENDM
 	map_const NAVEL_ROCK_OUTSIDE,                         13, 16 ;  4
 	map_const NAVEL_ROCK_INSIDE,                          27, 26 ;  5
 	map_const NAVEL_ROCK_ROOF,                             8, 11 ;  6
-	map_const FARAWAY_ISLAND,                             17, 23 ;  7
-	map_const FARAWAY_JUNGLE,                             14, 12 ;  8
-	map_const SEAGALLOP_FERRY_VERMILION_GATE,              7,  6 ;  9
-	map_const SEAGALLOP_FERRY_NAVEL_GATE,                  7,  6 ; 10
-	map_const SEAGALLOP_FERRY_SHAMOUTI_GATE,               7,  6 ; 11
+	map_const FARAWAY_ISLAND_NORTH,                       17, 15 ;  7
+	map_const FARAWAY_ISLAND_SOUTH,                       13,  8 ;  8
+	map_const FARAWAY_JUNGLE,                             14, 12 ;  9
+	map_const SEAGALLOP_FERRY_VERMILION_GATE,              7,  6 ; 10
+	map_const SEAGALLOP_FERRY_NAVEL_GATE,                  7,  6 ; 11
+	map_const SEAGALLOP_FERRY_SHAMOUTI_GATE,               7,  6 ; 12
 
 	newgroup                                                     ; 20
 	map_const POKECENTER_2F,                               8,  4 ;  1
@@ -709,5 +708,9 @@ ENDM
 
 	newgroup                                                     ; 38
 	map_const CERULEAN_CAPE,                              25, 19 ;  1
+
+	newgroup                                                     ; 39
+	map_const ROUTE_35,                                   12, 18 ;  1
+	map_const ROUTE_36,                                   23,  9 ;  2
 
 DEF NUM_MAP_GROUPS EQU const_value ; 37

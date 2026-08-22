@@ -1,11 +1,11 @@
 SECTION "Roof Graphics", ROMX
 
-NewBarkRoofGFX::   INCBIN "gfx/tilesets/roofs/new_bark.2bpp.lzp"
-VioletRoofGFX::    INCBIN "gfx/tilesets/roofs/violet.2bpp.lzp"
-AzaleaRoofGFX::    INCBIN "gfx/tilesets/roofs/azalea.2bpp.lzp"
-OlivineRoofGFX::   INCBIN "gfx/tilesets/roofs/olivine.2bpp.lzp"
-GoldenrodRoofGFX:: INCBIN "gfx/tilesets/roofs/goldenrod.2bpp.lzp"
-SinjohRoofGFX::    INCBIN "gfx/tilesets/roofs/sinjoh.2bpp.lzp"
+NewBarkRoofGFX:: INCBIN "gfx/tilesets/roofs/new_bark.2bpp.lzp"
+VioletRoofGFX::  INCBIN "gfx/tilesets/roofs/violet.2bpp.lzp"
+AzaleaRoofGFX::  INCBIN "gfx/tilesets/roofs/azalea.2bpp.lzp"
+OlivineRoofGFX:: INCBIN "gfx/tilesets/roofs/olivine.2bpp.lzp"
+ParkRoofGFX::    INCBIN "gfx/tilesets/roofs/park.2bpp.lzp"
+SinjohRoofGFX::  INCBIN "gfx/tilesets/roofs/sinjoh.2bpp.lzp"
 
 
 SECTION "Map Name Sign Graphics", ROMX
@@ -32,6 +32,11 @@ RainGFX::          INCBIN "gfx/overworld/rain_splash.2bpp"
 SnowGFX::          INCBIN "gfx/overworld/snow.2bpp"
 SandGFX::          INCBIN "gfx/overworld/sand.2bpp"
 CherryBlossomGFX:: INCBIN "gfx/overworld/cherry_blossom.2bpp"
+
+
+SECTION "Coast Sand Graphics", ROMX
+
+CoastSandTileGFX:: INCBIN "gfx/tilesets/animations/coast_sand.2bpp.lzp"
 
 
 SECTION "Fishing Graphics", ROMX

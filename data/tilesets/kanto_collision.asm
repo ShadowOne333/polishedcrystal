@@ -200,17 +200,36 @@
 	tilecoll WALL, FLOOR, WATER, WATER ; c7
 	tilecoll WALL, WATER, WALL, WATER ; c8
 	tilecoll WATER, WALL, WATER, WALL ; c9
-	tilecoll WALL, WATER, WALL, WALL ; ca
-	tilecoll WATER, WALL, WALL, WALL ; cb
+	tilecoll WALL, WATER, WALL, BUOY ; ca
+	tilecoll WATER, WALL, BUOY, WALL ; cb
 	tilecoll WALL, WATER, WATER, WATER ; cc
 	tilecoll WATER, WALL, WATER, WATER ; cd
 	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; ce
-	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; cf
+	tilecoll FLOOR, FLOOR, FLOOR, WALL ; cf
 	tilecoll WALL, LEDGE_DOWN, WALL, WALL ; d0
-	tilecoll FLOOR, FLOOR, FLOOR, WALL ; d1
-	tilecoll FLOOR, FLOOR, FLOOR, WALL ; d2
-	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; d3
+	tilecoll BUOY, BUOY, BUOY, BUOY ; d1
+	tilecoll WATER, WATER, BUOY, BUOY ; d2
+	tilecoll WATER, BUOY, WATER, BUOY ; d3
 	tilecoll FLOOR, WALL, FLOOR, WALL ; d4
 	tilecoll FLOOR, WALL, WALL, WALL ; d5
 	tilecoll FLOOR, WALL, FLOOR, WALL ; d6
 	tilecoll WALL, WALL, FLOOR, FLOOR ; d7
+	tilecoll BUOY, WATER, BUOY, WATER ; d8
+	tilecoll FLOOR, FLOOR, FLOOR, WALL ; d9
+	tilecoll BUOY, WATER, BUOY, WATER ; da
+	tilecoll WATER, BUOY, WATER, BUOY ; db
+	tilecoll BUOY, WATER, BUOY, BUOY ; dc
+	tilecoll WATER, BUOY, BUOY, BUOY ; dd
+	tilecoll WALL, WATER, WALL, BUOY ; de
+	tilecoll WATER, WALL, BUOY, WALL ; df
+	tilecoll FLOOR, FLOOR, WALL, WALL ; e0
+	tilecoll FLOOR, FLOOR, WALL, WALL ; e1
+	tilecoll COAST_SAND, COAST_SAND, WATER, WATER ; e2
+	tilecoll WATER, WATER, COAST_SAND, COAST_SAND ; e3
+	tilecoll COAST_SAND, COAST_SAND, FLOOR, FLOOR ; e4
+	tilecoll FLOOR, FLOOR, COAST_SAND, COAST_SAND ; e5
+	tilecoll COAST_SAND, WATER, COAST_SAND, WATER ; e6
+	tilecoll WATER, COAST_SAND, WATER, COAST_SAND ; e7
+	tilecoll COAST_SAND, FLOOR, COAST_SAND, FLOOR ; e8
+	tilecoll FLOOR, COAST_SAND, FLOOR, COAST_SAND ; e9
+	tilecoll COAST_SAND, COAST_SAND, COAST_SAND, COAST_SAND ; ea

@@ -174,8 +174,7 @@ TilesetIndigoPlateauGFX0:: INCBIN "gfx/tilesets/kanto_common.2bpp.lzp"
 
 SECTION "Tileset Graphics - kanto vram1", ROMX
 
-TilesetKantoGFX1::
-TilesetKantoUrbanGFX1:: INCBIN "gfx/tilesets/kanto.kanto_common.2bpp.lzp"
+TilesetKantoGFX1:: INCBIN "gfx/tilesets/kanto.kanto_common.2bpp.lzp"
 
 
 SECTION "Tileset Data - kanto", ROMX
@@ -195,6 +194,11 @@ SECTION "Tileset Data - kanto north", ROMX
 TilesetKantoNorthMeta:: INCBIN "data/tilesets/kanto_north_metatiles.bin.lzp"
 TilesetKantoNorthAttr:: INCBIN "data/tilesets/kanto_north_attributes.bin.lzp"
 TilesetKantoNorthColl:: INCBIN "data/tilesets/kanto_north_collision.bin.lzp"
+
+
+SECTION "Tileset Graphics - kanto urban vram1", ROMX
+
+TilesetKantoUrbanGFX1:: INCBIN "gfx/tilesets/kanto_urban.kanto_common.2bpp.lzp"
 
 
 SECTION "Tileset Data - kanto urban", ROMX
