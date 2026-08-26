@@ -389,6 +389,8 @@ ENDM
 	map_const ROUTE_12_SUPER_ROD_HOUSE,                    4,  4 ; 19
 	map_const LUCKY_ISLAND,                               26, 19 ; 20
 	map_const ROUTE_14_LUCKY_ISLAND_DUAL,                 35,  3 ; 21
+	map_const FUCHSIA_AQUARIUM_1F,                         9,  5 ; 22
+	map_const FUCHSIA_AQUARIUM_2F,                         9,  5 ; 23
 
 	newgroup                                                     ; 18
 	map_const ROUTE_8,                                    26, 11 ;  1
@@ -704,7 +706,7 @@ ENDM
 
 	newgroup                                                     ; 37
 	map_const ECRUTEAK_SHRINE_OUTSIDE,                     8, 11 ;  1
-	map_const ECRUTEAK_SHRINE_INSIDE,                      6,  6 ;  2
+	map_const ECRUTEAK_SHRINE_INSIDE,                      6,  5 ;  2
 
 	newgroup                                                     ; 38
 	map_const CERULEAN_CAPE,                              25, 19 ;  1
