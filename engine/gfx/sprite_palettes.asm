@@ -96,6 +96,30 @@ CopySpritePalToOBPal7:
 	ld de, wOBPals1 palette 7
 	; fallthrough
 CopySpritePalHandler::
+	; Non-object users of this routine always request an unmodified palette.
+	xor a
+	ld [wNeededObjPalGlow], a
+	ld [wPrevNeededObjPalGlow], a
+	push hl
+	push bc
+	ld a, e
+	sub LOW(wOBPals1)
+	rrca
+	rrca
+	rrca
+	and %00011111
+	ld c, a
+	ld b, 0
+	ld hl, wLoadedObjPalGlows
+	add hl, bc
+	ld [hl], OBJ_GLOW_NONE
+	ld hl, wLoadedObjPalPrevGlows
+	add hl, bc
+	ld [hl], OBJ_GLOW_NONE
+	pop bc
+	pop hl
+	; fallthrough
+CopyObjectSpritePalHandler::
 	; check if we are fading palettes
 	ldh a, [rWBK]
 	push af
@@ -254,6 +278,8 @@ endr
 	; a = light color OW palette index (0–15, raw PAL_OW_* value for LookupOBPalette / CopyMonIconLightColor)
 	call nz, CopyMonIconLightColor
 
+	call ApplyObjectGlowToPalette
+
 	ld a, [wPalFlags]
 	and NO_DYN_PAL_APPLY
 	jr nz, .skip_apply
@@ -309,6 +335,12 @@ LookupOBPalette:
 	ld a, [wPalFlags]
 	bit USE_DAYTIME_PAL_F, a
 	jr nz, .not_overcast
+	; Day/night-lit objects use their non-overcast palette for this fade endpoint.
+	call GetNeededObjPalGlow
+	cp OBJ_GLOW_DAY
+	jr z, .not_overcast
+	cp OBJ_GLOW_NITE
+	jr z, .not_overcast
 
 	; check darkness
 	ld a, PALSTATE_DARKNESS
@@ -354,10 +386,21 @@ LookupOBPalette:
 	ld a, [wPalFlags]
 	bit USE_DAYTIME_PAL_F, a
 	ld a, DAY
-	jr nz, .daytime
+	jr nz, .got_time
+	call GetNeededObjPalGlow
+	cp OBJ_GLOW_DAY
+	jr z, .daytime
+	cp OBJ_GLOW_NITE
+	jr nz, .get_time_state
+	ld a, NITE
+	jr .got_time
+.daytime
+	ld a, DAY
+	jr .got_time
+.get_time_state
 	ld a, PALSTATE_TIME_OF_DAY
 	call GetPalState
-.daytime
+.got_time
 	maskbits NUM_DAYTIMES
 	ld bc, NUM_OW_TIME_OF_DAY_PALS palettes
 	rst AddNTimes
@@ -435,6 +478,147 @@ CalculateStates:
 	pop hl
 	ret
 
+GetNeededObjPalGlow:
+; Return the glow associated with the palette endpoint being constructed.
+	ld a, [wPalState]
+	and a
+	ld a, [wPrevNeededObjPalGlow]
+	ret z
+	ld a, [wNeededObjPalGlow]
+	ret
+
+ApplyObjectGlowToPalette:
+; Add cool aquarium light to one dynamically loaded object palette. Campfire
+; glow is handled by selecting the daytime source palette in LookupOBPalette.
+	call GetNeededObjPalGlow
+	and a ; OBJ_GLOW_NONE?
+	ret z
+	cp NUM_OBJ_GLOW_TYPES + 1 ; no adjustments?
+	ret nc
+
+	ld d, a
+
+	ldh a, [rWBK]
+	push af
+	ld a, BANK(wOBPals1)
+	ldh [rWBK], a
+
+	push hl
+	dec d
+	ld a, d
+	add d
+	add d
+	add LOW(PaletteGlowAdjustments)
+	ld l, a
+	adc HIGH(PaletteGlowAdjustments)
+	sub l
+	ld h, a
+	ld de, wPalGlowAdjustments
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	pop hl
+
+	push hl
+rept PAL_COLORS - 1 ; leave black color 3 unchanged
+	call .apply_to_color
+endr
+	pop hl
+
+	pop af
+	ldh [rWBK], a
+	ret
+
+.apply_to_color
+; Input: hl = pointer to current little-endian CGB color.
+; Output: hl = pointer to next CGB color, after adjusting the current one.
+
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+
+	ld a, e
+	and COLOR_RED
+	ld b, a
+	ld a, [wPalGlowRedAdjustment]
+	add b
+	cp COLOR_CH_MAX + 1
+	jr c, .red_ok
+	ld a, COLOR_CH_MAX
+.red_ok
+	ld b, a
+
+	ld a, e
+rept 8 - B_COLOR_GREEN
+	rlca
+endr
+	and (1 << (8 - B_COLOR_GREEN)) - 1
+	ld c, a
+	ld a, d
+	and COLOR_GREEN_HIGH
+rept COLOR_CH_WIDTH - 2
+	add a
+endr
+	or c
+	ld c, a
+	ld a, [wPalGlowGreenAdjustment]
+	add c
+	cp COLOR_CH_MAX + 1
+	jr c, .green_ok
+	ld a, COLOR_CH_MAX
+.green_ok
+	ld c, a
+
+	ld a, d
+rept B_COLOR_BLUE - 8
+	rrca
+endr
+	and COLOR_CH_MAX
+	ld d, a
+	ld a, [wPalGlowBlueAdjustment]
+	add d
+	cp COLOR_CH_MAX + 1
+	jr c, .blue_ok
+	ld a, COLOR_CH_MAX
+.blue_ok
+rept B_COLOR_BLUE - 8
+	add a
+endr
+	and COLOR_BLUE
+	ld d, a
+
+	ld a, c
+	and (1 << (COLOR_CH_WIDTH - 2)) - 1
+rept 8 - B_COLOR_GREEN
+	rrca
+endr
+	and COLOR_GREEN_LOW
+	ld e, a
+	ld a, c
+rept COLOR_CH_WIDTH - 2
+	rrca
+endr
+	and COLOR_GREEN_HIGH
+	or d
+	ld d, a
+	ld a, b
+	or e
+	ld e, a
+
+	dec hl
+	ld a, d
+	ld [hld], a
+	ld a, e
+	ld [hli], a
+	inc hl
+	ret
+
 CopyWhitePal:
 ; target palette in de
 	push hl
@@ -488,3 +672,5 @@ OvercastOBPalette:
 	table_width 1 palettes
 INCLUDE "gfx/overworld/npc_sprites_overcast.pal"
 	assert_table_length NUM_OW_TIME_OF_DAY_PALS * NUM_DAYTIMES
+
+INCLUDE "data/collision/glow_adjustments.asm"
