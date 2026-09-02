@@ -766,25 +766,6 @@ wDiscardPileEnd::
 wCardFlipEnd::
 
 
-;SECTION UNION "Misc 404", WRAM0
-;; memory game
-;	ds 172
-;
-;wMemoryGame::
-;wMemoryGameCards:: ds 9 * 5
-;wMemoryGameCardsEnd::
-;wMemoryGameLastCardPicked:: db
-;wMemoryGameCard1:: db
-;wMemoryGameCard2:: db
-;wMemoryGameCard1Location:: db
-;wMemoryGameCard2Location:: db
-;wMemoryGameNumberTriesRemaining:: db
-;wMemoryGameLastMatches:: ds 5
-;wMemoryGameCounter:: db
-;wMemoryGameNumCardsMatched:: db
-;wMemoryGameEnd::
-
-
 SECTION UNION "Misc 404", WRAM0
 ; Unown puzzle
 	ds 172
@@ -1065,7 +1046,7 @@ wLinkMode::
 
 wPlayerNextMovement:: db
 
-	ds 1 ; unused
+wNumHits:: db
 
 wMovementObject:: db
 wMovementDataPointer:: ds 3 ; dba
@@ -1197,10 +1178,6 @@ wCardFlipCursorY:: db
 wCardFlipCursorX:: db
 wCardFlipWhichCard:: db
 
-;NEXTU
-;; unused memory game
-;wMemoryGameCardChoice:: db
-
 NEXTU
 ; magnet train
 wMagnetTrainOffset:: db
@@ -1234,8 +1211,8 @@ wRandomValue::
 wEchoRAMTest::
 	db
 wPrinterQueueLength::
-wFrameCounter2:: db
-wUnusedTradeAnimPlayEvolutionMusic:: db
+wFrameCounter2::
+	db
 
 ENDU
 
@@ -1382,8 +1359,6 @@ wBGP:: db
 wOBP0:: db
 wOBP1:: db
 
-wNumHits:: db
-
 wOverworldWeatherTimer:: db
 wOverworldWeatherCooldown:: db
 wSpriteOverlapCount:: db
@@ -1416,10 +1391,12 @@ wColoredMaleFemaleShinyTiles:: ds 3 tiles
 wSpecialPalStart:: db
 wSpecialPalCount:: db
 
+wSPBuffer:: dw
+
 
 SECTION "Unused", WRAM0
 
-	ds 316 ; it's free real estate
+	ds 315 ; it's free real estate
 
 
 SECTION "Options", WRAM0

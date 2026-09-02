@@ -684,20 +684,15 @@ CheckFlyAllowedOnMap:
 	and a
 	jr z, .no_fly
 	cp d
-	jr nz, .skip
 	ld a, [hli]
+	jr nz, .loop
 	cp e
-	ret z
-	jr .loop
-.skip
-	inc hl
-	jr .loop
-.no_fly
-	inc a
-	and a ; nz
-	ret
+	jr nz, .loop
 .yes_fly
 	xor a ; z
+	ret
+.no_fly
+	inc a ; nz
 	ret
 
 INCLUDE "data/maps/indoor_fly_maps.asm"
