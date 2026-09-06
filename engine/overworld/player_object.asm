@@ -3,6 +3,7 @@ INCLUDE "data/sprites/map_objects.asm"
 BlankScreen:
 	call DisableSpriteUpdates
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call ClearBGPalettes
 	call ClearSprites
@@ -281,7 +282,7 @@ InitializeVisibleSprites:
 	ret
 
 CheckObjectEnteringVisibleRange::
-	ld a, [wPlayerStepDirection]
+	ldh a, [hPlayerStepDirection]
 	cp STANDING
 	ret z
 	call StackJumpTable

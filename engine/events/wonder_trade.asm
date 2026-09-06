@@ -173,9 +173,12 @@ DoWonderTrade:
 	ld de, wPlayerTrademonPersonality
 	call Trade_CopyTwoBytes
 
-	xor a
-	ld [wPlayerTrademonCaughtData], a
-	ld [wOTTrademonCaughtData], a
+	ld hl, wPartyMon1CaughtBall
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call Trade_GetAttributeOfCurrentPartymon
+	ld a, [hl]
+	and CAUGHT_BALL_MASK
+	ld [wPlayerTrademonCaughtBall], a
 
 	ld hl, wPartyMon1Level
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -254,6 +257,7 @@ DoWonderTrade:
 .poke_ball
 	ld a, POKE_BALL
 .got_ball
+	ld [wOTTrademonCaughtBall], a
 	ld c, a
 	farcall SetGiftPartyMonCaughtData
 
@@ -417,10 +421,6 @@ GetGSBallPichu:
 	ld de, wPlayerTrademonPersonality
 	call Trade_CopyTwoBytes
 
-	xor a
-	ld [wPlayerTrademonCaughtData], a
-	ld [wOTTrademonCaughtData], a
-
 	ld hl, wPartyMon1Level
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call Trade_GetAttributeOfCurrentPartymon
@@ -432,7 +432,9 @@ GetGSBallPichu:
 	farcall RemoveMonFromParty
 	farcall TryAddMonToParty
 
-	ld c, ULTRA_BALL
+	ld a, ULTRA_BALL
+	ld [wOTTrademonCaughtBall], a
+	ld c, a
 	farcall SetGiftPartyMonCaughtData
 
 	ld a, [wOTTrademonSpecies]

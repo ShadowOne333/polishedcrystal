@@ -29,8 +29,21 @@ DeleteMapObject::
 	farjp CheckForUsedObjPals
 
 HandleObjectStep:
+	ld hl, OBJECT_FLAGS2
+	add hl, bc
+	ld a, [hl]
+	push af
 	call _CheckObjectStillVisible
+	pop de ; d = previous OBJECT_FLAGS2; preserve the deletion carry flag
 	ret c
+	ld hl, OBJECT_FLAGS2
+	add hl, bc
+	ld a, [hl]
+	xor d
+	and OFF_SCREEN
+	jr z, .visibility_unchanged
+	farcall CheckForUsedObjPals
+.visibility_unchanged
 	call _HandleStepType
 
 	ld hl, OBJECT_FLAGS1
@@ -445,7 +458,7 @@ UpdatePlayerStep:
 	add hl, bc
 	ld a, [hl]
 	and %00000011
-	ld [wPlayerStepDirection], a
+	ldh [hPlayerStepDirection], a
 	call AddStepVector
 ApplyPlayerStep:
 	ld a, [wPlayerStepVectorX]
@@ -2495,7 +2508,7 @@ HandleNPCStep::
 	ld [wPlayerStepFlags], a
 	ret nz
 	dec a ; STANDING
-	ld [wPlayerStepDirection], a
+	ldh [hPlayerStepDirection], a
 	ret
 
 RefreshPlayerSprite:

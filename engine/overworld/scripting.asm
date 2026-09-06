@@ -2047,13 +2047,10 @@ Script_checkcellnum:
 Script_specialphonecall:
 	call GetScriptByte
 	ld [wSpecialPhoneCallID], a
-	xor a
-	ld [wSpecialPhoneCallID + 1], a
 	ret
 
 Script_checkphonecall:
 ; returns false if no special phone call is stored
-
 	ld a, [wSpecialPhoneCallID]
 	and a
 	jr z, .ok
@@ -2298,6 +2295,7 @@ Script_changeblock:
 
 Script_refreshmap::
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call LoadMapPart
 	call GetMovementPermissions

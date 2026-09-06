@@ -114,18 +114,13 @@ hSCY:: db
 hWX::  db
 hWY::  db
 
-hBGMapCopyNRows:: ; How many rows the `_OFS` modes (in hBGMapMode) ought to copy.
-hNbRowsToCopy::   ; Temporary counter for `CopyTilemapInHBlank`.
-hNbTilesToCopy::  ; Temporary counter for the `gfx.asm` functions.
+hBGMapCopyNRows:: ; How many rows the `_OFS` modes (in hBGMapMode) ought to copy
+hNbRowsToCopy::   ; Temporary counter for `CopyTilemapInHBlank`
+hNbTilesToCopy::  ; Temporary counter for the `gfx.asm` functions
 	db
-
-hBGMapMode::
-; 0 - top third
-; 1 - middle third
-; 2 - bottom third
-	db
-hBGMapHalf:: db ; Either 0 (top half), or 1 (bottom half).
-hBGMapAddress::  dw
+hBGMapMode::    db ; See `ram_constants.asm`
+hBGMapHalf::    db ; Either 0 (top half), or 1 (bottom half)
+hBGMapAddress:: dw
 
 hBGMapUpdate::    db
 hBGMapTileCount:: db
@@ -213,7 +208,14 @@ ENDU
 hUsedWeatherSpriteIndex:: db
 hUsedOAMIndex:: db
 
-	ds 11 ; unused
+hOverworldMapAnchor:: dw
+hMetatileStandingY:: db
+hMetatileStandingX:: db
+hPlayerStepDirection:: db
+hStreamMapWalkedPatch:: db ; Step renderer scratch.
+
+
+SECTION "HRAM tail", HRAM
 
 hLCDInterruptFunction::
 hLCDInterruptFunctionJump::     db ; $c3 jp
@@ -237,3 +239,7 @@ hJumpFunctionJump::     db ; $c3 jp
 hJumpFunctionTarget::
 hJumpFunctionTargetLo:: db ; LOW(target)
 hJumpFunctionTargetHi:: db ; HIGH(target)
+
+; The variables above need to be within `jr` range of some code in early ROM0, so we place them
+; at the very end of HRAM to help with that.
+	align 16, $ffff

@@ -75,6 +75,13 @@ CheckForUsedObjPals::
 	xor a
 	ld [wUsedObjectPals], a
 
+	; Remember objects whose requested palette already matched in pass one.
+	; Pass two can skip them until all slots are occupied (slot exhaustion
+	; can replace slot 7 and makes another lookup necessary).
+	ld hl, wResolvedObjectPals
+	ld bc, NUM_OBJECT_STRUCTS
+	rst ByteFill
+
 	; Initialize transient palette state before dual pal check
 	ld [wNeededPalType], a ; a = 0 = normal
 	assert NO_PAL_LOADED == -1
@@ -82,6 +89,13 @@ CheckForUsedObjPals::
 	ld [wNeededMonPalLight], a
 
 	call CheckDualObjectPals
+	; Weather OAM uses a fixed slot, including particles still clearing after
+	; the weather stops. Do not let an object overwrite that palette.
+	call CheckWeatherPalInUse
+	jr z, .weather_pal_reserved
+	ld hl, wUsedObjectPals
+	set PAL_OW_WEATHER, [hl]
+.weather_pal_reserved
 
 	; Scan for active objects first and mark those pals still in use.
 	ld hl, wPalFlags
@@ -113,7 +127,26 @@ ScanObjectStructPals:
 	ld a, [hl]
 	and a
 	jmp z, .skip
+	; Retained off-screen objects and script-hidden sprites need no palette.
+	ld hl, OBJECT_FLAGS1
+	add hl, de
+	bit INVISIBLE_F, [hl]
+	jmp nz, .skip
+	inc hl ; OBJECT_FLAGS2
+	bit OFF_SCREEN_F, [hl]
+	jmp nz, .skip
 
+	ld a, [wPalFlags]
+	bit SCAN_OBJECTS_FIRST_F, a
+	jr nz, .scan_object
+	ld a, [wUsedObjectPals]
+	inc a
+	jr z, .scan_object ; preserve the existing palette-exhaustion policy
+	call .ResolvedFlag
+	ld a, [hl]
+	and a
+	jmp nz, .skip
+.scan_object
 	; Look up this object's collision-driven glow type.
 	ld a, b
 	cpl
@@ -220,6 +253,10 @@ ScanObjectStructPals:
 	; Then load the return into OBJECT_PALETTE, which corresponds
 	; to OBJ 0 - OBJ 7
 	jr nc, .skip
+	push af
+	call .ResolvedFlag
+	ld [hl], 1
+	pop af
 	and OAM_PALETTE
 	ld c, a
 	ld hl, OBJECT_PALETTE
@@ -239,6 +276,16 @@ ScanObjectStructPals:
 	ld e, l
 	jmp .loop
 
+.ResolvedFlag:
+	ld a, NUM_OBJECT_STRUCTS
+	sub b
+	add LOW(wResolvedObjectPals)
+	ld l, a
+	adc HIGH(wResolvedObjectPals)
+	sub l
+	ld h, a
+	ret
+
 MarkUsedPal:
 	push de
 	push bc
@@ -251,6 +298,14 @@ MarkUsedPal:
 	ld a, d
 	cp [hl]
 	jr nz, .not_loaded_here
+	; A previously loaded object palette may still occupy the weather slot
+	; before LoadWeatherPal runs. It must be reassigned, not matched here.
+	ld a, c
+	cp PAL_OW_WEATHER
+	jr nz, .check_loaded_type
+	call CheckWeatherPalInUse
+	jr nz, .not_loaded_here
+.check_loaded_type
 	; Palette index matches - also check type
 	ld a, [wLoadedObjPalType]
 	ld e, c
@@ -394,6 +449,15 @@ MarkUsedPal:
 .done
 	pop bc
 	pop de
+	ret
+
+CheckWeatherPalInUse:
+; Return nz while weather can still render using PAL_OW_WEATHER.
+	ld a, [wCurWeather]
+	and a
+	ret nz
+	ld a, [wOverworldWeatherCooldown]
+	and a
 	ret
 
 CheckDualObjectPals:

@@ -255,21 +255,20 @@ SummaryScreenLoop:
 
 SummaryScreen_DoAnim:
 	ld hl, wSummaryScreenFlags
-	bit 6, [hl]
+	bit SUMMARY_FLAGS_DO_ANIM_F, [hl]
 	jr nz, .try_anim
-	bit 5, [hl]
+	bit SUMMARY_FLAGS_FINISH_ANIM_F, [hl]
 	jr nz, .finish
 	jmp DelayFrame
 
 .try_anim
-	farcall SetUpPokeAnim
-	jr nc, .finish
+	farcall TickFrontpicAnim
 	ld hl, wSummaryScreenFlags
+	jr nc, .finish
 	res SUMMARY_FLAGS_DO_ANIM_F, [hl]
 .finish
-	ld hl, wSummaryScreenFlags
 	res SUMMARY_FLAGS_FINISH_ANIM_F, [hl]
-	farjp HDMATransferTileMapToWRAMBank3
+	ret
 
 SummaryScreen_InitMon:
 	ld hl, wSummaryScreenFlags
@@ -534,6 +533,7 @@ SummaryScreen_LoadPage:
 	ld [wTempSpecies], a
 	ld [wCurSpecies], a
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	ldh [hOAMUpdate], a
 	ldh [hCGBPalUpdate], a
@@ -923,15 +923,14 @@ SummaryScreen_PlaceFrontpic:
 	ld a, TRUE
 .got_align
 	ld [wBoxAlignment], a
-	ld a, [wCurPartySpecies]
-	call IsAPokemon
+	call IsCurPartySpeciesAPokemon
 	ret c
 	call SummaryScreen_LoadTextboxSpaceGFX
 	ld de, vTiles2 tile $00
 	farcall PrepareAnimatedFrontpic
 	hlcoord 0, 1
 	lb de, $0, $2
-	farcall LoadMonAnimation
+	farcall LoadFrontpicAnim
 	ld hl, wSummaryScreenFlags
 	set SUMMARY_FLAGS_DO_ANIM_F, [hl]
 	ret

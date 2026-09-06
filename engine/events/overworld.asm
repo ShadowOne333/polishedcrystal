@@ -299,6 +299,7 @@ CutDownGrass:
 	ld a, [wCutWhirlpoolReplacementBlock] ; ReplacementTile
 	ld [hl], a
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call LoadMapPart
 	call UpdateSprites
@@ -370,6 +371,7 @@ CutDownTree:
 	farcall CancelOWFadePalettes
 	farcall CopyBGGreenToOBPal7
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call LoadMapPart
 	call UpdateSprites
@@ -1536,7 +1538,8 @@ AutoRockSmashScript:
 	callasm RockItemEncounter
 	iffalsefwd .no_item
 	opentext
-	verbosegiveitem ITEM_FROM_MEM
+	; This random item is forfeited if the Bag is full.
+	verbosegiveitem_unsafe ITEM_FROM_MEM
 	closetext
 .no_item
 	end
@@ -1699,7 +1702,8 @@ Script_GotAnItem:
 	callasm PutTheRodAway
 	callasm CurItemToScriptVar
 	opentext
-	verbosegiveitem ITEM_FROM_MEM
+	; This random item is forfeited if the Bag is full.
+	verbosegiveitem_unsafe ITEM_FROM_MEM
 	endtext
 
 Script_GotABite:
@@ -1759,7 +1763,7 @@ Fishing_CheckFacingUp:
 
 Script_FishCastRod:
 	refreshmap
-	loadmem hBGMapMode, $0
+	loadmem hBGMapMode, NO_BG_MAP_TRANSFER
 	special UpdateTimePals
 	callasm LoadFishingGFX
 	loademote EMOTE_SHOCK
@@ -1773,6 +1777,7 @@ MovementData_CastRod:
 
 PutTheRodAway:
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	ld a, $1
 	ld [wPlayerAction], a
