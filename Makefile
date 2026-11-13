@@ -6,9 +6,9 @@ AUTHOR := RANGI42
 ROM_NAME = $(NAME)$(MODIFIERS)-$(VERSION)
 EXTENSION := gbc
 
-TITLE := PKPCRYSTAL
-MCODE := PKPC
-ROMVERSION := 0x32
+TITLE := PKPCRYSTAL	#PM_CRYSTAL
+MCODE := PKPC		#BYTE
+ROMVERSION := 0x32	#0x30
 
 FILLER := 0xff
 
@@ -325,7 +325,7 @@ gfx/pokemon/%/frames.asm: gfx/pokemon/%/front.animated.tilemap gfx/pokemon/%/fro
 	$Qtools/lzpcompress -- $< $@
 
 #%.4bpp: %.png
-#	$Qsuperfamiconv tiles -R -i $@ -d $<
+#	$Qtools/superfamiconv tiles -R -i $@ -d $<
 
 %.2bpp: %.png
 	$Q$(RGBGFX) -c dmg $(RGBGFXFLAGS) -o $@ $<

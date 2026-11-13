@@ -28,4 +28,5 @@ SongArtists:
 	li "NotFroggestSpirit"
 	li "ShinkoNetCavy,      ShockSlayer"
 	li "Cosmic Angel"
+	li "ShadowOne333"
 	assert_list_length NUM_SONG_ARTISTS

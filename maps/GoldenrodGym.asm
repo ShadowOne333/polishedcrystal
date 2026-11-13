@@ -82,7 +82,7 @@ GoldenrodGymWhitneyScript:
 
 	para "Isn't it just per-"
 	line "fect for a cutie"
-	cont "like me? ♥"
+	cont "like me?"
 	done
 
 TrainerLassCathy:
@@ -308,7 +308,7 @@ JoWhitneyCriesText:
 
 BeautyVictoriaSeenText:
 	text "Oh, you are a cute"
-	line "little trainer! ♥"
+	line "little trainer!"
 
 	para "I like you, but I"
 	line "won't hold back!"
