@@ -95,6 +95,7 @@ ENDM
 	map_attributes Route33, ROUTE_33, $0
 	connection north, Route32, ROUTE_32, 0
 	connection west, AzaleaTown, AZALEA_TOWN, 0
+	connection east, Route32Coast, ROUTE_32_COAST, -7
 
 	map_attributes Route34, ROUTE_34, $0
 	connection north, GoldenrodCity, GOLDENROD_CITY, -7
@@ -372,6 +373,7 @@ ENDM
 
 	map_attributes Route32Coast, ROUTE_32_COAST, $5
 	connection north, CherrygroveBay, CHERRYGROVE_BAY, 0
+	connection west, Route33, ROUTE_33, 7
 
 	map_attributes VioletOutskirts, VIOLET_OUTSKIRTS, $0
 	connection north, Route42, ROUTE_42, -5
@@ -385,7 +387,7 @@ ENDM
 	DEF MAP_FAKE_ROUTE_36    EQU MAP_ROUTE_36
 	DEF FAKE_ROUTE_36_WIDTH  EQU ROUTE_36_WIDTH
 	DEF FAKE_ROUTE_36_HEIGHT EQU ROUTE_36_HEIGHT - 1
-	connection north, FakeRoute36, FAKE_ROUTE_36, -11
+	connection north, FakeRoute36, FAKE_ROUTE_36, -9
 	PURGE GROUP_FAKE_ROUTE_36, MAP_FAKE_ROUTE_36, FAKE_ROUTE_36_WIDTH, FAKE_ROUTE_36_HEIGHT
 	connection east, Route32, ROUTE_32, 10
 
