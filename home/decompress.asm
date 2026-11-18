@@ -229,9 +229,6 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 .relative
 	push de
 	push hl
-	; a = 127 - a
-	cpl
-	add 127 + 1
 	ld e, a
 	ld d, $ff
 
@@ -308,13 +305,13 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 	jr nc, .long
 
 	; Extract the bitfields.
-	; c = %cccl llll, a = %ccc0 0000 (from `and` above)
+	; c = %ccc_nnnnn, a = %ccc_00000 (from `and` above)
 	ld b, a ; B = command.
-	xor c ; a = %000l llll
+	xor c ; a = %000_nnnnn
 	ld c, a ; Thus, C = length.
-
-.process_cmd
 	ld a, b ; command in the upper 3 bits
+	and LZ_CMD
+.process_cmd
 	; length in bc, upper 7 bits of b ignored
 	rla
 	jr c, .lz_copy
@@ -355,15 +352,15 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 	ld a, [de]
 	inc de
 	ld c, a
-	; b =  111ccc0l
+	; b =  %111_ccc_0n
 	ld a, %00111100
 	and b
 	rlca
 	rlca
 	rlca
-	; a = ccc00001
+	; a = %ccc_000_01
 	and b
-	; a = ccc0000l
+	; a = %ccc_000_0n
 	ld b, a
 	and LZ_CMD
 	jr nz, .process_cmd
@@ -432,7 +429,7 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 	and $0f
 	ld [hli], a
 	dec c
-	jr z, .Main
+	jmp z, .Main
 	ld a, b
 	and $0f
 	ld [hli], a
